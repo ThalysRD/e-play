@@ -1,5 +1,5 @@
 {
-  "name": "e-pay",
+  "name": "e-play",
   "version": "1.0.0",
   "description": "E-commerce para Compra e Venda de Jogos Físicos Usados",
   "main": "index.js",
@@ -7,8 +7,11 @@
     "dev": "npm run services:up && next dev",
     "services:up": "docker compose -f infra/compose.yaml up -d",
     "services:stop": "docker compose -f infra/compose.yaml stop",
-    "services:down": "docker compose -f infra/compose.yaml down"
-    },
+    "services:down": "docker compose -f infra/compose.yaml down",
+    "migration:create": "node-pg-migrate --migrations-dir infra/migrations create",
+    "migration:up": "dotenv -e .env.development -- node-pg-migrate -m infra/migrations up",
+    "migration:down": "dotenv -e .env.development -- node-pg-migrate -m infra/migrations down"
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -18,5 +21,8 @@
     "pg": "^8.11.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "dotenv-cli": "^10.0.0"
   }
 }
