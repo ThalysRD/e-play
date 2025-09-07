@@ -23,7 +23,7 @@ exports.up = (pgm) => {
     state: {
       type: "varchar(255)",
     },
-    adress: {
+    address: {
       type: "varchar(255)",
     },
     zip_code: {

@@ -9,7 +9,7 @@ export default async function migrations(request, response) {
     dir: "infra/migrations",
     direction: "up",
     verbose: true,
-    migrationsTable: "pgmitraions",
+    migrationsTable: "pgmigrations",
   };
 
   if (request.method === "GET") {
