@@ -4,7 +4,7 @@ exports.up = (pgm) => {
     order_id: {
       type: "integer",
       notNull: true,
-      references: '"orders"(id)"',
+      references: '"orders"(order_id)',
     },
     tracking_code: {
       type: "varchar(255)",

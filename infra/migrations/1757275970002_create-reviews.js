@@ -4,12 +4,12 @@ exports.up = (pgm) => {
     order_id: {
       type: "integer",
       notNull: true,
-      references: '"orders"(id)"',
+      references: '"orders"(order_id)',
     },
     reviewer_id: {
       type: "integer",
       notNull: true,
-      references: '"users"(id)"',
+      references: '"users"(user_id)',
     },
     rating: {
       type: "integer",

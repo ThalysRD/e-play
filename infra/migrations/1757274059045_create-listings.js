@@ -4,12 +4,12 @@ exports.up = (pgm) => {
     user_id: {
       type: "integer",
       notNull: true,
-      references: '"users"(id)"',
+      references: '"users"(user_id)',
     },
     category_id: {
       type: "integer",
       notNull: true,
-      references: '"categories"(id)',
+      references: '"categories"(category_id)',
     },
     title: {
       type: "varchar(255)",
