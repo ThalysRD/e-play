@@ -1,6 +1,6 @@
 exports.up = (pgm) => {
   pgm.createTable("users", {
-    id: "id",
+    user_id: "id",
     name: {
       type: "varchar(255)",
       notNull: true,
@@ -15,15 +15,14 @@ exports.up = (pgm) => {
       notNull: true,
     },
     role: {
-      type: "varchar(10)",
+      type: "varchar(20)",
     },
-    city: {
-      type: "varchar(255)",
+    cpf_cnpj: {
+      type: "varchar(20)",
+      notNull: true,
+      unique: true,
     },
-    state: {
-      type: "varchar(255)",
-    },
-    adress: {
+    address: {
       type: "varchar(255)",
     },
     zip_code: {
