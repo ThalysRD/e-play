@@ -4,7 +4,7 @@
   "description": "E-commerce para Compra e Venda de Jogos Físicos Usados",
   "main": "index.js",
   "scripts": {
-    "dev": "npm run services:up && next dev",
+    "dev": "npm run services:up && npm run wait-for-database && npm run migration:up next dev",
     "services:up": "docker compose -f infra/compose.yaml up -d",
     "services:stop": "docker compose -f infra/compose.yaml stop",
     "services:down": "docker compose -f infra/compose.yaml down",
@@ -14,7 +14,8 @@
     "test": "jest --runInBand",
     "test:watch": "jest --watchAll --runInBand",
     "lint:check": "prettier --check .",
-    "lint:fix": "prettier --write ."
+    "lint:fix": "prettier --write .",
+    "wait-for-database": "node infra/scripts/wait-for-database.js"
   },
   "author": "",
   "license": "ISC",
