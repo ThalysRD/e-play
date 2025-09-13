@@ -6,7 +6,7 @@ exports.up = (pgm) => {
       notNull: true,
     },
     email: {
-      type: "varchar(255)",
+      type: "varchar(254)",
       notNull: true,
       unique: true,
     },
@@ -16,6 +16,7 @@ exports.up = (pgm) => {
     },
     role: {
       type: "varchar(20)",
+      notNull: true,
     },
     cpf_cnpj: {
       type: "varchar(20)",
