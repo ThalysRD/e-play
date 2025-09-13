@@ -1,12 +1,12 @@
 export class InternalServerError extends Error {
   constructor({ cause, statusCode }) {
     super("Aconteceu um erro interno inesperado.", {
-      cause
-    })
+      cause,
+    });
 
-    this.name = "InternalServerError"
-    this.action = "Entre em contato com o suporte"
-    this.statusCode = statusCode || 500
+    this.name = "InternalServerError";
+    this.action = "Entre em contato com o suporte";
+    this.statusCode = statusCode || 500;
   }
 
   toJSON() {
@@ -14,19 +14,19 @@ export class InternalServerError extends Error {
       name: this.name,
       message: this.message,
       action: this.action,
-      status_code: this.statusCode
-    }
+      status_code: this.statusCode,
+    };
   }
 }
-
 
 export class MethodNotAllowedError extends Error {
   constructor() {
-    super("Método não permitido para este endpoint.")
+    super("Método não permitido para este endpoint.");
 
-    this.name = "MethodNotAllowedError"
-    this.action = "Verifique se o método HTTP enviado é valido para este endpoint."
-    this.statusCode = 405
+    this.name = "MethodNotAllowedError";
+    this.action =
+      "Verifique se o método HTTP enviado é valido para este endpoint.";
+    this.statusCode = 405;
   }
 
   toJSON() {
@@ -34,21 +34,20 @@ export class MethodNotAllowedError extends Error {
       name: this.name,
       message: this.message,
       action: this.action,
-      status_code: this.statusCode
-    }
+      status_code: this.statusCode,
+    };
   }
 }
-
 
 export class ServiceError extends Error {
   constructor({ cause, message }) {
     super(message || "Serviço indisponível no momento.", {
-      cause
-    })
+      cause,
+    });
 
-    this.name = "ServiceError"
-    this.action = "Verifique se o Serviço está disponível."
-    this.statusCode = 503
+    this.name = "ServiceError";
+    this.action = "Verifique se o Serviço está disponível.";
+    this.statusCode = 503;
   }
 
   toJSON() {
@@ -56,7 +55,7 @@ export class ServiceError extends Error {
       name: this.name,
       message: this.message,
       action: this.action,
-      status_code: this.statusCode
-    }
+      status_code: this.statusCode,
+    };
   }
 }
