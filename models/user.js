@@ -59,7 +59,7 @@ async function create(userInputValues) {
         userInputValues.username,
         userInputValues.email,
         userInputValues.password,
-        userInputValues.role || 'user',
+        userInputValues.role || "user",
         userInputValues.cpf || null,
         userInputValues.cnpj || null,
         userInputValues.address || null,
@@ -144,7 +144,8 @@ function validateCpfOrCnpj(userInputValues) {
   if (!cpf && !cnpj) {
     throw new ValidationError({
       message: "É obrigatório informar CPF ou CNPJ.",
-      action: "Informe um CPF válido ou um CNPJ válido para realizar o cadastro.",
+      action:
+        "Informe um CPF válido ou um CNPJ válido para realizar o cadastro.",
     });
   }
 
@@ -156,7 +157,8 @@ function validateCpfOrCnpj(userInputValues) {
       if (!validationCache.get(cacheKey)) {
         throw new ValidationError({
           message: "O CPF informado não é válido.",
-          action: "Informe um CPF válido no formato 000.000.000-00 ou apenas números.",
+          action:
+            "Informe um CPF válido no formato 000.000.000-00 ou apenas números.",
         });
       }
     } else {
@@ -165,7 +167,8 @@ function validateCpfOrCnpj(userInputValues) {
       if (!isValid) {
         throw new ValidationError({
           message: "O CPF informado não é válido.",
-          action: "Informe um CPF válido no formato 000.000.000-00 ou apenas números.",
+          action:
+            "Informe um CPF válido no formato 000.000.000-00 ou apenas números.",
         });
       }
     }
@@ -179,7 +182,8 @@ function validateCpfOrCnpj(userInputValues) {
       if (!validationCache.get(cacheKey)) {
         throw new ValidationError({
           message: "O CNPJ informado não é válido.",
-          action: "Informe um CNPJ válido no formato 00.000.000/0000-00 ou apenas números.",
+          action:
+            "Informe um CNPJ válido no formato 00.000.000/0000-00 ou apenas números.",
         });
       }
     } else {
@@ -188,7 +192,8 @@ function validateCpfOrCnpj(userInputValues) {
       if (!isValid) {
         throw new ValidationError({
           message: "O CNPJ informado não é válido.",
-          action: "Informe um CNPJ válido no formato 00.000.000/0000-00 ou apenas números.",
+          action:
+            "Informe um CNPJ válido no formato 00.000.000/0000-00 ou apenas números.",
         });
       }
     }
@@ -202,7 +207,7 @@ function validateCpfOrCnpj(userInputValues) {
 
 function isValidCpf(cpf) {
   // Remove caracteres não numéricos
-  const cleanCpf = cpf.replace(/[^\d]/g, '');
+  const cleanCpf = cpf.replace(/[^\d]/g, "");
 
   // Verificações rápidas para casos inválidos
   if (cleanCpf.length !== 11 || /^(\d)\1+$/.test(cleanCpf)) {
@@ -221,7 +226,7 @@ function isValidCpf(cpf) {
 
   if (digit1 !== parseInt(cleanCpf[9])) return false;
 
-  // Segundo dígito verificador  
+  // Segundo dígito verificador
   sum = 0;
   weight = 11;
   for (let i = 0; i < 10; i++) {
@@ -234,7 +239,7 @@ function isValidCpf(cpf) {
 
 function isValidCnpj(cnpj) {
   // Remove caracteres não numéricos
-  const cleanCnpj = cnpj.replace(/[^\d]/g, '');
+  const cleanCnpj = cnpj.replace(/[^\d]/g, "");
 
   // Verificações rápidas para casos inválidos
   if (cleanCnpj.length !== 14 || /^(\d)\1+$/.test(cleanCnpj)) {
