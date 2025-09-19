@@ -59,7 +59,7 @@ async function create(userInputValues) {
         userInputValues.username,
         userInputValues.email,
         userInputValues.password,
-        userInputValues.role || 'customer',
+        userInputValues.role || 'user',
         userInputValues.cpf || null,
         userInputValues.cnpj || null,
         userInputValues.address || null,
