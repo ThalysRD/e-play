@@ -1,10 +1,10 @@
 exports.up = (pgm) => {
   pgm.createTable("payments", {
-    payment_id: "id",
+    id: "id",
     order_id: {
       type: "integer",
       notNull: true,
-      references: '"orders"(order_id)',
+      references: '"orders"(id)',
     },
     amount: {
       type: "integer",

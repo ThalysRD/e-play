@@ -8,7 +8,7 @@ async function findOneById(id) {
 
   async function runSelectQuery(id) {
     const results = await database.query({
-      text: "SELECT * FROM users WHERE user_id = $1 LIMIT 1;",
+      text: "SELECT * FROM users WHERE id = $1 LIMIT 1;",
       values: [id],
     });
     if (results.rowCount === 0) {

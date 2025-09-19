@@ -29,7 +29,7 @@ describe("POST /api/v1/users", () => {
       const responseBody = await response.json()
 
       expect(responseBody).toEqual({
-        user_id: responseBody.user_id,
+        id: responseBody.id,
         name: "Teste da Silva",
         username: "teste123",
         email: "teste@teste.com",

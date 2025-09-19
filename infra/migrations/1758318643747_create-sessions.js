@@ -13,8 +13,9 @@ exports.up = (pgm) => {
     },
 
     user_id: {
-      type: "uuid",
+      type: "integer",
       notNull: true,
+      references: '"users"(id)',
     },
     expires_at: {
       type: "timestamptz",

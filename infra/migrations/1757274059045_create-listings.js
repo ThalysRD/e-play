@@ -1,15 +1,15 @@
 exports.up = (pgm) => {
   pgm.createTable("listings", {
-    listing_id: "id",
+    id: "id",
     user_id: {
       type: "integer",
       notNull: true,
-      references: '"users"(user_id)',
+      references: '"users"(id)',
     },
     category_id: {
       type: "integer",
       notNull: true,
-      references: '"categories"(category_id)',
+      references: '"categories"(id)',
     },
     title: {
       type: "varchar(255)",

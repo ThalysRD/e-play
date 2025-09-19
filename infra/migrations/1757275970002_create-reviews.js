@@ -1,15 +1,15 @@
 exports.up = (pgm) => {
   pgm.createTable("reviews", {
-    review_id: "id",
+    id: "id",
     order_id: {
       type: "integer",
       notNull: true,
-      references: '"orders"(order_id)',
+      references: '"orders"(id)',
     },
     reviewer_id: {
       type: "integer",
       notNull: true,
-      references: '"users"(user_id)',
+      references: '"users"(id)',
     },
     rating: {
       type: "integer",

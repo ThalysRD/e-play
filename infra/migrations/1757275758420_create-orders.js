@@ -1,15 +1,15 @@
 exports.up = (pgm) => {
   pgm.createTable("orders", {
-    order_id: "id",
+    id: "id",
     buyer_id: {
       type: "integer",
       notNull: true,
-      references: '"users"(user_id)',
+      references: '"users"(id)',
     },
     listing_id: {
       type: "integer",
       notNull: true,
-      references: '"listings"(listing_id)',
+      references: '"listings"(id)',
     },
     quantity: {
       type: "integer",
