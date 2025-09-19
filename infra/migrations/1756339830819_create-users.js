@@ -5,6 +5,11 @@ exports.up = (pgm) => {
       type: "varchar(255)",
       notNull: true,
     },
+    username: {
+      type: "varchar(30)",
+      notNull: true,
+      unique: true,
+    },
     email: {
       type: "varchar(254)",
       notNull: true,
@@ -18,9 +23,12 @@ exports.up = (pgm) => {
       type: "varchar(20)",
       notNull: true,
     },
-    cpf_cnpj: {
-      type: "varchar(20)",
-      notNull: true,
+    cpf: {
+      type: "varchar(11)",
+      unique: true,
+    },
+    cnpj: {
+      type: "varchar(14)",
       unique: true,
     },
     address: {
@@ -34,9 +42,16 @@ exports.up = (pgm) => {
       notNull: true,
       default: pgm.func("current_timestamp"),
     },
+    updated_at: {
+      type: "timestamptz",
+      notNull: true,
+      default: pgm.func("timezone('utc', now())"),
+    },
   });
 };
 
 exports.down = (pgm) => {
   pgm.dropTable("users");
 };
+
+
