@@ -21,7 +21,6 @@ describe("POST /api/v1/users", () => {
           username: "teste123",
           email: "teste@teste.com",
           password: "senha123",
-          cpf: "11144477735",
         }),
       });
 
@@ -35,7 +34,7 @@ describe("POST /api/v1/users", () => {
         email: "teste@teste.com",
         password: responseBody.password,
         role: "user",
-        cpf: "11144477735",
+        cpf: null,
         cnpj: null,
         address: null,
         zip_code: null,

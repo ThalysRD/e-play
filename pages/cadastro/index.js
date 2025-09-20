@@ -1,7 +1,6 @@
 import { useState } from "react";
 import useSWRMutation from "swr/mutation";
 
-// Função para fazer requisições POST
 async function sendRequest(url, { arg }) {
   const response = await fetch(url, {
     method: "POST",
@@ -34,14 +33,11 @@ function RegisterForm() {
     email: "",
     password: "",
     confirmPassword: "",
-    cpf: null,
-    cnpj: null,
   });
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
 
-  // Hook do SWR Mutation
   const { trigger, isMutating } = useSWRMutation("/api/v1/users", sendRequest);
 
   const handleChange = (e) => {
@@ -57,7 +53,6 @@ function RegisterForm() {
     setError("");
     setSuccess(false);
 
-    // Validação dos campos obrigatórios
     for (const key in formData) {
       if (formData[key] === "") {
         setError(`O campo ${key} é obrigatório`);
@@ -65,7 +60,6 @@ function RegisterForm() {
       }
     }
 
-    // Validação das senhas
     if (formData.password !== formData.confirmPassword) {
       setError("As senhas não estão iguais");
       return;
@@ -77,14 +71,10 @@ function RegisterForm() {
     }
 
     try {
-      // Prepara os dados para envio
       const dataToSend = { ...formData };
       delete dataToSend.confirmPassword;
-
-      // Usa o trigger do SWR Mutation
       const result = await trigger(dataToSend);
 
-      // Sucesso!
       setSuccess(true);
       setFormData({
         name: "",
@@ -92,8 +82,6 @@ function RegisterForm() {
         email: "",
         password: "",
         confirmPassword: "",
-        cpf: "",
-        cnpj: "",
       });
     } catch (err) {
       setError(err.message);
@@ -134,17 +122,6 @@ function RegisterForm() {
         required
       />
 
-      {/* <label htmlFor="cpf">CPF*</label>
-      <input
-        id="cpf"
-        name="cpf"
-        type="text"
-        placeholder="000.000.000-00"
-        value={formData.cpf}
-        onChange={handleChange}
-        required
-      /> */}
-
       <label htmlFor="password">Senha*</label>
       <input
         id="password"
@@ -165,12 +142,10 @@ function RegisterForm() {
         required
       />
 
-      {/* Exibe a mensagem de sucesso */}
       {success && (
         <div className="success-message">✅ Conta criada com sucesso!</div>
       )}
 
-      {/* Exibe a mensagem de erro, se houver */}
       {error && <p className="error-message">❌ {error}</p>}
 
       <button type="submit" className="create-button" disabled={isMutating}>
