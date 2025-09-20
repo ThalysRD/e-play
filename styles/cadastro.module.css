@@ -1,0 +1,486 @@
+/* Criar conta */
+.pageContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #1a2333;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+/* Logo */
+.logo {
+  position: absolute;
+  width: 257px;
+  height: 65px;
+  left: 50%;
+  top: 30px;
+  transform: translateX(-50%);
+  z-index: 20;
+}
+
+/* Logo Image */
+.logoImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Form */
+.registerForm {
+  position: absolute;
+  width: 555px;
+  height: 764px;
+  left: 50%;
+  top: 120px;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+/* Rectangle 24 (Form Background) */
+.formBackground {
+  box-sizing: border-box;
+  position: absolute;
+  width: 555px;
+  height: 764px;
+  left: 0px;
+  top: 0px;
+  background: #33486d;
+  border: 2px solid #fbb829;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.5);
+  border-radius: 35px;
+}
+
+/* Criar conta */
+.title {
+  position: absolute;
+  width: 269.04px;
+  height: 24px;
+  left: 142px;
+  top: 58px;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 24px;
+  text-align: center;
+  color: #ffffff;
+  transform: rotate(-0.28deg);
+}
+
+/* Botão */
+.createButton {
+  position: absolute;
+  width: 181px;
+  height: 44px;
+  left: 187px;
+  top: 590px;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  background: #de3277;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Criar (Button Text) */
+.createButton {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #ffffff;
+}
+
+.createButton:hover:not(:disabled) {
+  background: #c42968;
+  transform: translateY(-1px);
+}
+
+.createButton:disabled {
+  background: #666;
+  cursor: not-allowed;
+}
+
+/* Já tem uma conta? Faça login! */
+.loginLink {
+  position: absolute;
+  width: 249px;
+  height: 17px;
+  left: 153px;
+  top: 690px;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+  color: #ffffff;
+}
+
+/* Inputs */
+.formContainer {
+  position: absolute;
+  width: 386px;
+  height: 421px;
+  left: 84px;
+  top: 102px;
+}
+
+/* Nome de usuário */
+.fieldGroup {
+  position: absolute;
+  width: 386px;
+  height: 73px;
+}
+
+.fieldGroup:nth-child(1) {
+  left: 0px;
+  top: 0px;
+} /* Nome */
+.fieldGroup:nth-child(2) {
+  left: 0px;
+  top: 87px;
+} /* Username */
+.fieldGroup:nth-child(3) {
+  left: 0px;
+  top: 174px;
+} /* Email */
+.fieldGroup:nth-child(4) {
+  left: 0px;
+  top: 261px;
+} /* Senha */
+.fieldGroup:nth-child(5) {
+  left: 0px;
+  top: 348px;
+} /* Confirmar senha */
+
+/* Labels */
+.label {
+  position: absolute;
+  width: 221px;
+  height: 28px;
+  left: 3px;
+  top: 0px;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 24px;
+  display: flex;
+  align-items: center;
+  text-align: justify;
+  color: #ffffff;
+}
+
+/* Rectangle 24 (Input Fields) */
+.input {
+  position: absolute;
+  width: 386px;
+  height: 45px;
+  left: 0px;
+  top: 28px;
+  background: #5e5443;
+  border: 2px solid #fbb829;
+  border-radius: 20px;
+  box-sizing: border-box;
+  padding: 0 20px;
+  color: #ffffff;
+  font-family: "Montserrat", sans-serif;
+  font-size: 14px;
+}
+
+.input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(251, 184, 41, 0.3);
+}
+
+/* Password Container */
+.passwordContainer {
+  position: relative;
+}
+
+/* Frame 200 (Eye Icon Container) */
+.eyeIcon {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.eyeIcon svg {
+  width: 24px;
+  height: 24px;
+  stroke: #ffffff;
+  stroke-width: 2.5px;
+  fill: none;
+}
+
+/* Checkbox */
+.rememberMe {
+  position: absolute;
+  width: 123.07px;
+  height: 13.6px;
+  left: 91px;
+  top: 541px;
+  display: flex;
+  align-items: center;
+}
+
+/* Rectangle 25 (Checkbox) */
+.checkboxContainer {
+  position: relative;
+  width: 10px;
+  height: 10px;
+  background: #ffffff;
+  border: 0.5px solid #0e0d10;
+  border-radius: 2px;
+  transform: rotate(-0.28deg);
+  margin-right: 16.9px;
+}
+
+.checkboxInput {
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+}
+
+/* Lembrar de mim */
+.checkboxLabel {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+  color: #ffffff;
+  transform: rotate(-0.28deg);
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Container dos Links Legais */
+.legalLinksContainer {
+  position: absolute;
+  width: 400px;
+  height: 39px;
+  left: 50%;
+  top: 900px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  padding: 15px 20px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+}
+
+/* Termos de Uso */
+.termsOfUseLink {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 20px;
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.termsOfUseLink:hover {
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: underline;
+}
+
+/* Políticas de Privacidade */
+.privacyPolicyLink {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 700;
+  margin-left: 10px;
+  font-size: 13px;
+  line-height: 20px;
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.privacyPolicyLink:hover {
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: underline;
+}
+
+/* Separador */
+.linkSeparator {
+  color: rgba(255, 255, 255, 0.4);
+  font-weight: 400;
+}
+
+/* Messages */
+.successMessage,
+.errorMessage {
+  position: absolute;
+  width: 350px;
+  left: 50%;
+  top: 550px;
+  transform: translateX(-50%);
+  padding: 10px;
+  border-radius: 10px;
+  text-align: center;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  animation: fadeIn 0.3s ease-in;
+}
+
+.successMessage {
+  background: rgba(39, 174, 96, 0.9);
+  color: #ffffff;
+  animation:
+    fadeIn 0.3s ease-in,
+    fadeOut 0.5s ease-out 4.5s forwards;
+}
+
+.errorMessage {
+  background: rgba(231, 76, 60, 0.9);
+  color: #ffffff;
+}
+
+/* Background Elements Container */
+.backgroundElements {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* Responsividade */
+@media (max-width: 1440px) {
+  .pageContainer {
+    width: 100vw;
+    min-width: 100vw;
+    overflow-x: hidden;
+  }
+
+  .logo {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .registerForm {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .termsLinks {
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .pageContainer {
+    min-height: 100vh;
+    height: auto;
+  }
+
+  .registerForm {
+    width: 90%;
+    max-width: 400px;
+    left: 50%;
+    top: 200px;
+    transform: translateX(-50%);
+    height: auto;
+    min-height: 600px;
+  }
+
+  .logo {
+    width: 200px;
+    left: 50%;
+    top: 50px;
+    transform: translateX(-50%);
+  }
+
+  .formContainer {
+    width: 90%;
+    left: 5%;
+  }
+
+  .fieldGroup {
+    width: 100%;
+  }
+
+  .input {
+    width: 100%;
+  }
+
+  .createButton {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .termsLinks {
+    position: relative;
+    top: auto;
+    left: 0;
+    transform: none;
+    width: 100%;
+    text-align: center;
+    margin-top: 0px;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-10px);
+    visibility: hidden;
+  }
+}

@@ -1,0 +1,20 @@
+/* Reset CSS global */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Remove qualquer scroll horizontal indesejado */
+body {
+  width: 100vw;
+  overflow-x: hidden;
+}
