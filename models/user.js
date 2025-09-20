@@ -53,7 +53,7 @@ async function create(userInputValues) {
 
   async function runInsertQuery(userInputValues) {
     const results = await database.query({
-      text: "INSERT INTO users (name,username,email,password_hash,role,cpf,cnpj,address,zip_code) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *;",
+      text: "INSERT INTO users (name,username,email,password,role,cpf,cnpj,address,zip_code) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *;",
       values: [
         userInputValues.name,
         userInputValues.username,

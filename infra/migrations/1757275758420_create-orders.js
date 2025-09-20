@@ -18,7 +18,7 @@ exports.up = (pgm) => {
     status: {
       type: "varchar(255)",
     },
-    order_date: {
+    created_at: {
       type: "timestamp",
       notNull: true,
       default: pgm.func("current_timestamp"),

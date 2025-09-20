@@ -39,6 +39,11 @@ exports.up = (pgm) => {
       notNull: true,
       default: pgm.func("current_timestamp"),
     },
+    updated_at: {
+      type: "timestamptz",
+      notNull: true,
+      default: pgm.func("timezone('utc', now())"),
+    },
   });
 };
 

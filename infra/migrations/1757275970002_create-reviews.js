@@ -18,7 +18,7 @@ exports.up = (pgm) => {
     comment: {
       type: "varchar(255)",
     },
-    review_date: {
+    created_at: {
       type: "timestamp",
       notNull: true,
       default: pgm.func("current_timestamp"),

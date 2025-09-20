@@ -15,7 +15,7 @@ exports.up = (pgm) => {
       notNull: true,
       unique: true,
     },
-    password_hash: {
+    password: {
       type: "varchar(255)",
       notNull: true,
     },
