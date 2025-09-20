@@ -10,6 +10,11 @@ function onNoMatchHandler(request, response) {
 }
 
 function onErrorHandler(error, request, response) {
+  if (error.statusCode && error.toJSON) {
+    console.error(error);
+    return response.status(error.statusCode).json(error.toJSON());
+  }
+
   const publicErrorObject = new InternalServerError({
     cause: error,
   });
