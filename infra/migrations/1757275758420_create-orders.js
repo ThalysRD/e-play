@@ -1,27 +1,38 @@
 exports.up = (pgm) => {
   pgm.createTable("orders", {
-    order_id: "id",
+    id: "id",
     buyer_id: {
       type: "integer",
       notNull: true,
-      references: '"users"(user_id)',
+      references: '"users"(id)',
     },
     listing_id: {
       type: "integer",
       notNull: true,
-      references: '"listings"(listing_id)',
+      references: '"listings"(id)',
     },
     quantity: {
       type: "integer",
       notNull: true,
     },
-    status: {
-      type: "varchar(255)",
+    total_price: {
+      type: "numeric",
+      notNull: true,
     },
-    order_date: {
+    status: {
+      type: "varchar(50)",
+      notNull: true,
+      default: "pending",
+    },
+    created_at: {
       type: "timestamp",
       notNull: true,
       default: pgm.func("current_timestamp"),
+    },
+    updated_at: {
+      type: "timestamptz",
+      notNull: true,
+      default: pgm.func("timezone('utc', now())"),
     },
   });
 };

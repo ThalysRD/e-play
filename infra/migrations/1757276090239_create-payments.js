@@ -1,10 +1,10 @@
 exports.up = (pgm) => {
   pgm.createTable("payments", {
-    payment_id: "id",
+    id: "id",
     order_id: {
       type: "integer",
       notNull: true,
-      references: '"orders"(order_id)',
+      references: '"orders"(id)',
     },
     amount: {
       type: "integer",
@@ -16,10 +16,15 @@ exports.up = (pgm) => {
     status: {
       type: "varchar(255)",
     },
-    payment_date: {
+    created_at: {
       type: "timestamp",
       notNull: true,
       default: pgm.func("current_timestamp"),
+    },
+    updated_at: {
+      type: "timestamptz",
+      notNull: true,
+      default: pgm.func("timezone('utc', now())"),
     },
   });
 };

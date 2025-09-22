@@ -21,8 +21,28 @@ async function findOneById(id) {
   }
 }
 
+async function findOneByUsername(username) {
+  const userFound = await runSelectQuery(username);
+  return userFound;
+
+  async function runSelectQuery(username) {
+    const results = await database.query({
+      text: "SELECT * FROM users WHERE username = $1 LIMIT 1;",
+      values: [username],
+    });
+    if (results.rowCount === 0) {
+      throw new NotFoundError({
+        message: "o nome de usuário informado não foi encontrado no sistema",
+        action: "verifique se o nome de usuário está digitado corretamente",
+      });
+    }
+    return results.rows[0];
+  }
+}
+
 async function create(userInputValues) {
   await validateUniqueEmail(userInputValues.email);
+  await validateUniqueUsername(userInputValues.username);
   await hashPasswordInObject(userInputValues);
 
   const newUser = await runInsertQuery(userInputValues);
@@ -30,15 +50,37 @@ async function create(userInputValues) {
 
   async function runInsertQuery(userInputValues) {
     const results = await database.query({
-      text: "INSERT INTO users (name,email,password_hash,role,cpf_cnpj) VALUES ($1,$2,$3,'user',$4) RETURNING *;",
+      text: "INSERT INTO users (name,username,email,password,role) VALUES ($1,$2,$3,$4,$5) RETURNING *;",
       values: [
         userInputValues.name,
+        userInputValues.username,
         userInputValues.email,
         userInputValues.password,
-        userInputValues.cpf,
+        userInputValues.role || "user",
       ],
     });
     return results.rows[0];
+  }
+}
+
+async function validateUniqueUsername(username) {
+  const results = await database.query({
+    text: `
+      SELECT
+        username
+      FROM
+        users
+      WHERE
+        LOWER(username) = LOWER($1)
+      ;`,
+    values: [username],
+  });
+
+  if (results.rowCount > 0) {
+    throw new ValidationError({
+      message: "Esse nome de usuário informado já está sendo utilizado.",
+      action: "Utilize outro nome de usuário para realizar esta operação.",
+    });
   }
 }
 
@@ -61,7 +103,10 @@ async function hashPasswordInObject(userInputValues) {
 }
 const user = {
   findOneById,
+  findOneByUsername,
   create,
+  validateUniqueEmail,
+  validateUniqueUsername,
 };
 
 export default user;

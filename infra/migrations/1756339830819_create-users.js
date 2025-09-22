@@ -1,16 +1,21 @@
 exports.up = (pgm) => {
   pgm.createTable("users", {
-    user_id: "id",
+    id: "id",
     name: {
       type: "varchar(255)",
       notNull: true,
+    },
+    username: {
+      type: "varchar(30)",
+      notNull: true,
+      unique: true,
     },
     email: {
       type: "varchar(254)",
       notNull: true,
       unique: true,
     },
-    password_hash: {
+    password: {
       type: "varchar(255)",
       notNull: true,
     },
@@ -18,9 +23,12 @@ exports.up = (pgm) => {
       type: "varchar(20)",
       notNull: true,
     },
-    cpf_cnpj: {
-      type: "varchar(20)",
-      notNull: true,
+    cpf: {
+      type: "varchar(11)",
+      unique: true,
+    },
+    cnpj: {
+      type: "varchar(14)",
       unique: true,
     },
     address: {
@@ -29,10 +37,38 @@ exports.up = (pgm) => {
     zip_code: {
       type: "varchar(255)",
     },
+    profile_image_url: {
+      type: "varchar(500)",
+    },
+    phone_number: {
+      type: "varchar(20)",
+    },
+    profile_bio: {
+      type: "text",
+    },
+    status: {
+      type: "varchar(20)",
+      notNull: true,
+      default: "active",
+    },
+    seller_rating: {
+      type: "decimal(3,2)",
+      default: 0.00,
+    },
+    sales_count: {
+      type: "integer",
+      notNull: true,
+      default: 0,
+    },
     created_at: {
       type: "timestamp",
       notNull: true,
       default: pgm.func("current_timestamp"),
+    },
+    updated_at: {
+      type: "timestamptz",
+      notNull: true,
+      default: pgm.func("timezone('utc', now())"),
     },
   });
 };
