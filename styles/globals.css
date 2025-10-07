@@ -1,16 +1,22 @@
-/* Reset CSS global */
-html,
+/* Importa a fonte Montserrat do Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+
+html{
+  font-size: 12px;
+}
 body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   overflow-x: hidden;
+  color: #fff;
 }
 
 *,
 *::before,
 *::after {
   box-sizing: border-box;
+  font-family: "Montserrat", Arial, sans-serif;
 }
 
 /* Remove qualquer scroll horizontal indesejado */
