@@ -51,16 +51,16 @@ async function renew(sessionId) {
   async function runUpdateQuery(session_id, expiresAt) {
     const results = await database.query({
       text: `
-        UPDATE
-          sessions
-        SET 
-          expires_at = $2,
-          updated_at = NOW()
-        WHERE 
-          id = $1
-        RETURNING 
-          *
-        `,
+          UPDATE
+            sessions
+          SET 
+            expires_at = $2,
+            updated_at = NOW()
+          WHERE 
+            id = $1
+          RETURNING 
+            *
+          `,
       values: [sessionId, expiresAt],
     });
 
@@ -78,15 +78,15 @@ async function expireById(sessionId) {
         UPDATE
           sessions
         SET
-          expires_at = expires_at - interval '1 year'
+          expires_at = expires_at - interval '1 year',
           updated_at = NOW()
         WHERE
           id = $1
         RETURNING
           *
         ;`,
-      values: [sessionId]
-    })
+      values: [sessionId],
+    });
 
     return results.rows[0]
   }
