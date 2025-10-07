@@ -1,4 +1,4 @@
-import styles from "styles/home.module.css";
+import styles from "styles/layout.padrao.module.css";
 
 export default function LogoFooter() {
   return (

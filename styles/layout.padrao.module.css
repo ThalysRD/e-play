@@ -1,0 +1,144 @@
+/* ------- Container principal ------- */
+.pageContainer {
+  display: flex;
+  height: 100vh;
+  background-color: #1e2c47;
+}
+
+/* ------- Sidebar lateral ------- */
+.sidebar {
+  width: 180px;
+  background-color: #1e2c47;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.greeting {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 40px;
+}
+
+.navList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 15px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+.navLink {
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.navItem:hover,
+.navItem.active {
+  background-color: #33486D;
+}
+
+/* ------- Wrapper para o conteúdo e footer ------- */
+.contentWrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding-left: 0;
+  padding-top: 10px;
+  padding-right: 10px;
+  padding-bottom: 10px;
+  gap: 10px;
+}
+
+/* ------- Área principal ------- */
+.mainContent {
+  flex: 1;
+  padding: 25px;
+  background-color: #33486D;
+  border-right: 1px solid #FBB829;
+  border-top: 1px solid #FBB829;
+  border-bottom: 1px solid #FBB829;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+/* ------- Rodapé ------- */
+.footer {
+  padding: 20px 25px;
+  font-size: 0.9rem;
+  color: #d9e1f2;
+  background-color: #33486D;
+  border-right: 1px solid #FBB829;
+  border-top: 1px solid #FBB829;
+  border-bottom: 1px solid #FBB829;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.footerContent {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.footerColumn {
+  flex: 0 0 auto;
+  min-width: 200px;
+}
+
+.footerColumn p {
+  margin: 2px 0 5px 0;
+  font-size: 0.85rem;
+  font-weight: bold;
+}
+
+.footerColumn ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footerColumn li {
+  margin-bottom: 6px;
+}
+
+.footerColumn a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footerColumn a:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+  position: relative;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logoImage {
+  width: 120px;
+  height: auto;
+  object-fit: contain;
+}
