@@ -37,6 +37,10 @@
   cursor: pointer;
   transition: background-color 0.2s ease-in-out;
 }
+.navLink {
+  text-decoration: none;
+  color: #ffffff;
+}
 
 .navItem:hover,
 .navItem.active {
