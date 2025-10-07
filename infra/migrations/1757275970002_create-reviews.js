@@ -16,7 +16,7 @@ exports.up = (pgm) => {
       notNull: true,
     },
     comment: {
-      type: "varchar(255)",
+      type: "text",
     },
     created_at: {
       type: "timestamp",

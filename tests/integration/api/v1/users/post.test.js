@@ -1,6 +1,7 @@
 import orchestrator from "tests/orchestrator.js";
 import user from "models/user.js";
 import password from "models/password";
+import status from "pages/api/v1/status";
 
 beforeAll(async () => {
   await orchestrator.waitForAllServices();
@@ -34,6 +35,12 @@ describe("POST /api/v1/users", () => {
         email: "teste@teste.com",
         password: responseBody.password,
         role: "user",
+        phone_number: null,
+        profile_bio: null,
+        sales_count: 0,
+        seller_rating: "0.00",
+        profile_image_url: null,
+        status: "active",
         cpf: null,
         cnpj: null,
         address: null,

@@ -22,39 +22,6 @@ async function findOneById(id) {
   }
 }
 
-async function findByUserId(userId, options = {}) {
-  const { active = null, limit = null, offset = 0 } = options;
-
-  let query = "SELECT * FROM listings WHERE user_id = $1";
-  const values = [userId];
-  let paramCounter = 2;
-
-  if (active !== null) {
-    query += ` AND active = $${paramCounter}`;
-    values.push(active);
-    paramCounter++;
-  }
-
-  query += " ORDER BY created_at DESC";
-
-  if (limit) {
-    query += ` LIMIT $${paramCounter}`;
-    values.push(limit);
-    paramCounter++;
-  }
-
-  if (offset > 0) {
-    query += ` OFFSET $${paramCounter}`;
-    values.push(offset);
-  }
-
-  const results = await database.query({
-    text: query,
-    values: values,
-  });
-
-  return results.rows;
-}
 
 async function findByCategoryId(categoryId, options = {}) {
   const { active = true, limit = null, offset = 0 } = options;
@@ -296,7 +263,6 @@ async function validateCategoryExists(categoryId) {
 
 const listings = {
   findOneById,
-  findByUserId,
   findByCategoryId,
   findAll,
   create,

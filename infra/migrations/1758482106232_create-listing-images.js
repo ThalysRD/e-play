@@ -1,28 +1,20 @@
 exports.up = (pgm) => {
-  pgm.createTable("orders", {
+  pgm.createTable("listing_images", {
     id: "id",
-    buyer_id: {
-      type: "integer",
-      notNull: true,
-      references: '"users"(id)',
-    },
     listing_id: {
       type: "integer",
       notNull: true,
       references: '"listings"(id)',
+      onDelete: "CASCADE",
     },
-    quantity: {
+    image_url: {
+      type: "varchar(500)",
+      notNull: true,
+    },
+    display_order: {
       type: "integer",
       notNull: true,
-    },
-    total_price: {
-      type: "numeric",
-      notNull: true,
-    },
-    status: {
-      type: "varchar(50)",
-      notNull: true,
-      default: "pending",
+      default: 0,
     },
     created_at: {
       type: "timestamp",
@@ -35,8 +27,11 @@ exports.up = (pgm) => {
       default: pgm.func("timezone('utc', now())"),
     },
   });
+
+  // Índice para buscar imagens por listing
+  pgm.createIndex("listing_images", "listing_id");
 };
 
 exports.down = (pgm) => {
-  pgm.dropTable("orders");
+  pgm.dropTable("listing_images");
 };
