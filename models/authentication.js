@@ -1,63 +1,58 @@
 import user from "models/user.js";
 import password from "models/password.js";
-import { NotFoundError, UnauthorizedError } from "infra/errors.js"
+import { NotFoundError, UnauthorizedError } from "infra/errors.js";
 
 async function getAuthenticatedUser(providedEmail, providedPassword) {
-
   try {
+    const storedUser = await findUserByEmail(providedEmail);
+    await validatePassword(providedPassword, storedUser.password);
 
-    const storedUser = await findUserByEmail(providedEmail)
-    await validatePassword(providedPassword, storedUser.password)
-
-    return storedUser
+    return storedUser;
   } catch (error) {
     if (error instanceof UnauthorizedError) {
       throw new UnauthorizedError({
         message: "Dados de autenticação incorretos",
-        action: "Verifique se os dados enviados estão corretos"
-      })
+        action: "Verifique se os dados enviados estão corretos",
+      });
     }
-    throw error
+    throw error;
   }
 
   async function findUserByEmail(providedEmail) {
-    let storedUser
+    let storedUser;
 
     try {
-
-      storedUser = await user.findOneByEmail(providedEmail)
+      storedUser = await user.findOneByEmail(providedEmail);
     } catch (error) {
       if (error instanceof NotFoundError) {
         throw new UnauthorizedError({
           message: "Email incorreto",
-          action: "Verifique se os dados enviados estão corretos"
-        })
+          action: "Verifique se os dados enviados estão corretos",
+        });
       }
 
-      throw error
+      throw error;
     }
-    return storedUser
+    return storedUser;
   }
 
   async function validatePassword(providedPassword, storedPassword) {
-    const correctPasswordMatch = await password.compare(providedPassword, storedPassword)
+    const correctPasswordMatch = await password.compare(
+      providedPassword,
+      storedPassword,
+    );
 
     if (!correctPasswordMatch) {
       throw new UnauthorizedError({
         message: "Dados de autenticação incorretos",
-        action: "Verifique se os dados enviados estão corretos"
-      })
+        action: "Verifique se os dados enviados estão corretos",
+      });
     }
-
   }
-
-
 }
-
 
 const authentication = {
-  getAuthenticatedUser
-}
+  getAuthenticatedUser,
+};
 
-
-export default authentication
+export default authentication;

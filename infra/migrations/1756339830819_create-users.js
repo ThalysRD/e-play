@@ -53,7 +53,7 @@ exports.up = (pgm) => {
     },
     seller_rating: {
       type: "decimal(3,2)",
-      default: 0.00,
+      default: 0.0,
     },
     sales_count: {
       type: "integer",
