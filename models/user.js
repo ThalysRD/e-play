@@ -40,6 +40,25 @@ async function findOneByUsername(username) {
   }
 }
 
+async function findOneByEmail(email) {
+  const userFound = await runSelectQuery(email);
+  return userFound;
+
+  async function runSelectQuery(email) {
+    const results = await database.query({
+      text: "SELECT * FROM users WHERE email = $1 LIMIT 1;",
+      values: [email],
+    });
+    if (results.rowCount === 0) {
+      throw new NotFoundError({
+        message: "o email informado não foi encontrado no sistema",
+        action: "verifique se o email do usuário está digitado corretamente",
+      });
+    }
+    return results.rows[0];
+  }
+}
+
 async function create(userInputValues) {
   await validateUniqueEmail(userInputValues.email);
   await validateUniqueUsername(userInputValues.username);
@@ -50,13 +69,13 @@ async function create(userInputValues) {
 
   async function runInsertQuery(userInputValues) {
     const results = await database.query({
-      text: "INSERT INTO users (name,username,email,password,role) VALUES ($1,$2,$3,$4,$5) RETURNING *;",
+      text: "INSERT INTO users (name,username,email,password,permissions) VALUES ($1,$2,$3,$4,$5) RETURNING *;",
       values: [
         userInputValues.name,
         userInputValues.username,
         userInputValues.email,
         userInputValues.password,
-        userInputValues.role || "user",
+        ["ler:token_de_ativacao"],
       ],
     });
     return results.rows[0];
@@ -107,6 +126,7 @@ const user = {
   create,
   validateUniqueEmail,
   validateUniqueUsername,
+  findOneByEmail,
 };
 
 export default user;

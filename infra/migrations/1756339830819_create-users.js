@@ -1,6 +1,10 @@
 exports.up = (pgm) => {
   pgm.createTable("users", {
-    id: "id",
+    id: {
+      type: "uuid",
+      primaryKey: true,
+      default: pgm.func("gen_random_uuid()"),
+    },
     name: {
       type: "varchar(255)",
       notNull: true,
@@ -19,8 +23,8 @@ exports.up = (pgm) => {
       type: "varchar(255)",
       notNull: true,
     },
-    role: {
-      type: "varchar(20)",
+    permissions: {
+      type: "varchar[]",
       notNull: true,
     },
     cpf: {

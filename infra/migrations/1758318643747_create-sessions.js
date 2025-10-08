@@ -6,7 +6,7 @@ exports.up = (pgm) => {
       default: pgm.func("gen_random_uuid()"),
     },
     user_id: {
-      type: "integer",
+      type: "uuid",
       notNull: true,
       references: '"users"(id)',
     },

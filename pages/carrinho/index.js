@@ -1,12 +1,16 @@
+import React from "react";
 import LayoutPadrao from "components/LayoutPadrao";
 
-export default function HomePage() {
+
+const CarrinhoPage = () => {
   return (
     <LayoutPadrao>
       <div>
-        <h1>Bem-vindo à tela inicial</h1>
+        <h1>Bem-vindo à tela do carrinho!</h1>
         <p>Este é o E-Play.</p>
       </div>
     </LayoutPadrao>
   );
-}
+};
+
+export default CarrinhoPage;
