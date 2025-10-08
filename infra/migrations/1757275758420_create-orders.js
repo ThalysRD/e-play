@@ -1,13 +1,17 @@
 exports.up = (pgm) => {
   pgm.createTable("orders", {
-    id: "id",
+    id: {
+      type: "uuid",
+      primaryKey: true,
+      default: pgm.func("gen_random_uuid()"),
+    },
     buyer_id: {
-      type: "integer",
+      type: "uuid",
       notNull: true,
       references: '"users"(id)',
     },
     listing_id: {
-      type: "integer",
+      type: "uuid",
       notNull: true,
       references: '"listings"(id)',
     },
