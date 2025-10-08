@@ -3,15 +3,34 @@ import { IoHome, IoCart, IoSettings } from "react-icons/io5";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import LogoIMG from "./LogoFooter";
+import { useEffect, useState } from "react";
 
 export default function LayoutPadrao({ children }) {
   const router = useRouter();
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    const token = localStorage.getItem('authToken');
+    const name = localStorage.getItem('userName');
+    if (token && name) setUser({name});
+  },[]);
 
   return (
     <div className={styles.pageContainer}>
       <nav className={styles.sidebar}>
         <div>
-          <h2 className={styles.greeting}>Olá, Fulano!</h2>
+          
+          {user ? (
+            <h2 className={styles.greeting}>Olá, {user.name}!</h2>
+          ) : (
+            <div className={styles.navLoginCadastro}>
+              <Link href="/login" className={styles.navLink}>
+                <li className={`${styles.navItemLoginCadastro} ${router.pathname === "/login" ? styles.active : ""}`}>
+                  <span>Entre</span>
+                </li>
+              </Link>
+            </div>
+          )}
+
           <ul className={styles.navList}>
             <Link href="/" className={styles.navLink}>
               <li className={`${styles.navItem} ${router.pathname === "/" ? styles.active : ""}`}>

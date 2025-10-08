@@ -1,0 +1,37 @@
+:root {
+  /* Paleta principal */
+  --cor-primaria: #33486D;      
+  --cor-secundaria: #1e2c47;
+  --cor-borda: #FBB829;
+  --cor-texto: #fff;
+  --cor-texto-secundario: #d9e1f2;
+  --cor-search-bar: #95a0b2;
+
+  /* Cores complementares */
+  --cor-rosa-claro: #FC7DA8;
+  --cor-rosa-medio: #DE3277;
+  --cor-rosa-escuro: #b9225f;
+  
+  --cor-roxo-claro: #865CEB;
+  --cor-roxo-medio: #552CB8;
+  --cor-roxo-escuro: #31318B;
+  
+  --cor-azul-claro: #78B2E6;
+  --cor-azul-medio: #589AD6;
+  --cor-azul-escuro: #048CD6;
+
+  --cor-verde-claro: #77CCA3;
+  --cor-verde-medio: #18C481;
+  --cor-verde-escuro: #009A5E;
+
+  --cor-laranja-claro: #FF6F5E;
+  --cor-laranja-medio: #FD5A47;
+  --cor-laranja-escuro: #c2483b;
+
+  --cor-amarelo-claro: #FFC567;
+  --cor-amarelo-medio: #FBB829;
+  
+  --cor-amarelo-escuro: #534e40;
+  --cor-amarelo-escuro-hoover: #767268;
+
+}

@@ -2,13 +2,13 @@
 .pageContainer {
   display: flex;
   height: 100vh;
-  background-color: #1e2c47;
+  background-color: var(--cor-secundaria);
 }
 
 /* ------- Sidebar lateral ------- */
 .sidebar {
   width: 180px;
-  background-color: #1e2c47;
+  background-color: var(--cor-secundaria);
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -19,13 +19,31 @@
   font-weight: 600;
   margin-bottom: 40px;
 }
-
+.navLoginCadastro{
+  margin-bottom: 50px;
+}
+.navItemLoginCadastro {
+  display: flex;
+  align-items: center;
+  padding: 12px 15px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  background-color: var(--cor-amarelo-escuro);
+  transition: background-color 0.2s ease-in-out;
+  border: 1px solid var(--cor-borda);
+  font-weight: bold;
+}
+.navItemLoginCadastro:hover,
+.navItemLoginCadastro.active {
+  background-color: var(--cor-amarelo-escuro-hoover);
+}
 .navList {
   list-style: none;
   padding: 0;
   margin: 0;
 }
-
 .navItem {
   display: flex;
   align-items: center;
@@ -39,12 +57,11 @@
 }
 .navLink {
   text-decoration: none;
-  color: #ffffff;
+  color: var(--cor-texto);
 }
-
 .navItem:hover,
 .navItem.active {
-  background-color: #33486D;
+  background-color: var(--cor-primaria);
 }
 
 /* ------- Wrapper para o conteúdo e footer ------- */
@@ -63,10 +80,10 @@
 .mainContent {
   flex: 1;
   padding: 25px;
-  background-color: #33486D;
-  border-right: 1px solid #FBB829;
-  border-top: 1px solid #FBB829;
-  border-bottom: 1px solid #FBB829;
+  background-color: var(--cor-primaria);
+  border-right: 1px solid var(--cor-borda);
+  border-top: 1px solid var(--cor-borda);
+  border-bottom: 1px solid var(--cor-borda);
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
 }
@@ -75,11 +92,11 @@
 .footer {
   padding: 20px 25px;
   font-size: 0.9rem;
-  color: #d9e1f2;
-  background-color: #33486D;
-  border-right: 1px solid #FBB829;
-  border-top: 1px solid #FBB829;
-  border-bottom: 1px solid #FBB829;
+  color: var(--cor-texto-secundario);
+  background-color: var(--cor-primaria);
+  border-right: 1px solid var(--cor-borda);
+  border-top: 1px solid var(--cor-borda);
+  border-bottom: 1px solid var(--cor-borda);
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
 }
@@ -119,7 +136,7 @@
 }
 
 .footerColumn a:hover {
-  color: #fff;
+  color: var(--cor-texto);
   text-decoration: underline;
 }
 

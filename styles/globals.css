@@ -1,4 +1,4 @@
-/* Importa a fonte Montserrat do Google Fonts */
+@import './colors.css'; 
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
 
 html{
@@ -9,7 +9,7 @@ body {
   padding: 0;
   box-sizing: border-box;
   overflow-x: hidden;
-  color: #fff;
+  color: var(--cor-texto);
 }
 
 *,
