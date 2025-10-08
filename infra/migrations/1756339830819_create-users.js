@@ -23,8 +23,8 @@ exports.up = (pgm) => {
       type: "varchar(255)",
       notNull: true,
     },
-    role: {
-      type: "varchar(20)",
+    permissions: {
+      type: "varchar[]",
       notNull: true,
     },
     cpf: {

@@ -69,13 +69,13 @@ async function create(userInputValues) {
 
   async function runInsertQuery(userInputValues) {
     const results = await database.query({
-      text: "INSERT INTO users (name,username,email,password,role) VALUES ($1,$2,$3,$4,$5) RETURNING *;",
+      text: "INSERT INTO users (name,username,email,password,permissions) VALUES ($1,$2,$3,$4,$5) RETURNING *;",
       values: [
         userInputValues.name,
         userInputValues.username,
         userInputValues.email,
         userInputValues.password,
-        userInputValues.role || "user",
+        ["ler:token_de_ativacao"],
       ],
     });
     return results.rows[0];
