@@ -1,7 +1,7 @@
 import { useState } from "react";
 import useSWRMutation from "swr/mutation";
 import Link from "next/link";
-import styles from "styles/login.module.css";
+import styles from "styles/cadastro_login/login.module.css";
 import BackgroundShapes from "components/BackgroundShapes";
 import LogoIMG from "components/LogoIMG";
 import { FaUser, FaLock } from "react-icons/fa";
@@ -27,10 +27,8 @@ export default function LoginPage() {
   return (
     <div className={styles.pageContainer}>
       <BackgroundShapes />
-      <LogoIMG />
+      <LogoIMG className={styles.loginLogo} />
       <LoginForm />
-
-      {/* Rodapé */}
       <div className={styles.legalLinksContainer}>
         <a href="/termos-de-uso" className={styles.termsOfUseLink}>
           Termos de Uso
@@ -77,21 +75,21 @@ function LoginForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className={styles.loginForm} aria-label="Formulário de login">
-      <div className={styles.formBackground} aria-hidden="true"></div>
-      <h2 className={styles.title}>Bem vindo de volta!</h2>
+    <form onSubmit={handleSubmit} className={styles.loginForm}>
+      <div className={styles.formBackground}></div>
 
+      <h2 className={styles.title}>Bem vindo de volta!</h2>
       <div className={styles.fieldGroup}>
         <div className={styles.inputContainer}>
           <FaUser className={styles.inputIcon} aria-hidden="true" />
           <input
             type="text"
             name="email"
-            placeholder="email"
+            placeholder="Email"
             value={formData.email}
             onChange={handleChange}
             className={styles.input}
-            aria-label="Nome de usuário"
+            aria-label="Emaill"
           />
         </div>
       </div>

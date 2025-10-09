@@ -1,6 +1,6 @@
 import LayoutPadrao from "components/LayoutPadrao";
 import SearchBar from "components/SearchBar";
-import styles from "styles/home.module.css";
+import styles from "styles/catalogo/home.module.css";
 
 export default function HomePage() {
   return (
