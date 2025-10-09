@@ -51,7 +51,7 @@ function LoginForm() {
   });
 
   const [error, setError] = useState("");
-  const { trigger, isMutating } = useSWRMutation("/api/v1/login", sendLoginRequest);
+  const { trigger, isMutating } = useSWRMutation("/api/v1/sessions", sendLoginRequest);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
