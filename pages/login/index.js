@@ -46,7 +46,7 @@ export default function LoginPage() {
 
 function LoginForm() {
   const [formData, setFormData] = useState({
-    username: "",
+    email: "",
     password: "",
   });
 
@@ -62,7 +62,7 @@ function LoginForm() {
     e.preventDefault();
     setError("");
 
-    if (!formData.username || !formData.password) {
+    if (!formData.email || !formData.password) {
       setError("Preencha todos os campos!");
       return;
     }
@@ -86,9 +86,9 @@ function LoginForm() {
           <FaUser className={styles.inputIcon} aria-hidden="true" />
           <input
             type="text"
-            name="username"
-            placeholder="Username"
-            value={formData.username}
+            name="email"
+            placeholder="email"
+            value={formData.email}
             onChange={handleChange}
             className={styles.input}
             aria-label="Nome de usuário"
