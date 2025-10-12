@@ -25,16 +25,13 @@ export default function LayoutPadrao({ children }) {
     fetchUser();
   }, []);
 
-  if (isLoading) {
-    return <div className={styles.loading}>Carregando...</div>;
-  }
-
   return (
     <div className={styles.pageContainer}>
       <nav className={styles.sidebar}>
         <div className={styles.sidebarTop}>
-          {user ? (
-            <h2 className={styles.greeting}>Olá, {user.name}!</h2>
+          {user ? (<h2 className={styles.greeting}>
+            Olá, {user.name.split(" ")[0].charAt(0).toUpperCase() + user.name.split(" ")[0].slice(1).toLowerCase()}!
+          </h2>
           ) : (
             <div className={styles.navLoginCadastro}>
               <ul className={styles.navList}>
