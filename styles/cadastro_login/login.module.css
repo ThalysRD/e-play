@@ -14,6 +14,29 @@
   z-index: 10;
 }
 
+.loadingContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh; 
+}
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(255, 255, 255, 0.3);
+  border-top: 5px solid var(--cor-texto);
+  border-radius: 50%;
+  animation: rotate 1s linear infinite;
+}
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 /* ----- Card principal ----- */
 .formBackground {
   position: relative;
@@ -80,6 +103,14 @@
   border-color: var(--cor-borda);
   box-shadow: 0 0 8px rgba(251, 184, 41, 0.677);
   background: rgba(255,255,255,0.02);
+}
+.input:-webkit-autofill,
+.input:-webkit-autofill:hover,
+.input:-webkit-autofill:focus,
+.input:-webkit-autofill:active {
+  -webkit-text-fill-color: #fff !important;
+  box-shadow: 0 0 0 30px var(--cor-amarelo-escuro) inset !important;
+  transition: background-color 5000s ease-in-out 0s;
 }
 
 /* ------ Opções (lembrar / esqueci) ------ */
@@ -188,14 +219,112 @@
   z-index: 2;
 }
 
-/* Responsividade */
-@media (max-width: 420px) {
-  .loginForm {
-    width: calc(100% - 40px);
-    padding: 28px 20px;
+/* ---------------- RESPONSIVIDADE ---------------- */
+/* Tablets e telas médias */
+@media (max-width: 768px) {
+  .formBackground {
+    width: 50vh;
+    padding: 35px 25px;
+  }
+
+  .loginLogo {
+    width: 150px;
+    margin-bottom: 30px;
+  }
+
+  .loginButton {
+    width: 80%;
+  }
+
+  .title {
+    font-size: 16px;
+  }
+}
+
+/* Celulares pequenos */
+@media (max-width: 480px) {
+  .formBackground {
+    width: 50vh;
+    padding: 25px 20px;
+    border-radius: 15px;
+  }
+
+  .loginLogo {
+    margin-bottom: 25px;
+  }
+
+  .title {
+    font-size: 15px;
+    margin-bottom: 20px;
+  }
+
+  .input {
+    font-size: 13px;
+    padding: 9px 15px 9px 38px;
+  }
+
+  .optionsRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
   }
 
   .loginButton {
     width: 100%;
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .registerPrompt {
+    font-size: 11px;
+  }
+
+  .legalLinksContainer {
+    gap: 4px;
+    font-size: 10px;
+  }
+
+  /* Celulares pequenos */
+  @media (max-width: 360px) {
+    .formBackground {
+      width: 45vh;
+      padding: 25px 20px;
+      border-radius: 15px;
+    }
+
+    .loginLogo {
+      margin-bottom: 25px;
+    }
+
+    .title {
+      font-size: 15px;
+      margin-bottom: 20px;
+    }
+
+    .input {
+      font-size: 13px;
+      padding: 9px 15px 9px 38px;
+    }
+
+    .optionsRow {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+    }
+
+    .loginButton {
+      width: 100%;
+      font-size: 14px;
+      padding: 10px;
+    }
+
+    .registerPrompt {
+      font-size: 11px;
+    }
+
+    .legalLinksContainer {
+      gap: 4px;
+      font-size: 10px;
+    }
   }
 }

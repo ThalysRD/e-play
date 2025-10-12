@@ -10,6 +10,11 @@ body {
   box-sizing: border-box;
   overflow-x: hidden;
   color: var(--cor-texto);
+  overflow: auto; /* mantém o scroll */
+  scrollbar-width: none; /* Firefox */
+}
+body::-webkit-scrollbar {
+  display: none; /* Chrome, Edge, Safari */
 }
 
 *,
@@ -17,10 +22,4 @@ body {
 *::after {
   box-sizing: border-box;
   font-family: "Montserrat", Arial, sans-serif;
-}
-
-/* Remove qualquer scroll horizontal indesejado */
-body {
-  width: 100vw;
-  overflow-x: hidden;
 }

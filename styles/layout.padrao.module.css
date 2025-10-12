@@ -13,6 +13,11 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between; 
+  position: fixed; /* Fixa o elemento na tela */
+  height: 100vh;   /* Garante que ocupe 100% da altura da tela */
+  top: 0;          /* Alinha no topo */
+  left: 0;         /* Alinha na esquerda */
+  z-index: 1000; 
 }
 
 .greeting {
@@ -80,6 +85,8 @@
 
 /* ------- Wrapper para o conteúdo e footer ------- */
 .contentWrapper {
+  height: 100%;
+  background-color: var(--cor-secundaria);
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -88,6 +95,7 @@
   padding-right: 10px;
   padding-bottom: 10px;
   gap: 10px;
+  margin-left: 190px;
 }
 
 /* ------- Área principal ------- */

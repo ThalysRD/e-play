@@ -1,6 +1,6 @@
 /* Container principal */
 .pageContainer {
-  padding: 100px;
+  padding: 50px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -22,7 +22,7 @@
   background: var(--cor-primaria);
   border: 1px solid var(--cor-borda);
   border-radius: 20px;
-  padding: 40px 60px;
+  padding: 30px 50px;
   width: 480px;
   display: flex;
   flex-direction: column;
@@ -85,6 +85,14 @@
   box-shadow: 0 0 8px rgba(251, 184, 41, 0.677);
   background: rgba(255,255,255,0.02);
 }
+.input:-webkit-autofill,
+.input:-webkit-autofill:hover,
+.input:-webkit-autofill:focus,
+.input:-webkit-autofill:active {
+  -webkit-text-fill-color: #fff !important;
+  box-shadow: 0 0 0 30px var(--cor-amarelo-escuro) inset !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
 
 /* Checkbox Lembrar de mim */
 .optionsRow {
@@ -115,15 +123,15 @@
   border-radius: 8px;
   text-align: center;
   font-weight: 600;
-  font-size: 14px;
-  margin-bottom: 10px;
+  font-size: 13px;
+  margin-top: 20px;
 }
 .successMessage {
-  background: rgba(39, 174, 96, 0.9);
+  background: rgba(255, 255, 255, 0.04);
   color: #fff;
 }
 .errorMessage {
-  background: rgba(231, 76, 60, 0.9);
+  background: rgba(255, 255, 255, 0.04);
   color: #fff;
 }
 
@@ -191,16 +199,101 @@
   color: var(--cor-texto-terciario);
 }
 
-/* Responsividade */
+/* ---------------- RESPONSIVIDADE ---------------- */
+/* Tablets e telas médias */
 @media (max-width: 768px) {
-  .registerForm {
-    width: 90%;
-    padding: 30px 20px;
+  .formBackground {
+    width: 50vh;
+    padding: 35px 25px;
   }
+
+  .loginLogo {
+    width: 150px;
+    margin-bottom: 30px;
+  }
+
   .createButton {
-    width: 100%;
+    width: 80%;
   }
-  .formContainer {
-    gap: 12px;
+
+  .title {
+    font-size: 16px;
   }
 }
+
+/* Celulares pequenos */
+@media (max-width: 480px) {
+  .formBackground {
+    width: 50vh;
+    padding: 25px 20px;
+    border-radius: 15px;
+  }
+
+  .loginLogo {
+    margin-bottom: 25px;
+  }
+
+  .title {
+    font-size: 15px;
+    margin-bottom: 20px;
+  }
+
+  .input {
+    font-size: 13px;
+    padding: 9px 15px;
+  }
+
+  .createButton {
+    width: 100%;
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .loginPrompt {
+    font-size: 11px;
+  }
+
+  .legalLinksContainer {
+    gap: 4px;
+    font-size: 10px;
+  }
+
+  /* Celulares muito pequenos */
+  @media (max-width: 360px) {
+    .formBackground {
+      width: 45vh;
+      padding: 25px 20px;
+      border-radius: 15px;
+    }
+
+    .loginLogo {
+      margin-bottom: 25px;
+    }
+
+    .title {
+      font-size: 14px;
+      margin-bottom: 18px;
+    }
+
+    .input {
+      font-size: 12px;
+      padding: 8px 14px;
+    }
+
+    .createButton {
+      width: 100%;
+      font-size: 13px;
+      padding: 9px;
+    }
+
+    .loginPrompt {
+      font-size: 10px;
+    }
+
+    .legalLinksContainer {
+      gap: 3px;
+      font-size: 9px;
+    }
+  }
+}
+

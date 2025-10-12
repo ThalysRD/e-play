@@ -1,0 +1,111 @@
+.header {
+  background-color: var(--cor-secundaria);
+  border-radius: 16px;
+  color: var(--cor-texto);
+  max-width: 100%;
+  margin: 0 auto;
+}
+.infosUser {
+  padding: 25px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.profilePic {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #fff;
+  box-shadow: 0 0 10px var(--cor-amarelo-medio);
+  background-color: var(--cor-azul-claro);
+}
+.userInfoText {
+  display: flex;
+  flex-direction: column;
+}
+.userInfo{
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+.userName {
+  font-size: 2rem;
+  font-weight: 600;
+  margin: 0 0 12px 0;
+}
+.userDetails {
+  display: flex;
+  gap: 40px;
+}
+.column p {
+  margin: 0 0 8px 0;
+}
+.label {
+  color: var(--cor-azul-claro);
+  font-weight: bold;
+  margin-right: 8px;
+}
+
+.body {
+  max-width: 100%;
+  margin: 24px auto 0;
+}
+.optionsContainer {
+  background-color: var(--cor-secundaria);
+  padding: 10px 24px 24px 24px;
+  border-radius: 16px;
+  color: var(--cor-texto);
+  margin: 0 auto;
+}
+
+.section {
+  width: 100%;
+}
+
+.sectionTitle {
+  color: var(--cor-texto);
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+.buttonsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px; 
+}
+.optionButton {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-radius: 12px;
+  color: #ffffff;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.optionButton:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+.btnPurple {
+  background-color: var(--cor-roxo-medio);
+}
+
+.btnBlue {
+  background-color: var(--cor-azul-medio);
+}
+
+.btnPink {
+  background-color: var(--cor-rosa-medio);
+}
+
+.btnGreen {
+  background-color: var(--cor-verde-medio);
+}
+
+.btnOrange {
+  background-color: var(--cor-laranja-medio);
+}

@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useSWRMutation from "swr/mutation";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import styles from "styles/cadastro_login/login.module.css";
 import BackgroundShapes from "components/BackgroundShapes";
 import LogoIMG from "components/LogoIMG";
@@ -43,12 +44,13 @@ export default function LoginPage() {
 }
 
 function LoginForm() {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
-
   const [error, setError] = useState("");
+  const [isSuccess, setIsSuccess] = useState(false);
   const { trigger, isMutating } = useSWRMutation("/api/v1/sessions", sendLoginRequest);
 
   const handleChange = (e) => {
@@ -67,12 +69,28 @@ function LoginForm() {
 
     try {
       await trigger(formData);
-      //alert("✅ Login realizado com sucesso!");
-      window.location.href = "/";
+      setIsSuccess(true);
     } catch (err) {
       setError(err.message);
     }
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      const timer = setTimeout(() => {
+        router.push("/");
+      }, 800)
+      return () => clearTimeout(timer);
+    }
+  }, [isSuccess, router])
+
+  if (isSuccess) {
+    return (
+      <div className={styles.loadingContainer}>
+        <div className={styles.spinner}></div>
+      </div>
+    );
+  }
 
   return (
     <form onSubmit={handleSubmit} className={styles.loginForm}>
@@ -90,6 +108,7 @@ function LoginForm() {
               onChange={handleChange}
               className={styles.input}
               aria-label="Emaill"
+              required
             />
           </div>
         </div>
@@ -105,15 +124,16 @@ function LoginForm() {
               onChange={handleChange}
               className={styles.input}
               aria-label="Senha"
+              required
             />
           </div>
         </div>
 
         <div className={styles.optionsRow}>
-          <label className={styles.rememberMe}>
+          {/*<label className={styles.rememberMe}>
             <input type="checkbox" className={styles.checkbox} />
             Lembrar de mim
-          </label>
+          </label>*/}
           <Link href="/recuperar-senha" className={styles.forgotLink}>
             Esqueci minha senha
           </Link>
@@ -132,6 +152,6 @@ function LoginForm() {
           </Link>
         </p>
       </div>
-    </form>
+    </form >
   );
 }

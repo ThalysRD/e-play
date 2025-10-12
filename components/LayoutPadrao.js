@@ -1,4 +1,5 @@
 import styles from "styles/layout.padrao.module.css";
+import load from "styles/componentes/loading.module.css";
 import { IoHome, IoCart, IoSettings, IoLogOut } from "react-icons/io5";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -24,6 +25,14 @@ export default function LayoutPadrao({ children }) {
     }
     fetchUser();
   }, []);
+
+  if (isLoading) {
+    return (
+      <div className={load.loadingContainer}>
+        <div className={load.spinner}></div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.pageContainer}>

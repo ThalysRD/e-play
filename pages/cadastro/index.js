@@ -193,12 +193,12 @@ function RegisterForm() {
 
         {error && <div className={styles.errorMessage}>❌ {error}</div>}
 
-        <div className={styles.optionsRow}>
+        {/*<div className={styles.optionsRow}>
           <label className={styles.rememberMe}>
             <input type="checkbox" className={styles.checkbox} />
             Lembrar de mim
           </label>
-        </div>
+        </div>*/}
 
         {/* Botão - Criar */}
         <button
