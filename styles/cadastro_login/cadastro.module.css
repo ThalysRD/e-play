@@ -17,7 +17,7 @@
 }
 
 /* Form principal */
-.registerForm {
+.formBackground{
   position: relative;
   background: var(--cor-primaria);
   border: 1px solid var(--cor-borda);
@@ -87,17 +87,24 @@
 }
 
 /* Checkbox Lembrar de mim */
-.rememberMe {
+.optionsRow {
+  margin-top: 20px;
   width: 100%;
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 8px;
-  margin: 15px 0;
-  font-size: 12px;
-  color: #fff;
+  margin-bottom: 25px;
+  font-size: 13px;
+  z-index: 2;
 }
-.checkboxInput {
+.checkbox {
   accent-color: var(--cor-amarelo-medio);
+  margin-right: 6px;
+} 
+.rememberMe{
+  font-size: 10px;
+  display: flex;
+  align-items: center;
 }
 
 /* Mensagens de sucesso e erro */

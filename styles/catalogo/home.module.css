@@ -3,3 +3,7 @@
   align-items: center;
   gap: 1.5rem; 
 }
+
+.catalogoBackground{
+  background-color: var(--cor-primaria);
+}

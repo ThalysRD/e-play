@@ -7,11 +7,12 @@
 
 /* ------- Sidebar lateral ------- */
 .sidebar {
-  width: 180px;
+  width: 190px;
   background-color: var(--cor-secundaria);
   padding: 20px;
   display: flex;
   flex-direction: column;
+  justify-content: space-between; 
 }
 
 .greeting {
@@ -20,24 +21,23 @@
   margin-bottom: 40px;
 }
 .navLoginCadastro{
+  display: flex;
+  flex-direction: column;
+  margin: 5px;
   margin-bottom: 50px;
+}
+.navLinkLoginCadastro{
+  text-decoration: none;
+  color: var(--cor-texto);
+  font-size: 13px;
 }
 .navItemLoginCadastro {
   display: flex;
   align-items: center;
-  padding: 12px 15px;
-  margin-bottom: 15px;
-  border-radius: 10px;
-  font-size: 0.95rem;
-  cursor: pointer;
-  background-color: var(--cor-amarelo-escuro);
-  transition: background-color 0.2s ease-in-out;
-  border: 1px solid var(--cor-borda);
-  font-weight: bold;
+  border-radius: 10px;  color: var(--cor-texto);
 }
-.navItemLoginCadastro:hover,
-.navItemLoginCadastro.active {
-  background-color: var(--cor-amarelo-escuro-hoover);
+.navItemLoginCadastro span {
+  display: block;
 }
 .navList {
   list-style: none;
@@ -60,8 +60,22 @@
   color: var(--cor-texto);
 }
 .navItem:hover,
-.navItem.active {
+.navItem.active,
+.logoutButton:hover {
   background-color: var(--cor-primaria);
+}
+.logoutButton {
+  background: var(--cor-secundaria);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  color: var(--cor-texto);
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease;
 }
 
 /* ------- Wrapper para o conteúdo e footer ------- */

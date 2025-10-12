@@ -15,7 +15,7 @@
 }
 
 /* ----- Card principal ----- */
-.loginForm {
+.formBackground {
   position: relative;
   background: var(--cor-primaria);
   border: 1px solid var(--cor-borda);
