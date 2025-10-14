@@ -1,11 +1,18 @@
 import React from "react";
+import styles from "styles/carrinho/carrinho.module.css";
 
 
 const CarrinhoPage = () => {
   return (
-    <div>
-      <h1>Bem-vindo à tela do carrinho!</h1>
-      <p>Este é o E-Play.</p>
+    <div className={styles.carrinhoBackground}>
+      <header className={styles.header}>
+        <h2>Carrinho</h2>
+      </header>
+      <main className={styles.body}>
+        <div className={styles.optionsContainer}>
+          <p>Meus itens aqui!</p>
+        </div>
+      </main>
     </div>
   );
 };

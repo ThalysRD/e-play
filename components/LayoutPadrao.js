@@ -1,5 +1,4 @@
 import styles from "styles/layout.padrao.module.css";
-import load from "styles/componentes/loading.module.css";
 import { IoHome, IoCart, IoSettings, IoLogOut } from "react-icons/io5";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -28,8 +27,8 @@ export default function LayoutPadrao({ children }) {
 
   if (isLoading) {
     return (
-      <div className={load.loadingContainer}>
-        <div className={load.spinner}></div>
+      <div className={styles.loadingContainer}>
+        <div className={styles.spinner}></div>
       </div>
     );
   }
@@ -63,18 +62,20 @@ export default function LayoutPadrao({ children }) {
             </Link>
 
             <Link href="/carrinho" className={styles.navLink}>
-              <li className={`${styles.navItem} ${router.pathname === "/carrinho" ? styles.active : ""}`}>
+              <li className={`${styles.navItem} ${router.pathname.startsWith("/carrinho") ? styles.active : ""}`}>
                 <IoCart size={20} />
                 <span>Carrinho</span>
               </li>
             </Link>
 
-            <Link href="/configuracoes" className={styles.navLink}>
-              <li className={`${styles.navItem} ${router.pathname === "/configuracoes" ? styles.active : ""}`}>
-                <IoHome size={20} />
-                <span>Configurações</span>
-              </li>
-            </Link>
+            {user && (
+              <Link href="/configuracoes" className={styles.navLink}>
+                <li className={`${styles.navItem} ${router.pathname.startsWith("/configuracoes") ? styles.active : ""}`}>
+                  <IoSettings size={20} />
+                  <span>Configurações</span>
+                </li>
+              </Link>
+            )}
           </ul>
         </div>
 

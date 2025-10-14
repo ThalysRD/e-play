@@ -3,6 +3,7 @@ import useSWRMutation from "swr/mutation";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import styles from "styles/cadastro_login/login.module.css";
+import load from "styles/componentes/loading.module.css";
 import BackgroundShapes from "components/BackgroundShapes";
 import LogoIMG from "components/LogoIMG";
 import { FaUser, FaLock } from "react-icons/fa";
@@ -86,8 +87,8 @@ function LoginForm() {
 
   if (isSuccess) {
     return (
-      <div className={styles.loadingContainer}>
-        <div className={styles.spinner}></div>
+      <div className={load.loadingContainer}>
+        <div className={load.spinner}></div>
       </div>
     );
   }

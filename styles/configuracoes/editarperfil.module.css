@@ -1,0 +1,123 @@
+.header {
+  background-color: var(--cor-secundaria);
+  border-radius: 16px;
+  color: var(--cor-texto);
+  max-width: 100%;
+  padding: 10px 10px 10px 30px;
+}
+.profilePic {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #fff;
+  box-shadow: 0 0 10px var(--cor-amarelo-medio);
+  background-color: var(--cor-azul-claro);
+}
+
+/* ----- CONTEUDO PRINCIPAL -----*/
+.body {
+  max-width: 100%;
+  margin: 24px auto 0;
+}
+.formBackground {
+  background: var(--cor-secundaria);
+  border-radius: 20px;
+  padding: 30px;
+  min-width: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.topContainer {
+  display: flex;
+  align-items: flex-start;
+  gap: 30px;
+  margin-bottom: 20px;
+  width: 100%;
+  grid-column: 1 / -1;
+}
+
+.topContainer .fieldGroup {
+  flex: 1;
+}
+.bioTextarea {
+  height: 80px;
+  resize: none;
+}
+.formContainer {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px 20px;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.formContainer img.profilePic {
+  grid-column: 1 / -1; /* Faz o avatar ocupar todas as colunas */
+  justify-self: center;
+}
+/* Labels */
+.label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 6px;
+}
+.input {
+  width: 100%;
+  padding: 10px 15px;
+  border: 1px solid var(--cor-borda);
+  border-radius: 10px;
+  background: var(--cor-amarelo-escuro);
+  color: #fff;
+  font-size: 14px;
+  outline: none;
+  transition: border 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+.input::placeholder {
+  color: var(--cor-texto-terciario);
+}
+.input:focus {
+  border-color: var(--cor-borda);
+  box-shadow: 0 0 8px rgba(251, 184, 41, 0.677);
+  background: rgba(255,255,255,0.02);
+}
+.input:-webkit-autofill,
+.input:-webkit-autofill:hover,
+.input:-webkit-autofill:focus,
+.input:-webkit-autofill:active {
+  -webkit-text-fill-color: #fff !important;
+  box-shadow: 0 0 0 30px var(--cor-amarelo-escuro) inset !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+.fullWidthField {
+  grid-column: 1 / -1;
+}
+
+.buttonsContainer{
+    display: flex;
+    gap: 20px;
+}
+.button {
+  background: var(--cor-rosa-medio);
+  color: var(--cor-texto);
+  border: none;
+  border-radius: 8px;
+  padding: 12px 25px;
+  width: 60%;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  margin-top: 30px;
+}
+.button:hover{
+    background-color: var(--cor-rosa-escuro);
+}
