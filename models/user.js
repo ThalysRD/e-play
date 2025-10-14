@@ -75,9 +75,70 @@ async function create(userInputValues) {
         userInputValues.username,
         userInputValues.email,
         userInputValues.password,
-        ["ler:token_de_ativacao"],
+        ["read:validate_token"],
       ],
     });
+    return results.rows[0];
+  }
+}
+
+async function update(userInputValues) {
+  const currentUser = await findOneById(userInputValues.userId);
+
+  if ("username" in userInputValues) {
+    await validateUniqueUsername(userInputValues.username);
+  }
+
+  if ("email" in userInputValues) {
+    await validateUniqueEmail(userInputValues.email);
+  }
+
+  if ("password" in userInputValues) {
+    await hashPasswordInObject(userInputValues);
+  }
+
+  const userWithNewValues = { ...currentUser, ...userInputValues };
+
+  const updatedUser = await runUpdateQuery(userWithNewValues);
+  return updatedUser;
+
+  async function runUpdateQuery(userWithNewValues) {
+    const results = await database.query({
+      text: `
+        UPDATE
+          users
+        SET
+          username = $2,
+          email = $3,
+          password = $4,
+          cpf = $5,
+          cnpj = $6,
+          address = $7,
+          zip_code = $8,
+          profile_image_url = $9,
+          phone_number = $10,
+          profile_bio = $11,
+          updated_at = timezone('utc', now())
+        WHERE
+          id = $1
+        RETURNING
+          *
+      `,
+      values: [
+        userWithNewValues.id,
+        userWithNewValues.username,
+        userWithNewValues.email,
+        userWithNewValues.password,
+        userWithNewValues.cpf || null,
+        userWithNewValues.cnpj || null,
+        userInputValues.address || null,
+        userWithNewValues.zipCode || null,
+        userWithNewValues.profileImageUrl || null,
+        userWithNewValues.phoneNumber || null,
+        userWithNewValues.profileBio || null
+      ],
+    });
+
     return results.rows[0];
   }
 }
@@ -127,6 +188,7 @@ const user = {
   validateUniqueEmail,
   validateUniqueUsername,
   findOneByEmail,
+  update
 };
 
 export default user;
