@@ -1,15 +1,19 @@
 import React from "react";
-import LayoutPadrao from "components/LayoutPadrao";
+import styles from "styles/carrinho/carrinho.module.css";
 
 
 const CarrinhoPage = () => {
   return (
-    <LayoutPadrao>
-      <div>
-        <h1>Bem-vindo à tela do carrinho!</h1>
-        <p>Este é o E-Play.</p>
-      </div>
-    </LayoutPadrao>
+    <div className={styles.carrinhoBackground}>
+      <header className={styles.header}>
+        <h2>Carrinho</h2>
+      </header>
+      <main className={styles.body}>
+        <div className={styles.optionsContainer}>
+          <p>Meus itens aqui!</p>
+        </div>
+      </main>
+    </div>
   );
 };
 

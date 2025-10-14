@@ -5,10 +5,11 @@
   --cor-borda: #FBB829;
   --cor-texto: #fff;
   --cor-texto-secundario: #d9e1f2;
+  --cor-texto-terciario: rgba(255, 255, 255, 0.7);
   --cor-search-bar: #95a0b2;
 
   /* Cores complementares */
-  --cor-rosa-claro: #FC7DA8;
+  --cor-rosa-claro: #e0608b;
   --cor-rosa-medio: #DE3277;
   --cor-rosa-escuro: #b9225f;
   
@@ -17,7 +18,7 @@
   --cor-roxo-escuro: #31318B;
   
   --cor-azul-claro: #78B2E6;
-  --cor-azul-medio: #589AD6;
+  --cor-azul-medio: #048CD6;
   --cor-azul-escuro: #048CD6;
 
   --cor-verde-claro: #77CCA3;
@@ -28,7 +29,7 @@
   --cor-laranja-medio: #FD5A47;
   --cor-laranja-escuro: #c2483b;
 
-  --cor-amarelo-claro: #FFC567;
+  --cor-amarelo-claro--cor-amarelo-claro: #ffe57a;
   --cor-amarelo-medio: #FBB829;
   
   --cor-amarelo-escuro: #534e40;

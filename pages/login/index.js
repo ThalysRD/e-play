@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useSWRMutation from "swr/mutation";
 import Link from "next/link";
-import styles from "styles/login.module.css";
+import { useRouter } from "next/router";
+import styles from "styles/cadastro_login/login.module.css";
+import load from "styles/componentes/loading.module.css";
 import BackgroundShapes from "components/BackgroundShapes";
 import LogoIMG from "components/LogoIMG";
 import { FaUser, FaLock } from "react-icons/fa";
@@ -27,10 +29,8 @@ export default function LoginPage() {
   return (
     <div className={styles.pageContainer}>
       <BackgroundShapes />
-      <LogoIMG />
+      <LogoIMG className={styles.loginLogo} />
       <LoginForm />
-
-      {/* Rodapé */}
       <div className={styles.legalLinksContainer}>
         <a href="/termos-de-uso" className={styles.termsOfUseLink}>
           Termos de Uso
@@ -45,13 +45,14 @@ export default function LoginPage() {
 }
 
 function LoginForm() {
+  const router = useRouter();
   const [formData, setFormData] = useState({
-    username: "",
+    email: "",
     password: "",
   });
-
   const [error, setError] = useState("");
-  const { trigger, isMutating } = useSWRMutation("/api/v1/login", sendLoginRequest);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const { trigger, isMutating } = useSWRMutation("/api/v1/sessions", sendLoginRequest);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -62,77 +63,96 @@ function LoginForm() {
     e.preventDefault();
     setError("");
 
-    if (!formData.username || !formData.password) {
+    if (!formData.email || !formData.password) {
       setError("Preencha todos os campos!");
       return;
     }
 
     try {
       await trigger(formData);
-      alert("✅ Login realizado com sucesso!");
-      // se quiser redirecionar: window.location.href = "/dashboard";
+      setIsSuccess(true);
     } catch (err) {
       setError(err.message);
     }
   };
 
+  useEffect(() => {
+    if (isSuccess) {
+      const timer = setTimeout(() => {
+        router.push("/");
+      }, 800)
+      return () => clearTimeout(timer);
+    }
+  }, [isSuccess, router])
+
+  if (isSuccess) {
+    return (
+      <div className={load.loadingContainer}>
+        <div className={load.spinner}></div>
+      </div>
+    );
+  }
+
   return (
-    <form onSubmit={handleSubmit} className={styles.loginForm} aria-label="Formulário de login">
-      <div className={styles.formBackground} aria-hidden="true"></div>
-      <h2 className={styles.title}>Bem vindo de volta!</h2>
+    <form onSubmit={handleSubmit} className={styles.loginForm}>
+      <div className={styles.formBackground}>
 
-      <div className={styles.fieldGroup}>
-        <div className={styles.inputContainer}>
-          <FaUser className={styles.inputIcon} aria-hidden="true" />
-          <input
-            type="text"
-            name="username"
-            placeholder="Username"
-            value={formData.username}
-            onChange={handleChange}
-            className={styles.input}
-            aria-label="Nome de usuário"
-          />
+        <h2 className={styles.title}>Bem vindo de volta!</h2>
+        <div className={styles.fieldGroup}>
+          <div className={styles.inputContainer}>
+            <FaUser className={styles.inputIcon} aria-hidden="true" />
+            <input
+              type="text"
+              name="email"
+              placeholder="Email"
+              value={formData.email}
+              onChange={handleChange}
+              className={styles.input}
+              aria-label="Emaill"
+              required
+            />
+          </div>
         </div>
-      </div>
 
-      <div className={styles.fieldGroup}>
-        <div className={styles.inputContainer}>
-          <FaLock className={styles.inputIcon} aria-hidden="true" />
-          <input
-            type="password"
-            name="password"
-            placeholder="Senha"
-            value={formData.password}
-            onChange={handleChange}
-            className={styles.input}
-            aria-label="Senha"
-          />
+        <div className={styles.fieldGroup}>
+          <div className={styles.inputContainer}>
+            <FaLock className={styles.inputIcon} aria-hidden="true" />
+            <input
+              type="password"
+              name="password"
+              placeholder="Senha"
+              value={formData.password}
+              onChange={handleChange}
+              className={styles.input}
+              aria-label="Senha"
+              required
+            />
+          </div>
         </div>
+
+        <div className={styles.optionsRow}>
+          {/*<label className={styles.rememberMe}>
+            <input type="checkbox" className={styles.checkbox} />
+            Lembrar de mim
+          </label>*/}
+          <Link href="/recuperar-senha" className={styles.forgotLink}>
+            Esqueci minha senha
+          </Link>
+        </div>
+
+        {error && <div className={styles.errorMessage}>❌ {error}</div>}
+
+        <button type="submit" className={styles.loginButton} disabled={isMutating}>
+          {isMutating ? "Entrando..." : "Entrar"}
+        </button>
+
+        <p className={styles.registerPrompt}>
+          Ainda não tem conta?{" "}
+          <Link href="/cadastro" className={styles.createAccountLink}>
+            Crie agora!
+          </Link>
+        </p>
       </div>
-
-      <div className={styles.optionsRow}>
-        <label className={styles.rememberMe}>
-          <input type="checkbox" className={styles.checkbox} />
-          Lembrar de mim
-        </label>
-        <Link href="/recuperar-senha" className={styles.forgotLink}>
-          Esqueci minha senha
-        </Link>
-      </div>
-
-      {error && <div className={styles.errorMessage}>❌ {error}</div>}
-
-      <button type="submit" className={styles.loginButton} disabled={isMutating}>
-        {isMutating ? "Entrando..." : "Entrar"}
-      </button>
-
-      <p className={styles.registerPrompt}>
-        Ainda não tem conta?{" "}
-        <Link href="/cadastro" className={styles.createAccountLink}>
-          Crie agora!
-        </Link>
-      </p>
-    </form>
+    </form >
   );
 }

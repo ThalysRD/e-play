@@ -1,12 +1,15 @@
-import { NextResponse } from "next/server";
-import { resolveHostname } from "nodemailer/lib/shared";
+import { NextResponse } from 'next/server';
 
+/**
+ * @param {import('next/server').NextRequest} request
+ */
 export function middleware(request) {
-    const token = request.cookies.get('authToken')?.value;
     const { pathname } = request.nextUrl;
+    const sessionId = request.cookies.get('session_id')?.value;
+    const isAuthenticated = !!sessionId;
 
-    if (token && (pathname.startsWith("/login") || pathname.startsWith("/cadastro"))) {
-        return NextResponse.redirect(new URL("/", request.url));
+    if (isAuthenticated && (pathname === '/login' || pathname === '/cadastro')) {
+        return NextResponse.redirect(new URL('/', request.url));
     }
 
     return NextResponse.next();

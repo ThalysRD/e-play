@@ -1,4 +1,4 @@
-import styles from "styles/BackgroundShapes.module.css";
+import styles from "styles/componentes/BackgroundShapes.module.css";
 
 const BackgroundShapes = () => {
   return (

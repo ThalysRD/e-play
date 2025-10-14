@@ -1,14 +1,116 @@
 import React from "react";
-import LayoutPadrao from "components/LayoutPadrao";
+import styles from "styles/configuracoes/config.module.css";
+import load from "styles/componentes/loading.module.css";
+import { useEffect, useState } from "react";
+import { FaUserEdit, FaKey, FaBullhorn, FaBoxOpen, FaStar, FaTruck, FaCreditCard, FaHeadset } from "react-icons/fa";
+import { useRouter } from "next/router";
+import Link from "next/link";
+
 
 const ConfiguracoesPage = () => {
+  const router = useRouter();
+  const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    async function fetchUser() {
+      try {
+        const res = await fetch("/api/v1/user", { credentials: "include" });
+        const data = await res.json();
+        if (res.ok) setUser(data);
+      } catch (error) {
+        console.error("Erro ao buscar usuário:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchUser();
+  }, []);
+
   return (
-    <LayoutPadrao>
-      <div>
-        <h1>Bem-vindo à tela de configurações!</h1>
-        <p>Este é o E-Play.</p>
-      </div>
-    </LayoutPadrao>
+    <div className={styles.configuracoesBackground}>
+      <header className={styles.header}>
+        <div className={styles.infosUser}>
+          {!isLoading ? (
+            <><img src={user.profile_image_url || "/assets/AvatarPadrao.svg"} className={styles.profilePic} />
+              <div className={styles.userInfoText}>
+                <div className={styles.userInfo}>
+                  <h2 className={styles.userName}>{user.name}</h2>
+                </div>
+                <div className={styles.userDetails}>
+                  <div className={styles.column}>
+                    <p><span className={styles.label}>Usuário:</span> @{user.username}</p>
+                    <p><span className={styles.label}>Email:</span> {user.email}</p>
+                  </div>
+                  <div className={styles.column}>
+                    <p><span className={styles.label}>Sobre mim:</span> {user.profile_bio || 'Não informado'}</p>
+                  </div>
+                </div>
+              </div>
+            </>
+          ) : (
+            <div className={load.loadingContainer}>
+              <div className={load.spinner}></div>
+            </div>
+          )}
+        </div>
+      </header>
+      <main className={styles.body}>
+        <div className={styles.optionsContainer}>
+          {/* Seção Conta */}
+          <section className={styles.section}>
+            <h3 className={styles.sectionTitle}>Conta</h3>
+            <div className={styles.buttonsGrid}>
+              <Link href="/configuracoes/editar-perfil" className={`${styles.optionButton} ${styles.btnPurple}`}>
+                <span>Editar perfil</span>
+                <FaUserEdit size={22} />
+              </Link>
+              <Link href="/configuracoes/atualizar-senha" className={`${styles.optionButton} ${styles.btnBlue}`}>
+                <span>Atualizar senha</span>
+                <FaKey size={22} />
+              </Link>
+              <Link href="/configuracoes/meus-anuncios" className={`${styles.optionButton} ${styles.btnPink}`}>
+                <span>Meus anúncios</span>
+                <FaBullhorn size={22} />
+              </Link>
+              <Link href="/configuracoes/lista-desejos" className={`${styles.optionButton} ${styles.btnGreen}`}>
+                <span>Lista de desejos</span>
+                <FaStar size={22} />
+              </Link>
+            </div>
+          </section>
+
+          {/* Seção Compras */}
+          <section className={styles.section}>
+            <h3 className={styles.sectionTitle}>Compras</h3>
+            <div className={styles.buttonsGrid}>
+              <Link href="/configuracoes/meus-pedidos" className={`${styles.optionButton} ${styles.btnPink}`}>
+                <span>Meus pedidos</span>
+                <FaBoxOpen size={22} />
+              </Link>
+              <Link href="/configuracoes/enderecos" className={`${styles.optionButton} ${styles.btnPurple}`}>
+                <span>Endereço de entrega</span>
+                <FaTruck size={22} />
+              </Link>
+              <Link href="/configuracoes/pagamento" className={`${styles.optionButton} ${styles.btnOrange}`}>
+                <span>Métodos de pagamento</span>
+                <FaCreditCard size={22} />
+              </Link>
+            </div>
+          </section>
+
+          {/* Seção Ajuda */}
+          <section className={styles.section}>
+            <h3 className={styles.sectionTitle}>Ajuda</h3>
+            <div className={styles.buttonsGrid}>
+              <Link href="/suporte" className={`${styles.optionButton} ${styles.btnGreen}`}>
+                <span>Suporte ao cliente</span>
+                <FaHeadset size={22} />
+              </Link>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
   );
 };
 

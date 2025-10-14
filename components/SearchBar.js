@@ -1,6 +1,6 @@
 import React from 'react';
 import { FaSearch } from 'react-icons/fa'; // Importa apenas o ícone de pesquisa
-import styles from 'styles/SearchBar.module.css';
+import styles from 'styles/componentes/SearchBar.module.css';
 
 export default function SearchBar() {
     return (

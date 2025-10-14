@@ -1,7 +1,7 @@
 import { useState } from "react";
 import useSWRMutation from "swr/mutation";
 import Link from "next/link";
-import styles from "styles/cadastro.module.css";
+import styles from "styles/cadastro_login/cadastro.module.css";
 import BackgroundShapes from "components/BackgroundShapes";
 import LogoIMG from "components/LogoIMG";
 
@@ -26,19 +26,15 @@ export default function RegisterPage() {
   return (
     <div className={styles.pageContainer}>
       <BackgroundShapes />
-      <LogoIMG />
+      <LogoIMG className={styles.loginLogo} />
       <RegisterForm />
-
-      {/* Links Legais - Separados */}
       <div className={styles.legalLinksContainer}>
         <a href="/termos-de-uso" className={styles.termsOfUseLink}>
           Termos de Uso
         </a>
         <span className={styles.linkSeparator}>|</span>
-        <a
-          href="/politicas-de-privacidade"
-          className={styles.privacyPolicyLink}
-        >
+        <a href="/politicas-de-privacidade"
+          className={styles.privacyPolicyLink}>
           Políticas de Privacidade
         </a>
       </div>
@@ -110,132 +106,115 @@ function RegisterForm() {
 
   return (
     <form onSubmit={handleSubmit} className={styles.registerForm}>
-      <div className={styles.formBackground}></div>
+      <div className={styles.formBackground}>
+        <h2 className={styles.title}>Criar conta</h2>
+        <div className={styles.formContainer}>
+          <div className={styles.fieldGroup}>
+            <label htmlFor="name" className={styles.label}>
+              Nome
+            </label>
+            <input
+              id="name"
+              name="name"
+              type="text"
+              value={formData.name}
+              onChange={handleChange}
+              className={styles.input}
+              required
+            />
+          </div>
 
-      <h2 className={styles.title}>Criar conta</h2>
+          <div className={styles.fieldGroup}>
+            <label htmlFor="username" className={styles.label}>
+              Username
+            </label>
+            <input
+              id="username"
+              name="username"
+              type="text"
+              value={formData.username}
+              onChange={handleChange}
+              className={styles.input}
+              required
+            />
+          </div>
 
-      <div className={styles.formContainer}>
-        <div className={styles.fieldGroup}>
-          <label htmlFor="name" className={styles.label}>
-            Nome
+          <div className={styles.fieldGroup}>
+            <label htmlFor="email" className={styles.label}>
+              Email
+            </label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              value={formData.email}
+              onChange={handleChange}
+              className={styles.input}
+              required
+            />
+          </div>
+
+          <div className={styles.fieldGroup}>
+            <label htmlFor="password" className={styles.label}>
+              Senha
+            </label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              value={formData.password}
+              onChange={handleChange}
+              className={styles.input}
+              required
+            />
+          </div>
+
+          <div className={styles.fieldGroup}>
+            <label htmlFor="confirmPassword" className={styles.label}>
+              Confirmar senha
+            </label>
+            <input
+              id="confirmPassword"
+              name="confirmPassword"
+              type="password"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              className={styles.input}
+              required
+            />
+          </div>
+        </div>
+
+        {success && (
+          <div className={styles.successMessage}>
+            ✅ Conta criada com sucesso!
+          </div>
+        )}
+
+        {error && <div className={styles.errorMessage}>❌ {error}</div>}
+
+        {/*<div className={styles.optionsRow}>
+          <label className={styles.rememberMe}>
+            <input type="checkbox" className={styles.checkbox} />
+            Lembrar de mim
           </label>
-          <input
-            id="name"
-            name="name"
-            type="text"
-            value={formData.name}
-            onChange={handleChange}
-            className={styles.input}
-            required
-          />
-        </div>
+        </div>*/}
 
-        <div className={styles.fieldGroup}>
-          <label htmlFor="username" className={styles.label}>
-            Username
-          </label>
-          <input
-            id="username"
-            name="username"
-            type="text"
-            value={formData.username}
-            onChange={handleChange}
-            className={styles.input}
-            required
-          />
-        </div>
-
-        <div className={styles.fieldGroup}>
-          <label htmlFor="email" className={styles.label}>
-            Email
-          </label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            value={formData.email}
-            onChange={handleChange}
-            className={styles.input}
-            required
-          />
-        </div>
-
-        <div className={styles.fieldGroup}>
-          <label htmlFor="password" className={styles.label}>
-            Senha
-          </label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            value={formData.password}
-            onChange={handleChange}
-            className={styles.input}
-            required
-          />
-        </div>
-
-        <div className={styles.fieldGroup}>
-          <label htmlFor="confirmPassword" className={styles.label}>
-            Confirmar senha
-          </label>
-          <input
-            id="confirmPassword"
-            name="confirmPassword"
-            type="password"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            className={styles.input}
-            required
-          />
-        </div>
-      </div>
-
-      <div className={styles.rememberMe}>
-        <div className={styles.checkboxContainer}>
-          <input
-            type="checkbox"
-            id="rememberMe"
-            className={styles.checkboxInput}
-          />
-        </div>
-        <label htmlFor="rememberMe" className={styles.checkboxLabel}>
-          Lembrar de mim
-        </label>
-      </div>
-
-      {success && (
-        <div className={styles.successMessage}>
-          ✅ Conta criada com sucesso!
-        </div>
-      )}
-
-      {error && <div className={styles.errorMessage}>❌ {error}</div>}
-
-      <div className={styles.rememberMe}>
-        <div className={styles.checkboxContainer}>
-          <input type="checkbox" className={styles.checkboxInput} />
-        </div>
-        <label className={styles.checkboxLabel}>Lembrar de mim</label>
-      </div>
-
-      {/* Botão - Criar */}
-      <button
-        type="submit"
-        className={styles.createButton}
-        disabled={isMutating}
-      >
-        {isMutating ? "Criando..." : "Criar"}
-      </button>
-
-      <div className={styles.loginLink}>
-        Já tem uma conta?{" "}
-        <Link
-          href="/login"
-          style={{ color: "#fbb829", textDecoration: "underline" }}
+        {/* Botão - Criar */}
+        <button
+          type="submit"
+          className={styles.createButton}
+          disabled={isMutating}
         >
-          Faça login!
-        </Link>
+          {isMutating ? "Criando..." : "Criar"}
+        </button>
+
+        <div className={styles.loginPrompt}>
+          Já tem uma conta?{" "}
+          <Link href="/login" className={styles.loginLink}>
+            Faça login!
+          </Link>
+        </div>
       </div>
     </form>
   );
