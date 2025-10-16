@@ -8,10 +8,35 @@ export default function HomePage() {
         <SearchBar />
       </header>
 
-      <div>
-        <h1>Bem-vindo à tela inicial</h1>
-        <p>Este é o E-Play.</p>
-      </div>
+      <main className={styles.body}>
+        <div className={styles.homeContainer}>
+
+          <div className={styles.recomendados}>
+            <p>Recomendados 🔥</p>
+            <div className={styles.cardsRow}>
+              <div className={styles.card}></div>
+              <div className={styles.card}></div>
+            </div>
+          </div>
+
+          <div className={styles.recomendados}>
+            <p>Mais Vendidos 🏆</p>
+            <div className={styles.cardsRow}>
+              <div className={styles.card}></div>
+              <div className={styles.card}></div>
+            </div>
+          </div>
+
+          <div className={styles.recomendados}>
+            <p>Promoções 💸</p>
+            <div className={styles.cardsRow}>
+              <div className={styles.card}></div>
+              <div className={styles.card}></div>
+            </div>
+          </div>
+
+        </div>
+      </main>
     </div >
   );
 }
