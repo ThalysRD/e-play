@@ -1,0 +1,371 @@
+/* Criar Anúncio */
+.pageContainer {
+  min-height: 100vh;
+  background: #1a2333;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-bottom: 80px;
+}
+
+/* Form */
+.registerForm {
+  position: relative;
+  width: 700px;
+  min-height: 900px;
+  margin: 120px auto 50px;
+  z-index: 10;
+}
+
+/* Form Background */
+.formBackground {
+  box-sizing: border-box;
+  position: relative;
+  width: 100%;
+  min-height: 900px;
+  background: #33486d;
+  border: 2px solid #fbb829;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.5);
+  border-radius: 35px;
+  padding: 40px;
+}
+
+/* Title */
+.title {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 29px;
+  text-align: center;
+  color: #ffffff;
+  margin-bottom: 30px;
+}
+
+/* Form Container */
+.formContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+/* Field Group */
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Row Group (lado a lado) */
+.rowGroup {
+  display: flex;
+  gap: 20px;
+}
+
+.fieldGroupHalf {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Labels */
+.label {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 20px;
+  color: #ffffff;
+}
+
+/* Inputs */
+.input,
+.select,
+.textarea {
+  width: 100%;
+  background: #5e5443;
+  border: 2px solid #fbb829;
+  border-radius: 10px;
+  box-sizing: border-box;
+  padding: 12px 16px;
+  color: #ffffff;
+  font-family: "Montserrat", sans-serif;
+  font-size: 14px;
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.input::placeholder,
+.textarea::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.input:focus,
+.select:focus,
+.textarea:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(251, 184, 41, 0.3);
+}
+
+.select {
+  cursor: pointer;
+}
+
+/* File Input */
+.fileInput {
+  width: 100%;
+  background: #5e5443;
+  border: 2px dashed #fbb829;
+  border-radius: 10px;
+  padding: 20px;
+  color: #ffffff;
+  font-family: "Montserrat", sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.fileInput:hover {
+  border-color: #ffffff;
+  background: rgba(94, 84, 67, 0.8);
+}
+
+.fileInput::file-selector-button {
+  background: #fbb829;
+  color: #1a2333;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 16px;
+  font-family: "Montserrat";
+  font-weight: 600;
+  cursor: pointer;
+  margin-right: 10px;
+  transition: all 0.3s ease;
+}
+
+.fileInput::file-selector-button:hover {
+  background: #e6a623;
+}
+
+.helpText {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+  margin-top: 5px;
+  font-family: "Montserrat";
+}
+
+/* Image Preview Container */
+.imagePreviewContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.imagePreviewItem {
+  position: relative;
+  width: 100%;
+  padding-top: 100%; /* Aspect ratio 1:1 */
+  border-radius: 10px;
+  overflow: hidden;
+  border: 2px solid #fbb829;
+}
+
+.imagePreview {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Image Input Group */
+.imageInputGroup {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.imageInputGroup .input {
+  flex: 1;
+}
+
+.removeImageBtn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: #de3277;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.removeImageBtn:hover {
+  background: #c42968;
+  transform: scale(1.1);
+}
+
+.addImageBtn {
+  background: transparent;
+  color: #fbb829;
+  border: 2px dashed #fbb829;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-family: "Montserrat";
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 5px;
+}
+
+.addImageBtn:hover {
+  background: rgba(251, 184, 41, 0.1);
+  border-style: solid;
+}
+
+/* Create Button */
+.createButton {
+  width: 200px;
+  height: 50px;
+  margin: 20px auto;
+  display: block;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  background: #de3277;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  color: #ffffff;
+}
+
+.createButton:hover:not(:disabled) {
+  background: #c42968;
+  transform: translateY(-2px);
+}
+
+.createButton:disabled {
+  background: #666;
+  cursor: not-allowed;
+}
+
+/* Back Link */
+.backLink {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.backLink a {
+  font-family: "Montserrat";
+  font-size: 14px;
+  color: #fbb829;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.backLink a:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+/* Messages */
+.successMessage,
+.errorMessage {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  text-align: center;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 20px;
+  animation:
+    fadeIn 0.3s ease-in,
+    fadeOut 0.5s ease-out 4.5s forwards;
+}
+
+.successMessage {
+  background: rgba(39, 174, 96, 0.9);
+  color: #ffffff;
+}
+
+.errorMessage {
+  background: rgba(231, 76, 60, 0.9);
+  color: #ffffff;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-10px);
+    visibility: hidden;
+  }
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .registerForm {
+    width: 90%;
+    max-width: 500px;
+    margin-top: 80px;
+  }
+
+  .formBackground {
+    padding: 30px 20px;
+  }
+
+  .rowGroup {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .createButton {
+    width: 100%;
+  }
+}
