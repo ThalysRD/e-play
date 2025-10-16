@@ -26,40 +26,32 @@ const ConfiguracoesPage = () => {
     fetchUser();
   }, []);
 
-  if (isLoading) {
-    return (
-      <div className={load.loadingContainer}>
-        <div className={load.spinner}></div>
-      </div>
-    );
-  }
-
   return (
     <div className={styles.configuracoesBackground}>
       <header className={styles.header}>
         <div className={styles.infosUser}>
-          <img src={user.profile_image_url ? user.profile_image_url : "/assets/AvatarPadrao.svg"} className={styles.profilePic} />
-          <div className={styles.userInfoText}>
-            <div className={styles.userInfo}>
-              <h2 className={styles.userName}>{user.name}</h2>
-
+          {!isLoading ? (
+            <><img src={user.profile_image_url || "/assets/AvatarPadrao.svg"} className={styles.profilePic} />
+              <div className={styles.userInfoText}>
+                <div className={styles.userInfo}>
+                  <h2 className={styles.userName}>{user.name}</h2>
+                </div>
+                <div className={styles.userDetails}>
+                  <div className={styles.column}>
+                    <p><span className={styles.label}>Usuário:</span> @{user.username}</p>
+                    <p><span className={styles.label}>Email:</span> {user.email}</p>
+                  </div>
+                  <div className={styles.column}>
+                    <p><span className={styles.label}>Sobre mim:</span> {user.profile_bio || 'Não informado'}</p>
+                  </div>
+                </div>
+              </div>
+            </>
+          ) : (
+            <div className={load.loadingContainer}>
+              <div className={load.spinner}></div>
             </div>
-            <div className={styles.userDetails}>
-              <div className={styles.column}>
-                <p><span className={styles.label}>Sobre mim:</span> {user.profile_bio ? user.profile_bio : 'Não informado'}</p>
-                <p><span className={styles.label}>Usuário:</span> @{user.username}</p>
-
-              </div>
-              <div className={styles.column}>
-                <p><span className={styles.label}>Email:</span> {user.email}</p>
-                <p><span className={styles.label}>Telefone:</span> {user.phone_number ? user.phone_number : 'Não informado'}</p>
-              </div>
-              <div className={styles.column}>
-                <p><span className={styles.label}>CPF:</span> {user.cpf ? user.cpf : 'Não informado'}</p>
-                <p><span className={styles.label}>CNPJ:</span> {user.cnpj ? user.cnpj : 'Não informado'}</p>
-              </div>
-            </div>
-          </div>
+          )}
         </div>
       </header>
       <main className={styles.body}>
@@ -72,13 +64,17 @@ const ConfiguracoesPage = () => {
                 <span>Editar perfil</span>
                 <FaUserEdit size={22} />
               </Link>
-              <Link href="/configuracoes/atualizar-senha" className={`${styles.optionButton} ${styles.btnBlue}`}>
-                <span>Atualizar senha</span>
-                <FaKey size={22} />
+              <Link href="/configuracoes/meus-pedidos" className={`${styles.optionButton} ${styles.btnPink}`}>
+                <span>Meus pedidos</span>
+                <FaBoxOpen size={22} />
               </Link>
-              <Link href="/configuracoes/meus-anuncios" className={`${styles.optionButton} ${styles.btnPink}`}>
+              <Link href="/configuracoes/meus-anuncios" className={`${styles.optionButton} ${styles.btnBlue}`}>
                 <span>Meus anúncios</span>
                 <FaBullhorn size={22} />
+              </Link>
+              <Link href="/configuracoes/lista-desejos" className={`${styles.optionButton} ${styles.btnGreen}`}>
+                <span>Lista de desejos</span>
+                <FaStar size={22} />
               </Link>
             </div>
           </section>
@@ -87,15 +83,7 @@ const ConfiguracoesPage = () => {
           <section className={styles.section}>
             <h3 className={styles.sectionTitle}>Compras</h3>
             <div className={styles.buttonsGrid}>
-              <Link href="/configuracoes/meus-pedidos" className={`${styles.optionButton} ${styles.btnPink}`}>
-                <span>Meus pedidos</span>
-                <FaBoxOpen size={22} />
-              </Link>
-              <Link href="/configuracoes/lista-desejos" className={`${styles.optionButton} ${styles.btnGreen}`}>
-                <span>Lista de desejos</span>
-                <FaStar size={22} />
-              </Link>
-              <Link href="/configuracoes/enderecos" className={`${styles.optionButton} ${styles.btnPurple}`}>
+              <Link href="/configuracoes/enderecos" className={`${styles.optionButton} ${styles.btnBlue}`}>
                 <span>Endereço de entrega</span>
                 <FaTruck size={22} />
               </Link>

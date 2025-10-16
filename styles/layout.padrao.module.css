@@ -1,8 +1,32 @@
 /* ------- Container principal ------- */
 .pageContainer {
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
   background-color: var(--cor-secundaria);
+}
+
+.loadingContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; 
+  background-color: var(--cor-secundaria);
+}
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(255, 255, 255, 0.3);
+  border-top: 5px solid var(--cor-texto);
+  border-radius: 50%;
+  animation: rotate 1s linear infinite;
+}
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* ------- Sidebar lateral ------- */
@@ -85,10 +109,9 @@
 
 /* ------- Wrapper para o conteúdo e footer ------- */
 .contentWrapper {
-  height: 100%;
-  background-color: var(--cor-secundaria);
-  flex: 1;
+  min-height: 100vh; 
   display: flex;
+  flex: 1;
   flex-direction: column;
   padding-left: 0;
   padding-top: 10px;
@@ -96,6 +119,7 @@
   padding-bottom: 10px;
   gap: 10px;
   margin-left: 190px;
+  background-color: var(--cor-secundaria);
 }
 
 /* ------- Área principal ------- */
