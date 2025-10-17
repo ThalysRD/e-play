@@ -64,11 +64,11 @@ const ConfiguracoesPage = () => {
                 <span>Editar perfil</span>
                 <FaUserEdit size={22} />
               </Link>
-              <Link href="/configuracoes/atualizar-senha" className={`${styles.optionButton} ${styles.btnBlue}`}>
-                <span>Atualizar senha</span>
-                <FaKey size={22} />
+              <Link href="/configuracoes/meus-pedidos" className={`${styles.optionButton} ${styles.btnPink}`}>
+                <span>Meus pedidos</span>
+                <FaBoxOpen size={22} />
               </Link>
-              <Link href="/configuracoes/meus-anuncios" className={`${styles.optionButton} ${styles.btnPink}`}>
+              <Link href="/configuracoes/meus-anuncios" className={`${styles.optionButton} ${styles.btnBlue}`}>
                 <span>Meus anúncios</span>
                 <FaBullhorn size={22} />
               </Link>
@@ -83,11 +83,7 @@ const ConfiguracoesPage = () => {
           <section className={styles.section}>
             <h3 className={styles.sectionTitle}>Compras</h3>
             <div className={styles.buttonsGrid}>
-              <Link href="/configuracoes/meus-pedidos" className={`${styles.optionButton} ${styles.btnPink}`}>
-                <span>Meus pedidos</span>
-                <FaBoxOpen size={22} />
-              </Link>
-              <Link href="/configuracoes/enderecos" className={`${styles.optionButton} ${styles.btnPurple}`}>
+              <Link href="/configuracoes/enderecos" className={`${styles.optionButton} ${styles.btnBlue}`}>
                 <span>Endereço de entrega</span>
                 <FaTruck size={22} />
               </Link>
