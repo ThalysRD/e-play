@@ -1,5 +1,5 @@
 import Link from "next/link";
-import styles from "styles/configuracoes.module.css";
+import styles from "styles/configuracoes/config.module.css";
 
 export default function ConfiguracoesPage() {
   return (
@@ -8,7 +8,6 @@ export default function ConfiguracoesPage() {
 
       <section className={styles.section}>
         <h2>Conta</h2>
-        {/* ...outras opções de configuração... */}
       </section>
 
       <section className={styles.section}>
