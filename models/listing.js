@@ -2,6 +2,84 @@ import { ValidationError, NotFoundError } from "infra/errors.js";
 import database from "../infra/database.js";
 import user from "./user.js"
 
+
+async function findAll() {
+  const listings = await runSelectQuery();
+  return listings;
+
+  async function runSelectQuery() {
+    const results = await database.query({
+      text: `
+        SELECT
+          l.*,
+          u.username,
+          u.email,
+          (
+            SELECT json_agg(
+              json_build_object(
+                'id', li.id,
+                'image_url', li.image_url,
+                'display_order', li.display_order
+              ) ORDER BY li.display_order
+            )
+            FROM listing_images li
+            WHERE li.listing_id = l.id
+          ) as images
+        FROM
+          listings l
+        LEFT JOIN
+          users u ON l.user_id = u.id
+        ORDER BY
+          l.created_at DESC
+      `,
+    });
+    return results.rows;
+  }
+}
+
+async function findOneById(listingId) {
+  const listing = await runSelectQuery(listingId);
+  return listing;
+
+  async function runSelectQuery(listingId) {
+    const results = await database.query({
+      text: `
+        SELECT
+          l.*,
+          u.username,
+          u.email,
+          (
+            SELECT json_agg(
+              json_build_object(
+                'id', li.id,
+                'image_url', li.image_url,
+                'display_order', li.display_order
+              ) ORDER BY li.display_order
+            )
+            FROM listing_images li
+            WHERE li.listing_id = l.id
+          ) as images
+        FROM
+          listings l
+        LEFT JOIN
+          users u ON l.user_id = u.id
+        WHERE
+          l.id = $1
+      `,
+      values: [listingId],
+    });
+
+    if (results.rowCount === 0) {
+      throw new NotFoundError({
+        message: "Anúncio não encontrado.",
+        action: "Verifique se o ID do anúncio está correto.",
+      });
+    }
+
+    return results.rows[0];
+  }
+}
+
 async function create(userInputValues) {
   await validateUserExists(userInputValues.userId)
 
@@ -45,6 +123,8 @@ async function validateUserExists(userId) {
 }
 
 const listing = {
+  findAll,
+  findOneById,
   create
 }
 

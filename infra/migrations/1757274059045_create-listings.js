@@ -1,4 +1,6 @@
 exports.up = (pgm) => {
+  pgm.createType('listing_condition', ['Novo', 'Usado', 'Recondicionado']);
+
   pgm.createTable("listings", {
     id: {
       type: "uuid",
@@ -19,21 +21,20 @@ exports.up = (pgm) => {
       type: "varchar(255)",
     },
     description: {
-      type: "varchar(255)",
+      type: "text",
     },
     price: {
       type: "numeric",
       notNull: true,
     },
     condition: {
-      type: "varchar(255)",
+      type: "listing_condition",
     },
     quantity: {
       type: "integer",
       notNull: true,
     },
     active: {
-      // possivelmente n é booleano mas eai
       type: "boolean",
       notNull: true,
       default: true,
