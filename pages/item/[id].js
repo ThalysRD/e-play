@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import styles from "styles/item/detalhes.module.css";
-import Footer from "components/Footer";
 import ImageGallery from "components/ImageGallery";
 
 export default function ProductDetailsPage() {
@@ -156,7 +155,6 @@ export default function ProductDetailsPage() {
           </div>
         </div>
       </div>
-      <Footer />
     </div>
   );
 }

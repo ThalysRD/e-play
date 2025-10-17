@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import SearchBar from "components/SearchBar";
-import Footer from "components/Footer";
 import ListingCard from "components/ListingCard";
 import styles from "styles/catalogo/home.module.css";
 
@@ -71,7 +70,6 @@ export default function HomePage() {
           )}
         </div>
       </main>
-      <Footer />
     </div>
   );
 }
