@@ -30,14 +30,11 @@ async function deleteHandler(request, response) {
       return response.status(401).json({ error: "Não autenticado" });
     }
 
-    // Verify listing exists and belongs to user
     const listingData = await listing.findOneById(id);
-    console.log(listingData)
     if (!listingData) {
       return response.status(404).json({ error: "Anúncio não encontrado" });
     }
 
-    // Delete the listing
     await listing.deleteById(id);
 
     return response.status(200).json({ success: true, message: "Anúncio deletado com sucesso" });

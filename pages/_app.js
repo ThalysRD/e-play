@@ -15,7 +15,6 @@ export default function App({ Component, pageProps }) {
     );
   }
   return (
-    // garante q qualquer parte do site tenha acesso ao carrinho
     <CarrinhoProvider>
       <LayoutPadrao>
         <Component {...pageProps} />

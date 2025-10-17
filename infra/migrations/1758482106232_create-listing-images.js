@@ -32,7 +32,6 @@ exports.up = (pgm) => {
     },
   });
 
-  // Índice para buscar imagens por listing
   pgm.createIndex("listing_images", "listing_id");
 };
 

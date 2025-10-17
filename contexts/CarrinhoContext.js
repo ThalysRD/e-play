@@ -1,9 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-// cria o espaço onde os outros componentes podem acessar o carrinho
 const CarrinhoContext = createContext();
 
-// dá acesso aos componentes, sem precisar fazer isso manualmente
 export const useCarrinho = () => {
   const context = useContext(CarrinhoContext);
   if (!context) {
@@ -15,7 +13,6 @@ export const useCarrinho = () => {
 export const CarrinhoProvider = ({ children }) => {
   const [itens, setItens] = useState([]);
 
-  // carrega os itens do localStorage ao montar o componente
   useEffect(() => {
     const itensArmazenados = localStorage.getItem('carrinho');
     if (itensArmazenados) {
@@ -27,7 +24,6 @@ export const CarrinhoProvider = ({ children }) => {
     }
   }, []);
 
-  // salva os itens no localStorage qnd eles que mudarem
   useEffect(() => {
     localStorage.setItem('carrinho', JSON.stringify(itens));
   }, [itens]);
@@ -36,7 +32,6 @@ export const CarrinhoProvider = ({ children }) => {
     setItens((itensAtuais) => {
       const itemExistente = itensAtuais.find((item) => item.id === produto.id);
 
-      // se o item ainda n estiver no carrinho, eh adicionado
       if (itemExistente) {
         return itensAtuais.map((item) =>
           item.id === produto.id
@@ -44,8 +39,7 @@ export const CarrinhoProvider = ({ children }) => {
             : item
         );
       }
-      
-      // caso já esteja, eh incrementado em 1
+
       return [...itensAtuais, { ...produto, quantidade: 1 }];
     });
   };
@@ -76,7 +70,6 @@ export const CarrinhoProvider = ({ children }) => {
   };
 
   const calcularFrete = () => {
-    // mantém um frete fixo de R$ 15, ou grátis se a compra for acima de R$ 200
     const subtotal = calcularSubtotal();
     return subtotal >= 200 ? 0 : 15;
   };

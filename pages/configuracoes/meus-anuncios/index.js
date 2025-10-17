@@ -18,7 +18,6 @@ export default function MeusAnuncios() {
 
   useEffect(() => {
     if (user && user.id) {
-      // Fetch user's listings
       fetchUserListings();
     }
   }, [user]);
@@ -30,7 +29,6 @@ export default function MeusAnuncios() {
       if (!response.ok) throw new Error("Falha ao carregar anúncios");
 
       const allListings = await response.json();
-      // Filter listings by current user
       const userListings = allListings.filter(
         (listing) => listing.user_id === user.id
       );
@@ -55,7 +53,6 @@ export default function MeusAnuncios() {
 
       if (!response.ok) throw new Error("Falha ao deletar anúncio");
 
-      // Remove from local state
       setListings(listings.filter((l) => l.id !== listingId));
     } catch (err) {
       console.error("Erro ao deletar anúncio:", err);

@@ -5,7 +5,6 @@ import { IoTrash, IoAdd, IoRemove } from "react-icons/io5";
 import { useRouter } from "next/router";
 
 const CarrinhoPage = () => {
-  // pega os intens e funçoes do contexto do carrinho
   const {
     itens,
     removerItem,
@@ -25,19 +24,16 @@ const CarrinhoPage = () => {
   };
 
   const handleFinalizarCompra = () => {
-
-    // navega p pagina de finzalizacao de compra
     router.push('/finalizacao-compra');
   };
 
-  // verifica se o carrinho tá vazio e sugere voltar ao catálogo
   if (itens.length === 0) {
     return (
       <div className={styles.carrinhoContainer}>
         <div className={styles.carrinhoVazio}>
           <h2>Seu carrinho está vazio</h2>
           <p>Adicione seus jogos ao carrinho para continuar comprando!</p>
-          <button 
+          <button
             className={styles.voltarCatalogo}
             onClick={() => router.push('/')}
           >
@@ -48,7 +44,6 @@ const CarrinhoPage = () => {
     );
   }
 
-  // mostra a pagina do carrinho qnd há itens
   return (
     <div className={styles.carrinhoContainer}>
       <div className={styles.carrinhoHeader}>
@@ -65,7 +60,7 @@ const CarrinhoPage = () => {
                 alt={item.nome}
                 className={styles.itemImagem}
               />
-              
+
               <div className={styles.itemDetalhes}>
                 <h3 className={styles.itemNome}>{item.nome}</h3>
                 <p className={styles.itemPreco}>{formatarPreco(item.preco)}</p>
@@ -103,10 +98,10 @@ const CarrinhoPage = () => {
 
         <div className={styles.resumoPedido}>
           <h2>Resumo do Pedido</h2>
-          
+
           <div className={styles.freteInfo}>
-            {calcularFrete() === 0 
-              ? '🎉 Frete Grátis!' 
+            {calcularFrete() === 0
+              ? '🎉 Frete Grátis!'
               : 'Frete grátis acima de R$ 200,00'}
           </div>
 
@@ -118,8 +113,8 @@ const CarrinhoPage = () => {
           <div className={styles.resumoLinha}>
             <span>Frete:</span>
             <span>
-              {calcularFrete() === 0 
-                ? 'Grátis' 
+              {calcularFrete() === 0
+                ? 'Grátis'
                 : formatarPreco(calcularFrete())}
             </span>
           </div>
@@ -129,7 +124,7 @@ const CarrinhoPage = () => {
             <span>{formatarPreco(calcularTotal())}</span>
           </div>
 
-          <button 
+          <button
             className={styles.finalizarBtn}
             onClick={handleFinalizarCompra}
           >

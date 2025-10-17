@@ -8,7 +8,6 @@ const router = createRouter();
 
 router.get(getHandler);
 router.post(postHandler);
-// router.delete(deleteHandler);
 
 export default router.handler(controller.errorHandlers);
 
@@ -26,7 +25,6 @@ async function postHandler(request, response) {
   const userInputValues = request.body;
 
   try {
-    // 1) Verifica se o usuário está autenticado
     const sessionToken = request.cookies.session_id;
     if (!sessionToken) {
       return response.status(401).json({
@@ -36,19 +34,15 @@ async function postHandler(request, response) {
 
     const userSession = await session.findOneValidByToken(sessionToken);
 
-    // 2) Cria o listing com o userId da sessão
     const newListing = await listing.create({
       ...userInputValues,
       userId: userSession.user_id,
     });
 
-    // 3) Recebe imagens (espera um array de URLs em `listing_images` ou `images`)
-    //    Cada item pode ser string (url) ou objeto { image_url }
     const images = userInputValues.listing_images ?? userInputValues.images ?? [];
 
     let createdImages = [];
     if (Array.isArray(images) && images.length > 0) {
-      // usa Promise.all para inserir em paralelo (cada insert calcula display_order)
       createdImages = await Promise.all(
         images.map((img) => {
           const imageUrl = typeof img === "string" ? img : img.image_url || img.url;
@@ -60,7 +54,6 @@ async function postHandler(request, response) {
       );
     }
 
-    // 4) Resposta: listing + imagens criadas
     return response.status(201).json({
       ...newListing,
       images: createdImages,

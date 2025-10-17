@@ -61,46 +61,39 @@ function CreateListingForm() {
 
     if (files.length === 0) return;
 
-    // Verificar se não ultrapassa o limite de 6 imagens
     const totalImages = imageFiles.length + files.length;
     if (totalImages > 6) {
       setError(`Você pode adicionar no máximo 6 imagens. Você já tem ${imageFiles.length} imagem(ns).`);
-      e.target.value = ""; // Limpa o input
+      e.target.value = "";
       return;
     }
 
-    // Validação de tamanho (max 5MB por imagem)
-    const maxSize = 5 * 1024 * 1024; // 5MB
+    const maxSize = 5 * 1024 * 1024;
     const invalidFiles = files.filter(file => file.size > maxSize);
 
     if (invalidFiles.length > 0) {
       setError("Algumas imagens são maiores que 5MB. Por favor, escolha imagens menores.");
-      e.target.value = ""; // Limpa o input
+      e.target.value = "";
       return;
     }
 
-    // Validação de tipo
     const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
     const invalidTypes = files.filter(file => !validTypes.includes(file.type));
 
     if (invalidTypes.length > 0) {
       setError("Apenas imagens JPG, PNG e WEBP são permitidas.");
-      e.target.value = ""; // Limpa o input
+      e.target.value = "";
       return;
     }
 
-    // Adicionar aos arquivos existentes ao invés de substituir
     const newFiles = [...imageFiles, ...files];
     setImageFiles(newFiles);
 
-    // Criar previews para os novos arquivos e adicionar aos existentes
     const newPreviews = files.map(file => URL.createObjectURL(file));
     setImagePreviews([...imagePreviews, ...newPreviews]);
 
-    // Limpar o input para permitir adicionar a mesma imagem novamente se necessário
     e.target.value = "";
 
-    // Limpar a mensagem de erro se tudo deu certo
     setError("");
   };
 
@@ -108,7 +101,6 @@ function CreateListingForm() {
     const newFiles = imageFiles.filter((_, i) => i !== index);
     const newPreviews = imagePreviews.filter((_, i) => i !== index);
 
-    // Limpar URL do preview antigo
     URL.revokeObjectURL(imagePreviews[index]);
 
     setImageFiles(newFiles);
@@ -149,7 +141,6 @@ function CreateListingForm() {
     setError("");
     setSuccess(false);
 
-    // Validações
     if (!formData.title.trim()) {
       setError("O título é obrigatório");
       return;
@@ -171,7 +162,6 @@ function CreateListingForm() {
     }
 
     try {
-      // Upload das imagens para o Firebase
       let imageUrls = [];
       if (imageFiles.length > 0) {
         try {
