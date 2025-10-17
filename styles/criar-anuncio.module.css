@@ -1,24 +1,10 @@
 /* Criar Anúncio */
-.pageContainer {
-  min-height: 100vh;
-  background: #1a2333;
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  padding-bottom: 80px;
-}
-
 /* Form */
 .registerForm {
   position: relative;
-  width: 700px;
-  min-height: 900px;
-  margin: 120px auto 50px;
+  max-width: 700px;
+  width: 100%;
+  margin: 20px auto;
   z-index: 10;
 }
 
