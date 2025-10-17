@@ -1,39 +1,28 @@
-/* Criar Anúncio */
-/* Form */
 .registerForm {
   position: relative;
   max-width: 700px;
-  width: 100%;
-  margin: 20px auto;
+  max-width: 100%;
+  margin: 10px auto;
   z-index: 10;
 }
 
-/* Form Background */
 .formBackground {
-  box-sizing: border-box;
-  position: relative;
-  width: 100%;
-  min-height: 900px;
-  background: #33486d;
-  border: 2px solid #fbb829;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.5);
-  border-radius: 35px;
-  padding: 40px;
+  max-width: 100%;
+  margin: 10px auto 0;
+  background-color: var(--cor-secundaria);
+  border-radius: 16px;
+  padding: 10px 30px 30px 30px;
 }
 
-/* Title */
-.title {
-  font-family: "Montserrat";
-  font-style: normal;
-  font-weight: 700;
-  font-size: 24px;
+.header {
+  font-size: 14px;
   line-height: 29px;
-  text-align: center;
   color: #ffffff;
   margin-bottom: 30px;
+  text-align: center;
+  border-bottom: 2px solid var(--cor-primaria);
 }
 
-/* Form Container */
 .formContainer {
   width: 100%;
   display: flex;
@@ -42,14 +31,12 @@
   margin-bottom: 30px;
 }
 
-/* Field Group */
 .fieldGroup {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-/* Row Group (lado a lado) */
 .rowGroup {
   display: flex;
   gap: 20px;
@@ -62,7 +49,6 @@
   gap: 8px;
 }
 
-/* Labels */
 .label {
   font-family: "Montserrat";
   font-style: normal;
@@ -72,7 +58,6 @@
   color: #ffffff;
 }
 
-/* Inputs */
 .input,
 .select,
 .textarea {
@@ -87,9 +72,8 @@
   font-size: 14px;
 }
 
-.textarea {
-  resize: vertical;
-  min-height: 100px;
+.descTextarea {
+  resize: none;
 }
 
 .input::placeholder,
@@ -108,7 +92,6 @@
   cursor: pointer;
 }
 
-/* File Input */
 .fileInput {
   width: 100%;
   background: #5e5443;
@@ -235,25 +218,22 @@
 /* Create Button */
 .createButton {
   width: 200px;
-  height: 50px;
   margin: 20px auto;
   display: block;
-  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
-  background: #de3277;
+  background: var(--cor-rosa-medio);
   border-radius: 10px;
   border: none;
+  border-radius: 8px;
+  padding: 12px 25px;
+  font-size: 12px;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
-  font-family: "Montserrat";
-  font-style: normal;
-  font-weight: 700;
-  font-size: 16px;
-  color: #ffffff;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  color: var(--cor-texto);
 }
 
 .createButton:hover:not(:disabled) {
-  background: #c42968;
-  transform: translateY(-2px);
+  background-color: var(--cor-rosa-escuro);
 }
 
 .createButton:disabled {
@@ -283,26 +263,24 @@
 /* Messages */
 .successMessage,
 .errorMessage {
-  width: 100%;
+  max-width: 560px;
   padding: 12px;
   border-radius: 10px;
-  text-align: center;
-  font-family: "Montserrat", sans-serif;
-  font-weight: 600;
   font-size: 14px;
-  margin-bottom: 20px;
-  animation:
-    fadeIn 0.3s ease-in,
-    fadeOut 0.5s ease-out 4.5s forwards;
+  margin: 0 auto 20px;
+  display: flex;
+  align-self: center;
+  justify-content: center;
+  animation: fadeIn 0.3s ease-in; 
 }
 
 .successMessage {
-  background: rgba(39, 174, 96, 0.9);
+  background: var(--cor-sucess);
   color: #ffffff;
 }
 
 .errorMessage {
-  background: rgba(231, 76, 60, 0.9);
+  background: var(--cor-error);
   color: #ffffff;
 }
 

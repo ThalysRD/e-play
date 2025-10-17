@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Link from "next/link";
+import load from "styles/componentes/loading.module.css";
 import SearchBar from "components/SearchBar";
 import ListingCard from "components/ListingCard";
 import styles from "styles/catalogo/home.module.css";
@@ -39,10 +39,11 @@ export default function HomePage() {
 
       <main className={styles.mainContent}>
         <div className={styles.container}>
-          <h1 className={styles.pageTitle}>Catálogo de Jogos</h1>
 
           {loading && (
-            <div className={styles.loadingMessage}>Carregando anúncios...</div>
+            <div className={load.loadingContainer}>
+              <div className={load.spinner}></div>
+            </div>
           )}
 
           {error && <div className={styles.errorMessage}>{error}</div>}

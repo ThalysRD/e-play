@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import useSWRMutation from "swr/mutation";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "../../../firebase";
-import styles from "styles/criar-anuncio.module.css";
+import styles from "styles/item/criar-anuncio.module.css";
 
 async function sendRequest(url, { arg }) {
   const response = await fetch(url, {
@@ -196,14 +196,9 @@ function CreateListingForm() {
   return (
     <form onSubmit={handleSubmit} className={styles.registerForm}>
       <div className={styles.formBackground}>
-        <h1 className={styles.title}>Criar Anúncio</h1>
-
-        {error && <div className={styles.errorMessage}>{error}</div>}
-        {success && (
-          <div className={styles.successMessage}>
-            Anúncio criado com sucesso! Redirecionando...
-          </div>
-        )}
+        <header className={styles.header}>
+          <h2>Criar anúncio</h2>
+        </header>
 
         <div className={styles.formContainer}>
           {/* Título */}
@@ -234,13 +229,14 @@ function CreateListingForm() {
               value={formData.description}
               onChange={handleChange}
               placeholder="Descreva o estado do jogo, conteúdo incluído, etc."
-              className={styles.textarea}
+              className={`${styles.input} ${styles.descTextarea}`}
               rows="4"
               maxLength="500"
             />
           </div>
 
           {/* Preço e Quantidade */}
+          {/* Preço, Quantidade, Condição e Categoria na mesma linha */}
           <div className={styles.rowGroup}>
             <div className={styles.fieldGroupHalf}>
               <label htmlFor="price" className={styles.label}>
@@ -273,10 +269,7 @@ function CreateListingForm() {
                 className={styles.input}
               />
             </div>
-          </div>
 
-          {/* Condição e Categoria */}
-          <div className={styles.rowGroup}>
             <div className={styles.fieldGroupHalf}>
               <label htmlFor="condition" className={styles.label}>
                 Condição
@@ -351,6 +344,13 @@ function CreateListingForm() {
             )}
           </div>
         </div>
+
+        {error && <div className={styles.errorMessage}>❌ {error}</div>}
+        {success && (
+          <div className={styles.successMessage}>
+            ✅ Anúncio criado com sucesso! Redirecionando...
+          </div>
+        )}
 
         <button
           type="submit"

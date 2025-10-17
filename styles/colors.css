@@ -8,6 +8,9 @@
   --cor-texto-terciario: rgba(255, 255, 255, 0.7);
   --cor-search-bar: #95a0b2;
 
+  --cor-error: rgba(231, 77, 60, 0.61);
+  --cor-sucess: rgba(39, 174, 95, 0.678); 
+
   /* Cores complementares */
   --cor-rosa-claro: #e0608b;
   --cor-rosa-medio: #DE3277;

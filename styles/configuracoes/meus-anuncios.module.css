@@ -1,40 +1,23 @@
-.container {
-  min-height: 100vh;
-  background: linear-gradient(135deg, #1a2333 0%, #2d3f5a 100%);
-  padding: 40px 20px;
+.header {
+  background-color: var(--cor-secundaria);
+  border-radius: 16px;
+  color: var(--cor-texto);
+  padding: 10px 10px 20px 30px;
 }
-
-.mainContent {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.pageHeader {
-  margin-bottom: 40px;
-}
-
-.pageTitle {
-  font-family: "Montserrat", sans-serif;
-  font-size: 2rem;
-  font-weight: 700;
-  color: #fbb829;
-  margin-bottom: 10px;
-}
-
-.pageSubtitle {
-  font-family: "Montserrat", sans-serif;
-  font-size: 1rem;
-  color: rgba(255, 255, 255, 0.7);
+.divider{
+  background-color: var(--cor-borda);
+  height: 2px;
+  width: 100vh;
 }
 
 /* Estado Vazio */
 .emptyState {
   background: rgba(26, 35, 51, 0.6);
-  border: 2px dashed rgba(251, 184, 41, 0.3);
+  border: 2px dashed var(--cor-amarelo-escuro);
   border-radius: 15px;
   padding: 60px 40px;
   text-align: center;
-  margin: 40px 0;
+  margin: 20px 0;
 }
 
 .emptyIcon {
@@ -59,24 +42,21 @@
 }
 
 .createButton {
-  font-family: "Montserrat", sans-serif;
-  font-size: 1rem;
   font-weight: 600;
   padding: 12px 30px;
-  background: #fbb829;
-  color: #1a2333;
+  background: var(--cor-rosa-medio);
+  color: var(--cor-texto);
   border: none;
   border-radius: 10px;
   text-decoration: none;
   display: inline-block;
-  transition: all 0.3s ease;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
   cursor: pointer;
 }
 
 .createButton:hover {
-  background: #e6a623;
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(251, 184, 41, 0.4);
+  background: var(--cor-rosa-medio);
+  box-shadow: 0 5px 24px rgba(236, 64, 121, 0.463);
 }
 
 /* Grid de Anúncios */

@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
-import useUser from "../../../hooks/useUser";
-import styles from "../../../styles/configuracoes/meus-anuncios.module.css";
+import useUser from "/hooks/useUser";
+import styles from "/styles/configuracoes/meus-anuncios.module.css";
+import load from "styles/componentes/loading.module.css";
 import { useEffect, useState } from "react";
 
 export default function MeusAnuncios() {
@@ -83,17 +84,17 @@ export default function MeusAnuncios() {
   }
 
   return (
-    <div className={styles.container}>
+    <div className={styles.pageContainer}>
       <div className={styles.mainContent}>
-        <div className={styles.pageHeader}>
-          <h1 className={styles.pageTitle}>📝 Meus Anúncios</h1>
-          <p className={styles.pageSubtitle}>
-            Gerencie todos os seus anúncios de produtos
-          </p>
-        </div>
+        <header className={styles.header}>
+          <h2>Meus anúncios</h2>
+          <div className={styles.divider} />
+        </header>
 
         {loading ? (
-          <p className={styles.loadingMessage}>Carregando seus anúncios...</p>
+          <div className={load.loadingContainer}>
+            <div className={load.spinner}></div>
+          </div>
         ) : error ? (
           <p className={styles.errorMessage}>
             Erro ao carregar anúncios: {error}
@@ -101,7 +102,7 @@ export default function MeusAnuncios() {
         ) : listings.length === 0 ? (
           <div className={styles.emptyState}>
             <div className={styles.emptyIcon}>📭</div>
-            <h2 className={styles.emptyTitle}>Nenhum Anúncio Ainda</h2>
+            <h2 className={styles.emptyTitle}>Nada por aqui ainda :(</h2>
             <p className={styles.emptyMessage}>
               Você ainda não tem nenhum anúncio publicado. Comece agora criando
               seu primeiro anúncio!
@@ -110,7 +111,7 @@ export default function MeusAnuncios() {
               className={styles.createButton}
               onClick={() => router.push("/item/criar")}
             >
-              ➕ Criar Novo Anúncio
+              Criar anúncio
             </button>
           </div>
         ) : (

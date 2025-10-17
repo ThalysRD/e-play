@@ -138,6 +138,7 @@
   display: grid;
   grid-template-columns: 0.5fr 2fr 2fr;
   gap: 15px 20px;
+  margin-bottom: 20px;
   width: 100%;
 }
 .personalFormContainer .fieldGroup:nth-child(1) {
@@ -161,6 +162,7 @@
   grid-template-columns: 1fr 1fr;
   gap: 20px;
   width: 100%;
+  margin-bottom: 20px;
 }
 
 /* ----------------- Botões ----------------- */
@@ -200,13 +202,24 @@
 
 .successMessage, 
 .errorMessage {
-  background: rgba(255, 255, 255, 0.04);
-  color: #fff;
-  background: rgba(255, 255, 255, 0.04);
-  color: #fff;
-  padding: 20px;
-  border-radius: 15px;
+  max-width: 560px;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 14px;
+  margin: 0 auto 20px;
   display: flex;
   align-self: center;
   justify-content: center;
+  animation: fadeIn 0.3s ease-in; 
+}
+.successMessage {
+  background: var(--cor-sucess);
+  color: #ffffff;
+  animation: fadeIn 0.3s ease-in; 
+}
+
+.errorMessage {
+  background: var(--cor-error);
+  color: #ffffff;
+  animation: fadeIn 0.3s ease-in; 
 }
