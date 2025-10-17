@@ -28,7 +28,7 @@ exports.up = (pgm) => {
       notNull: true,
     },
     condition: {
-      type: conditionType,
+      type: "listing_condition",
     },
     quantity: {
       type: "integer",
