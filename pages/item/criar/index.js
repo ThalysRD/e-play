@@ -4,9 +4,6 @@ import useSWRMutation from "swr/mutation";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "../../../firebase";
 import styles from "styles/criar-anuncio.module.css";
-import BackgroundShapes from "components/BackgroundShapes";
-import LogoIMG from "components/LogoIMG";
-import Footer from "components/Footer";
 
 async function sendRequest(url, { arg }) {
   const response = await fetch(url, {
@@ -26,14 +23,7 @@ async function sendRequest(url, { arg }) {
 }
 
 export default function CreateListingPage() {
-  return (
-    <div className={styles.pageContainer}>
-      <BackgroundShapes />
-      <LogoIMG />
-      <CreateListingForm />
-      <Footer />
-    </div>
-  );
+  return <CreateListingForm />;
 }
 
 function CreateListingForm() {
