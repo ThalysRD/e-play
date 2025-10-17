@@ -20,7 +20,7 @@ const ConfiguracoesPage = () => {
     <div className={styles.configuracoesBackground}>
       <header className={styles.header}>
         <div className={styles.infosUser}>
-          {!isLoading ? (
+          {!isLoading && user != null ? (
             <><img src={user.profile_image_url || "/assets/AvatarPadrao.svg"} className={styles.profilePic} />
               <div className={styles.userInfoText}>
                 <div className={styles.userInfo}>

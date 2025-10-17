@@ -12,9 +12,11 @@ export function middleware(request) {
         return NextResponse.redirect(new URL('/', request.url));
     }
 
-    return NextResponse.next();
+    if (!isAuthenticated && (pathname.startsWith('/configuracoes'))) {
+        return NextResponse.redirect(new URL('/', request.url));
+    }
 }
 
 export const config = {
-    matcher: ['/login', '/cadastro'],
+    matcher: ['/login', '/cadastro', '/configuracoes'],
 };
