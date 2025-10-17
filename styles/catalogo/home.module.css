@@ -1,33 +1,12 @@
 .header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   gap: 1.5rem;
   padding: 20px;
   background: rgba(26, 35, 51, 0.5);
 }
 
-.createButton {
-  padding: 12px 24px;
-  background: #fbb829;
-  color: #1a2333;
-  text-decoration: none;
-  border-radius: 10px;
-  font-family: "Montserrat", sans-serif;
-  font-size: 1rem;
-  font-weight: 700;
-  transition: all 0.3s ease;
-  white-space: nowrap;
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.createButton:hover {
-  background: #e6a623;
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(251, 184, 41, 0.4);
-}
 .catalogoBackground {
   background-color: var(--cor-primaria);
   min-height: 100vh;
@@ -74,23 +53,6 @@
 
 .emptyMessage {
   color: #ffffff;
-}
-
-.createLink {
-  display: inline-block;
-  margin-top: 15px;
-  padding: 10px 20px;
-  background: #fbb829;
-  color: #1a2333;
-  text-decoration: none;
-  border-radius: 8px;
-  font-weight: 600;
-  transition: all 0.3s ease;
-}
-
-.createLink:hover {
-  background: #e6a623;
-  transform: translateY(-2px);
 }
 
 /* Listings Grid */
@@ -189,6 +151,22 @@
   color: rgba(255, 255, 255, 0.7);
   margin-top: 10px;
   font-style: italic;
+}
+
+/* Seções de Destaque */
+.featuredSection,
+.catalogSection {
+  margin-bottom: 50px;
+}
+
+.sectionTitle {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #fbb829;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 3px solid rgba(251, 184, 41, 0.3);
 }
 
 /* Responsive */

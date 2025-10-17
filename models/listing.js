@@ -122,10 +122,39 @@ async function validateUserExists(userId) {
   }
 }
 
+async function deleteById(listingId) {
+  const result = await runDeleteQuery(listingId);
+  return result;
+
+  async function runDeleteQuery(listingId) {
+    // First, delete all images associated with the listing
+    await database.query({
+      text: `DELETE FROM listing_images WHERE listing_id = $1`,
+      values: [listingId],
+    });
+
+    // Then delete the listing
+    const results = await database.query({
+      text: `DELETE FROM listings WHERE id = $1 RETURNING id`,
+      values: [listingId],
+    });
+
+    if (results.rowCount === 0) {
+      throw new NotFoundError({
+        message: "Anúncio não encontrado.",
+        action: "Verifique se o ID do anúncio está correto.",
+      });
+    }
+
+    return results.rows[0];
+  }
+}
+
 const listing = {
   findAll,
   findOneById,
-  create
+  create,
+  deleteById
 }
 
 

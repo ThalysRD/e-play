@@ -2,12 +2,14 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import styles from "styles/item/detalhes.module.css";
+import useUser from "hooks/useUser";
 
 import ImageGallery from "components/ImageGallery";
 
 export default function ProductDetailsPage() {
   const router = useRouter();
   const { id } = router.query;
+  const { user } = useUser();
 
   const [listing, setListing] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -44,6 +46,33 @@ export default function ProductDetailsPage() {
   function handleBuyNow() {
     alert("Funcionalidade de compra em desenvolvimento!");
   }
+
+  function handleEdit() {
+    router.push(`/item/${listing.id}/editar`);
+  }
+
+  async function handleDelete() {
+    if (!confirm("Tem certeza que deseja deletar este anúncio?")) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/v1/listings/${listing.id}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("Falha ao deletar anúncio");
+      }
+
+      alert("Anúncio deletado com sucesso!");
+      router.push("/configuracoes/meus-anuncios");
+    } catch (err) {
+      alert("Erro ao deletar anúncio: " + err.message);
+    }
+  }
+
+  const isOwnListing = user && listing && user.id === listing.user_id;
 
   if (loading) {
     return (
@@ -138,20 +167,39 @@ export default function ProductDetailsPage() {
             )}
 
             <div className={styles.actionButtons}>
-              <button
-                className={styles.buyButton}
-                onClick={handleBuyNow}
-                disabled={listing.quantity === 0}
-              >
-                {listing.quantity === 0 ? "Esgotado" : "Comprar Agora"}
-              </button>
-              <button
-                className={styles.cartButton}
-                onClick={handleAddToCart}
-                disabled={listing.quantity === 0}
-              >
-                Adicionar ao Carrinho
-              </button>
+              {isOwnListing ? (
+                <>
+                  <button
+                    className={styles.editButton}
+                    onClick={handleEdit}
+                  >
+                    ✏️ Editar Anúncio
+                  </button>
+                  <button
+                    className={styles.deleteButton}
+                    onClick={handleDelete}
+                  >
+                    🗑️ Deletar Anúncio
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button
+                    className={styles.buyButton}
+                    onClick={handleBuyNow}
+                    disabled={listing.quantity === 0}
+                  >
+                    {listing.quantity === 0 ? "Esgotado" : "Comprar Agora"}
+                  </button>
+                  <button
+                    className={styles.cartButton}
+                    onClick={handleAddToCart}
+                    disabled={listing.quantity === 0}
+                  >
+                    Adicionar ao Carrinho
+                  </button>
+                </>
+              )}
             </div>
           </div>
         </div>

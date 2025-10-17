@@ -270,6 +270,42 @@
   transform: none;
 }
 
+.editButton,
+.deleteButton {
+  flex: 1;
+  padding: 18px 30px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+}
+
+.editButton {
+  background: #fbb829;
+  color: #1a2333;
+}
+
+.editButton:hover {
+  background: #e6a623;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(251, 184, 41, 0.4);
+}
+
+.deleteButton {
+  background: #dc3545;
+  color: #ffffff;
+}
+
+.deleteButton:hover {
+  background: #c82333;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
+}
+
 /* Responsive */
 @media (max-width: 968px) {
   .productContainer {

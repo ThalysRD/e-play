@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import SearchBar from "components/SearchBar";
-
 import ListingCard from "components/ListingCard";
 import styles from "styles/catalogo/home.module.css";
 
@@ -24,9 +23,9 @@ export default function HomePage() {
       }
 
       const data = await response.json();
-      setListings(data);
+      setListings(Array.isArray(data) ? data : []);
     } catch (err) {
-      setError(err.message);
+      setError(err.message || "Erro desconhecido");
     } finally {
       setLoading(false);
     }
@@ -36,9 +35,6 @@ export default function HomePage() {
     <div className={styles.catalogoBackground}>
       <header className={styles.header}>
         <SearchBar />
-        <Link href="/item/criar" className={styles.createButton}>
-          + Criar Anúncio
-        </Link>
       </header>
 
       <main className={styles.mainContent}>
@@ -49,25 +45,54 @@ export default function HomePage() {
             <div className={styles.loadingMessage}>Carregando anúncios...</div>
           )}
 
-          {error && (
-            <div className={styles.errorMessage}>{error}</div>
-          )}
+          {error && <div className={styles.errorMessage}>{error}</div>}
 
           {!loading && !error && listings.length === 0 && (
             <div className={styles.emptyMessage}>
               <p>Nenhum anúncio encontrado.</p>
-              <Link href="/item/criar" className={styles.createLink}>
-                Seja o primeiro a criar um anúncio!
-              </Link>
             </div>
           )}
 
           {!loading && !error && listings.length > 0 && (
-            <div className={styles.listingsGrid}>
-              {listings.map((listing) => (
-                <ListingCard key={listing.id} listing={listing} />
-              ))}
-            </div>
+            <>
+              {/* Seções de Destaque */}
+              <section className={styles.featuredSection}>
+                <h2 className={styles.sectionTitle}>🔥 Recomendados</h2>
+                <div className={styles.listingsGrid}>
+                  {listings.slice(0, 4).map((listing) => (
+                    <ListingCard key={listing.id} listing={listing} />
+                  ))}
+                </div>
+              </section>
+
+              <section className={styles.featuredSection}>
+                <h2 className={styles.sectionTitle}>🏆 Mais Vendidos</h2>
+                <div className={styles.listingsGrid}>
+                  {listings.slice(4, 8).map((listing) => (
+                    <ListingCard key={listing.id} listing={listing} />
+                  ))}
+                </div>
+              </section>
+
+              <section className={styles.featuredSection}>
+                <h2 className={styles.sectionTitle}>💸 Promoções</h2>
+                <div className={styles.listingsGrid}>
+                  {listings.slice(8, 12).map((listing) => (
+                    <ListingCard key={listing.id} listing={listing} />
+                  ))}
+                </div>
+              </section>
+
+              {/* Catálogo Completo */}
+              <section className={styles.catalogSection}>
+                <h2 className={styles.sectionTitle}>📚 Todos os Anúncios</h2>
+                <div className={styles.listingsGrid}>
+                  {listings.map((listing) => (
+                    <ListingCard key={listing.id} listing={listing} />
+                  ))}
+                </div>
+              </section>
+            </>
           )}
         </div>
       </main>
