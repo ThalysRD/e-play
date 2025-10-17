@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import styles from "styles/item/detalhes.module.css";
+
 import ImageGallery from "components/ImageGallery";
 
 export default function ProductDetailsPage() {

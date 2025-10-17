@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import SearchBar from "components/SearchBar";
+
 import ListingCard from "components/ListingCard";
 import styles from "styles/catalogo/home.module.css";
 
