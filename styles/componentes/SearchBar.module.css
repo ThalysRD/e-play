@@ -14,10 +14,10 @@
   background-color: transparent;
   font-size: 1rem;
   margin-left: 0.5rem;
-  color: var(--cor-amarelo-medio);
+  color: #fff;
 }
 .searchBar input::placeholder {
-  color: var(--cor-texto);
+  color: #ffffff88;
 }
 .searchIconWrapper {
   display: flex;

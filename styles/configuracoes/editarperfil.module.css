@@ -112,6 +112,15 @@
   background: var(--cor-secundaria);
 }
 
+.input:-webkit-autofill,
+.input:-webkit-autofill:hover,
+.input:-webkit-autofill:focus,
+.input:-webkit-autofill:active {
+  -webkit-text-fill-color: #fff !important;
+  box-shadow: 0 0 0 30px var(--cor-amarelo-escuro) inset !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
 .bioTextarea {
   height: 80px;
   resize: none;
@@ -176,7 +185,7 @@
 
 .buttonCancel {
   background-color: var(--cor-secundaria);
-  border: 1px solid var(--cor-primaria);
+  border: 2px solid var(--cor-primaria);
   width: 15vh;
 }
 
@@ -187,3 +196,17 @@
 
 .buttonSave:hover { background-color: var(--cor-rosa-escuro); }
 .buttonCancel:hover { background: var(--cor-primaria); }
+
+
+.successMessage, 
+.errorMessage {
+  background: rgba(255, 255, 255, 0.04);
+  color: #fff;
+  background: rgba(255, 255, 255, 0.04);
+  color: #fff;
+  padding: 20px;
+  border-radius: 15px;
+  display: flex;
+  align-self: center;
+  justify-content: center;
+}

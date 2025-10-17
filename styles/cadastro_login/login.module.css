@@ -285,7 +285,7 @@
   }
 
   /* Celulares pequenos */
-  @media (max-width: 360px) {
+  @media (max-width: 300px) {
     .formBackground {
       width: 45vh;
       padding: 25px 20px;

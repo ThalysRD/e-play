@@ -1,36 +1,28 @@
 import styles from "styles/layout.padrao.module.css";
+import ModalLogout from "./ModalLogout";
 import { IoHome, IoCart, IoSettings, IoLogOut } from "react-icons/io5";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useState } from "react";
 import LogoIMG from "./LogoFooter";
-import { useEffect, useState } from "react";
+import useUser from "../hooks/useUser"
 
 export default function LayoutPadrao({ children }) {
   const router = useRouter();
-  const [user, setUser] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    async function fetchUser() {
-      try {
-        const res = await fetch("/api/v1/user", { credentials: "include" });
-        const data = await res.json();
-        if (res.ok) setUser(data);
-      } catch (error) {
-        console.error("Erro ao buscar usuário:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    fetchUser();
-  }, []);
-
+  const { user, isLoading, mutate } = useUser();
+  const [isModalOpen, setIsModalOpen] = useState(false);
   if (isLoading) {
     return (
       <div className={styles.loadingContainer}>
         <div className={styles.spinner}></div>
       </div>
     );
+  }
+  const handleLogout = async () => {
+    await fetch("/api/v1/sessions", { method: "DELETE" });
+    mutate(null, false)
+    router.push("/login");
   }
 
   return (
@@ -81,11 +73,7 @@ export default function LayoutPadrao({ children }) {
 
         {user && (
           <div className={styles.sidebarBottom}>
-            <button onClick={async () => {
-              await fetch("/api/v1/sessions", { method: "DELETE" });
-              setUser(null);
-              router.push("/login");
-            }} className={styles.logoutButton}>
+            <button onClick={() => setIsModalOpen(true)} className={styles.logoutButton}>
               <IoLogOut size={20} />
               Sair
             </button>
@@ -116,6 +104,7 @@ export default function LayoutPadrao({ children }) {
             <div className={styles.footerColumn}>
               <p>AJUDA</p>
               <ul>
+                <li><a href="#">Suporte</a></li>
                 <li><a href="#">Perguntas frequentes</a></li>
                 <li><a href="#">Métodos de Pagamento</a></li>
                 <li><a href="#">Devolução e Reembolso</a></li>
@@ -124,6 +113,7 @@ export default function LayoutPadrao({ children }) {
           </div>
         </footer>
       </div>
-    </div>
+      <ModalLogout isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onConfirm={handleLogout}></ModalLogout>
+    </div >
   );
 }

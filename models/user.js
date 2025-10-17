@@ -83,7 +83,7 @@ async function create(userInputValues) {
 }
 
 async function update(userInputValues) {
-  const currentUser = await findOneById(userInputValues.userId);
+  const currentUser = await findOneById(userInputValues.id);
 
   if ("username" in userInputValues) {
     await validateUniqueUsername(userInputValues.username);

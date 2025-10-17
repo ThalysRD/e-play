@@ -2,35 +2,25 @@ import React from "react";
 import styles from "styles/configuracoes/config.module.css";
 import load from "styles/componentes/loading.module.css";
 import { useEffect, useState } from "react";
-import { FaUserEdit, FaKey, FaBullhorn, FaBoxOpen, FaStar, FaTruck, FaCreditCard, FaHeadset } from "react-icons/fa";
-import { useRouter } from "next/router";
+import { FaUserEdit, FaBullhorn, FaBoxOpen, FaStar, FaTruck, FaCreditCard, FaHeadset } from "react-icons/fa";
 import Link from "next/link";
-
+import useUser from "/hooks/useUser";
 
 const ConfiguracoesPage = () => {
-  const router = useRouter();
-  const [user, setUser] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  useEffect(() => {
-    async function fetchUser() {
-      try {
-        const res = await fetch("/api/v1/user", { credentials: "include" });
-        const data = await res.json();
-        if (res.ok) setUser(data);
-      } catch (error) {
-        console.error("Erro ao buscar usuário:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    fetchUser();
-  }, []);
+  const { user, isLoading } = useUser();
+  if (isLoading) {
+    return (
+      <div className={styles.loadingContainer}>
+        <div className={styles.spinner}></div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.configuracoesBackground}>
       <header className={styles.header}>
         <div className={styles.infosUser}>
-          {!isLoading ? (
+          {!isLoading && user != null ? (
             <><img src={user.profile_image_url || "/assets/AvatarPadrao.svg"} className={styles.profilePic} />
               <div className={styles.userInfoText}>
                 <div className={styles.userInfo}>
