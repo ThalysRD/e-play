@@ -65,6 +65,7 @@
 .voltarCatalogo:hover {
   background: var(--cor-rosa-medio);
   box-shadow: 0 5px 24px rgba(236, 64, 121, 0.463);
+  transform: translateY(-3px);
 }
 
 .itemCarrinho {

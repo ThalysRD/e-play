@@ -1,5 +1,5 @@
 import styles from "styles/layout.padrao.module.css";
-import ModalLogout from "./ModalLogout";
+import Modal from "./ModalPadrao";
 import { IoHome, IoCart, IoSettings, IoLogOut } from "react-icons/io5";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -113,7 +113,13 @@ export default function LayoutPadrao({ children }) {
           </div>
         </footer>
       </div>
-      <ModalLogout isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onConfirm={handleLogout}></ModalLogout>
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={handleLogout}
+        title="Sair do E-play"
+        message="Você tem certeza que deseja sair da sua conta?"
+      />
     </div >
   );
 }

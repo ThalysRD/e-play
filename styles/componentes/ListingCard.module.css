@@ -1,0 +1,80 @@
+.listingCard {
+  background: var(--cor-secundaria);
+  border-radius: 25px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+
+.listingCard:hover {
+  border-color: var(--cor-borda);
+  box-shadow: 0 5px 15px rgba(251, 184, 41, 0.2);
+  transform: translateY(-5px);
+}
+
+.imageContainer {
+  width: 100%;
+  height: 200px;
+  background: var(--cor-amarelo-escuro-hoover);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.listingImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.noImage {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 20px;
+}
+
+.listingInfo {
+  padding: 10px 20px 10px 20px;
+}
+
+.listingTitle {
+  font-weight: 600;
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.listingPrice {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 12px;
+  padding-top: 10px;
+  color: var(--cor-amarelo-medio)
+}
+
+.listingDetails {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.condition,
+.quantity {
+  font-size: 0.85rem;
+  padding: 5px 10px;
+  border-radius: 5px;
+  background: var(--cor-sucess);
+  color: #ffffff;
+}
+
+.seller {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-top: 10px;
+  font-style: italic;
+}

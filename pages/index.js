@@ -19,7 +19,7 @@ export default function HomePage() {
       const response = await fetch("/api/v1/listings");
 
       if (!response.ok) {
-        throw new Error("Erro ao carregar anúncios");
+        throw new Error("Erro ao carregar anúncios :(");
       }
 
       const data = await response.json();
@@ -56,9 +56,8 @@ export default function HomePage() {
 
           {!loading && !error && listings.length > 0 && (
             <>
-              {/* Seções de Destaque */}
               <section className={styles.featuredSection}>
-                <h2 className={styles.sectionTitle}>🔥 Recomendados</h2>
+                <h2 className={styles.sectionTitle}>Recomendados 🔥</h2>
                 <div className={styles.listingsGrid}>
                   {listings.slice(0, 4).map((listing) => (
                     <ListingCard key={listing.id} listing={listing} />
@@ -66,8 +65,9 @@ export default function HomePage() {
                 </div>
               </section>
 
+              {/* 
               <section className={styles.featuredSection}>
-                <h2 className={styles.sectionTitle}>🏆 Mais Vendidos</h2>
+                <h2 className={styles.sectionTitle}>Mais Vendidos 🏆</h2>
                 <div className={styles.listingsGrid}>
                   {listings.slice(4, 8).map((listing) => (
                     <ListingCard key={listing.id} listing={listing} />
@@ -76,17 +76,17 @@ export default function HomePage() {
               </section>
 
               <section className={styles.featuredSection}>
-                <h2 className={styles.sectionTitle}>💸 Promoções</h2>
+                <h2 className={styles.sectionTitle}>Promoções 💸</h2>
                 <div className={styles.listingsGrid}>
                   {listings.slice(8, 12).map((listing) => (
                     <ListingCard key={listing.id} listing={listing} />
                   ))}
                 </div>
               </section>
+              */}
 
-              {/* Catálogo Completo */}
               <section className={styles.catalogSection}>
-                <h2 className={styles.sectionTitle}>📚 Todos os Anúncios</h2>
+                <h2 className={styles.sectionTitle}>Todos os Anúncios 📚</h2>
                 <div className={styles.listingsGrid}>
                   {listings.map((listing) => (
                     <ListingCard key={listing.id} listing={listing} />

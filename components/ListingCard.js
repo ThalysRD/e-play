@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import styles from "styles/catalogo/home.module.css";
+import styles from "styles/componentes/ListingCard.module.css";
 
 export default function ListingCard({ listing }) {
   const router = useRouter();
@@ -23,15 +23,13 @@ export default function ListingCard({ listing }) {
             className={styles.listingImage}
           />
         ) : (
-          <div className={styles.noImage}>Sem imagem</div>
+          <div className={styles.noImage}>🖼️</div>
         )}
       </div>
 
       <div className={styles.listingInfo}>
         <h3 className={styles.listingTitle}>{listing.title}</h3>
-        <p className={styles.listingPrice}>
-          R$ {Number(listing.price).toFixed(2)}
-        </p>
+
         <div className={styles.listingDetails}>
           <span className={styles.condition}>{listing.condition}</span>
           <span className={styles.quantity}>{quantityText}</span>
@@ -39,6 +37,9 @@ export default function ListingCard({ listing }) {
         {listing.username && (
           <p className={styles.seller}>Vendedor: {listing.username}</p>
         )}
+        <p className={styles.listingPrice}>
+          R$ {Number(listing.price).toFixed(2)}
+        </p>
       </div>
     </div>
   );

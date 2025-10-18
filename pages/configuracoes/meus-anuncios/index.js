@@ -3,10 +3,14 @@ import useUser from "/hooks/useUser";
 import styles from "/styles/configuracoes/meus-anuncios.module.css";
 import load from "styles/componentes/loading.module.css";
 import { useEffect, useState } from "react";
+import ListingCardEdit from "components/ListingCardEdit";
+import Modal from "components/ModalPadrao";
 
 export default function MeusAnuncios() {
   const router = useRouter();
   const { user, isLoading: userLoading, isError: userError } = useUser();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedListingId, setSelectedListingId] = useState(null);
   const [listings, setListings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -42,19 +46,19 @@ export default function MeusAnuncios() {
     }
   };
 
-  const handleDelete = async (listingId) => {
-    if (!confirm("Tem certeza que deseja deletar este anúncio?")) {
-      return;
-    }
+  const handleDelete = async () => {
+    if (!selectedListingId) return;
 
     try {
-      const response = await fetch(`/api/v1/listings/${listingId}`, {
+      const response = await fetch(`/api/v1/listings/${selectedListingId}`, {
         method: "DELETE",
       });
 
       if (!response.ok) throw new Error("Falha ao deletar anúncio");
 
-      setListings(listings.filter((l) => l.id !== listingId));
+      setListings(listings.filter((l) => l.id !== selectedListingId));
+      setIsModalOpen(false);
+      setSelectedListingId(null);
     } catch (err) {
       console.error("Erro ao deletar anúncio:", err);
       alert("Erro ao deletar anúncio: " + err.message);
@@ -118,47 +122,24 @@ export default function MeusAnuncios() {
           <>
             <div className={styles.listingsGrid}>
               {listings.map((listing) => (
-                <div key={listing.id} className={styles.listingCard}>
-                  <div className={styles.imageContainer}>
-                    {listing.images && listing.images.length > 0 ? (
-                      <img
-                        src={listing.images[0].image_url}
-                        alt={listing.title}
-                      />
-                    ) : (
-                      <span className={styles.noImage}>🖼️</span>
-                    )}
-                  </div>
-                  <div className={styles.listingInfo}>
-                    <h3 className={styles.listingTitle}>{listing.title}</h3>
-                    <p className={styles.listingPrice}>
-                      R$ {parseFloat(listing.price).toFixed(2)}
-                    </p>
-                    <div className={styles.listingDetails}>
-                      <span className={styles.condition}>
-                        {listing.listing_condition}
-                      </span>
-                      <span className={styles.quantity}>
-                        Qtd: {listing.quantity}
-                      </span>
-                    </div>
-
-                    <div className={styles.cardActions}>
-                      <button
-                        className={styles.editButton}
-                        onClick={() => router.push(`/item/${listing.id}/editar`)}
-                      >
-                        ✏️ Editar
-                      </button>
-                      <button
-                        className={styles.deleteButton}
-                        onClick={() => handleDelete(listing.id)}
-                      >
-                        🗑️ Deletar
-                      </button>
-                    </div>
-                  </div>
-                </div>
+                <ListingCardEdit
+                  key={listing.id}
+                  id={listing.id}
+                  title={listing.title}
+                  price={listing.price}
+                  condition={listing.listing_condition}
+                  quantity={listing.quantity}
+                  image={
+                    listing.images && listing.images.length > 0
+                      ? listing.images[0].image_url
+                      : null
+                  }
+                  onEdit={() => router.push(`/item/${listing.id}/editar`)}
+                  onDelete={() => {
+                    setSelectedListingId(listing.id);
+                    setIsModalOpen(true);
+                  }}
+                />
               ))}
             </div>
 
@@ -173,6 +154,17 @@ export default function MeusAnuncios() {
           </>
         )}
       </div>
+
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false);
+          setSelectedListingId(null);
+        }}
+        onConfirm={handleDelete}
+        title="Excluir anúncio"
+        message="Tem certeza que deseja excluir este anúncio? Essa ação não poderá ser desfeita."
+      />
     </div>
   );
 }

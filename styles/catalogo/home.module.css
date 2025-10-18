@@ -3,26 +3,14 @@
   gap: 1.5rem;
 }
 
-.catalogoBackground {
-  background-color: var(--cor-primaria);
-  min-height: 100vh;
-  padding-bottom: 40px;
-}
-
-.mainContent {
-  padding: 20px;
-}
 
 .container {
-  max-width: 1400px;
-  margin: 0 auto;
+  min-width: 100vh;
 }
 
 .pageTitle {
-  font-family: "Montserrat", sans-serif;
   font-size: 2.5rem;
   font-weight: 700;
-  color: #ffffff;
   margin-bottom: 30px;
   text-align: center;
 }
@@ -33,22 +21,11 @@
 .emptyMessage {
   text-align: center;
   padding: 40px 20px;
-  font-family: "Montserrat", sans-serif;
   font-size: 1.2rem;
-}
-
-.loadingMessage {
-  color: #fbb829;
-}
-
-.errorMessage {
-  color: #de3277;
-  background: rgba(222, 50, 119, 0.1);
+  margin: 20px;
+  background: rgba(255, 255, 255, 0.04);
+  font-size: 13px;
   border-radius: 10px;
-}
-
-.emptyMessage {
-  color: #ffffff;
 }
 
 /* Listings Grid */
@@ -56,116 +33,22 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 25px;
-  margin-top: 30px;
 }
 
-.listingCard {
-  background: rgba(26, 35, 51, 0.8);
-  border-radius: 15px;
-  overflow: hidden;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border: 2px solid transparent;
-}
-
-.listingCard:hover {
-  transform: translateY(-5px);
-  border-color: #fbb829;
-  box-shadow: 0 8px 20px rgba(251, 184, 41, 0.3);
-}
-
-.imageContainer {
-  width: 100%;
-  height: 280px;
-  background: rgba(94, 84, 67, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-
-.listingImage {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.3s ease;
-}
-
-.listingCard:hover .listingImage {
-  transform: scale(1.05);
-}
-
-.noImage {
-  color: rgba(255, 255, 255, 0.5);
-  font-family: "Montserrat", sans-serif;
-  font-size: 1rem;
-}
-
-.listingInfo {
-  padding: 20px;
-}
-
-.listingTitle {
-  font-family: "Montserrat", sans-serif;
-  font-size: 1.3rem;
-  font-weight: 600;
-  color: #ffffff;
-  margin-bottom: 10px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.listingPrice {
-  font-family: "Montserrat", sans-serif;
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: #fbb829;
-  margin-bottom: 12px;
-}
-
-.listingDetails {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-
-.condition,
-.quantity {
-  font-family: "Montserrat", sans-serif;
-  font-size: 0.85rem;
-  padding: 5px 10px;
-  border-radius: 5px;
-  background: rgba(94, 84, 67, 0.6);
-  color: #ffffff;
-}
-
-.seller {
-  font-family: "Montserrat", sans-serif;
-  font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.7);
-  margin-top: 10px;
-  font-style: italic;
-}
-
-/* Seções de Destaque */
 .featuredSection,
 .catalogSection {
-  margin-bottom: 50px;
+  margin-top: 20px;
+  border-radius: 16px;
+  padding: 20px;
+  box-sizing: border-box; 
 }
 
 .sectionTitle {
-  font-family: "Montserrat", sans-serif;
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: #fbb829;
   margin-bottom: 20px;
   padding-bottom: 10px;
-  border-bottom: 3px solid rgba(251, 184, 41, 0.3);
+  border-bottom: 2px solid;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .header {
     flex-direction: column;
