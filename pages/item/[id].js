@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import load from "styles/componentes/loading.module.css";
 import Link from "next/link";
 import styles from "styles/item/detalhes.module.css";
 import useUser from "hooks/useUser";
+import SearchBar from "components/SearchBar";
 
 import ImageGallery from "components/ImageGallery";
 
@@ -78,7 +80,12 @@ export default function ProductDetailsPage() {
     return (
       <div className={styles.pageContainer}>
         <div className={styles.container}>
-          <div className={styles.loadingMessage}>Carregando anúncio...</div>
+          <header className={styles.header}>
+            <SearchBar />
+          </header>
+          <div className={load.loadingContainer}>
+            <div className={load.spinner}></div>
+          </div>
         </div>
       </div>
     );
@@ -88,9 +95,9 @@ export default function ProductDetailsPage() {
     return (
       <div className={styles.pageContainer}>
         <div className={styles.container}>
-          <Link href="/" className={styles.backLink}>
-            ← Voltar para a home
-          </Link>
+          <header className={styles.header}>
+            <SearchBar />
+          </header>
           <div className={styles.errorMessage}>
             {error || "Anúncio não encontrado"}
           </div>
@@ -102,9 +109,10 @@ export default function ProductDetailsPage() {
   return (
     <div className={styles.pageContainer}>
       <div className={styles.container}>
-        <Link href="/" className={styles.backLink}>
-          ← Voltar para a home
-        </Link>
+
+        <header className={styles.header}>
+          <SearchBar />
+        </header>
 
         <div className={styles.productContainer}>
           <ImageGallery images={listing.images} title={listing.title} />

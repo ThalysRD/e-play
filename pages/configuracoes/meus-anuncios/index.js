@@ -5,6 +5,8 @@ import load from "styles/componentes/loading.module.css";
 import { useEffect, useState } from "react";
 import ListingCardEdit from "components/ListingCardEdit";
 import Modal from "components/ModalPadrao";
+import { FaPlus } from "react-icons/fa";
+
 
 export default function MeusAnuncios() {
   const router = useRouter();
@@ -114,12 +116,20 @@ export default function MeusAnuncios() {
             <button
               className={styles.createButton}
               onClick={() => router.push("/item/criar")}
-            >
+            ><FaPlus style={{ marginRight: "8px" }} />
               Criar anúncio
             </button>
           </div>
         ) : (
-          <>
+          <><div style={{ marginTop: "40px" }}>
+            <button
+              className={styles.createButton2}
+              onClick={() => router.push("/item/criar")}
+            >
+              <FaPlus style={{ marginRight: "8px" }} />
+              Criar anúncio
+            </button>
+          </div>
             <div className={styles.listingsGrid}>
               {listings.map((listing) => (
                 <ListingCardEdit
@@ -141,15 +151,6 @@ export default function MeusAnuncios() {
                   }}
                 />
               ))}
-            </div>
-
-            <div style={{ textAlign: "center", marginTop: "40px" }}>
-              <button
-                className={styles.createButton}
-                onClick={() => router.push("/item/criar")}
-              >
-                ➕ Criar Novo Anúncio
-              </button>
             </div>
           </>
         )}

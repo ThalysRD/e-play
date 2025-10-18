@@ -1,12 +1,10 @@
 .pageContainer {
   min-height: 100vh;
-  background-color: var(--cor-primaria);
-  padding: 40px 20px;
 }
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
+.header {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 20px;
 }
 
 .backLink {
@@ -27,22 +25,14 @@
 }
 
 /* Loading and Error */
-.loadingMessage,
 .errorMessage {
   text-align: center;
-  padding: 60px 20px;
-  font-family: "Montserrat", sans-serif;
-  font-size: 1.5rem;
-}
-
-.loadingMessage {
-  color: #fbb829;
-}
-
-.errorMessage {
-  color: #de3277;
-  background: rgba(222, 50, 119, 0.1);
-  border-radius: 15px;
+  padding: 40px 20px;
+  font-size: 1.2rem;
+  margin: 20px;
+  background: rgba(255, 255, 255, 0.04);
+  font-size: 13px;
+  border-radius: 10px;
 }
 
 /* Product Details */
@@ -50,10 +40,9 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 40px;
-  background: rgba(26, 35, 51, 0.8);
+  background: var(--cor-secundaria);
   border-radius: 20px;
-  padding: 40px;
-  border: 2px solid rgba(251, 184, 41, 0.3);
+  padding: 30px;
 }
 
 /* Image Gallery */
@@ -66,7 +55,7 @@
 .mainImageContainer {
   width: 100%;
   height: 500px;
-  background: rgba(94, 84, 67, 0.5);
+  background: var(--cor-amarelo-escuro2);
   border-radius: 15px;
   overflow: hidden;
   display: flex;
@@ -82,8 +71,6 @@
 
 .noImage {
   color: rgba(255, 255, 255, 0.5);
-  font-family: "Montserrat", sans-serif;
-  font-size: 1.5rem;
 }
 
 .thumbnails {
@@ -105,11 +92,11 @@
 }
 
 .thumbnail:hover {
-  border-color: #fbb829;
+  border-color: var(--cor-borda);
 }
 
 .thumbnail.active {
-  border-color: #fbb829;
+  border-color: var(--cor-borda);
 }
 
 .thumbnailImage {
@@ -126,65 +113,56 @@
 }
 
 .title {
-  font-family: "Montserrat", sans-serif;
-  font-size: 2.5rem;
+  font-size: 25px;
   font-weight: 700;
   color: #ffffff;
   margin: 0;
 }
 
 .price {
-  font-family: "Montserrat", sans-serif;
-  font-size: 3rem;
-  font-weight: 700;
-  color: #fbb829;
-  margin: 10px 0;
+  font-size: 3.5rem;
+  font-weight: bold;
+  color: var(--cor-amarelo-medio)
 }
 
 .detailsGrid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 15px;
-  margin: 20px 0;
+  margin: 10px 0;
 }
 
 .detailItem {
-  background: rgba(94, 84, 67, 0.4);
-  padding: 15px;
+  background: var(--cor-amarelo-escuro2);
+  padding: 12px;
   border-radius: 10px;
 }
 
 .detailLabel {
-  font-family: "Montserrat", sans-serif;
   font-size: 0.9rem;
   color: rgba(255, 255, 255, 0.7);
   margin-bottom: 5px;
 }
 
 .detailValue {
-  font-family: "Montserrat", sans-serif;
   font-size: 1.1rem;
   font-weight: 600;
-  color: #ffffff;
 }
 
 .description {
-  background: rgba(94, 84, 67, 0.3);
+  background: var(--cor-amarelo-escuro2);
   padding: 20px;
   border-radius: 10px;
-  margin: 20px 0;
 }
 
 .descriptionTitle {
-  font-family: "Montserrat", sans-serif;
   font-size: 1.3rem;
   font-weight: 600;
-  color: #fbb829;
+  color: var(--cor-amarelo-medio);
   margin-bottom: 10px;
 }
 
 .descriptionText {
-  font-family: "Montserrat", sans-serif;
   font-size: 1rem;
   color: rgba(255, 255, 255, 0.9);
   line-height: 1.6;
@@ -192,28 +170,24 @@
 }
 
 .seller {
-  background: rgba(94, 84, 67, 0.3);
+  background: var(--cor-amarelo-escuro2);
   padding: 20px;
   border-radius: 10px;
 }
 
 .sellerTitle {
-  font-family: "Montserrat", sans-serif;
   font-size: 1.3rem;
   font-weight: 600;
-  color: #fbb829;
+  color: var(--cor-amarelo-medio);
   margin-bottom: 10px;
 }
 
 .sellerName {
-  font-family: "Montserrat", sans-serif;
   font-size: 1.2rem;
-  color: #ffffff;
   font-weight: 600;
 }
 
 .sellerEmail {
-  font-family: "Montserrat", sans-serif;
   font-size: 1rem;
   color: rgba(255, 255, 255, 0.7);
   margin-top: 5px;
