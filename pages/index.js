@@ -59,7 +59,7 @@ export default function HomePage() {
               <section className={styles.featuredSection}>
                 <h2 className={styles.sectionTitle}>Recomendados 🔥</h2>
                 <div className={styles.listingsGrid}>
-                  {listings.slice(0, 4).map((listing) => (
+                  {listings.slice(0, 8).map((listing) => (
                     <ListingCard key={listing.id} listing={listing} />
                   ))}
                 </div>

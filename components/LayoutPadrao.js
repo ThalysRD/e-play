@@ -47,7 +47,7 @@ export default function LayoutPadrao({ children }) {
 
           <ul className={styles.navList}>
             <Link href="/" className={styles.navLink}>
-              <li className={`${styles.navItem} ${router.pathname === "/" ? styles.active : ""}`}>
+              <li className={`${styles.navItem} ${router.pathname === "/" || router.pathname.startsWith("/catalogo") || router.pathname.startsWith("/item") ? styles.active : ""}`}>
                 <IoHome size={20} />
                 <span>Catálogo</span>
               </li>

@@ -5,17 +5,17 @@ import Link from "next/link";
 import styles from "styles/item/detalhes.module.css";
 import useUser from "hooks/useUser";
 import SearchBar from "components/SearchBar";
-
+import Modal from "components/ModalPadrao";
 import ImageGallery from "components/ImageGallery";
 
 export default function ProductDetailsPage() {
   const router = useRouter();
   const { id } = router.query;
   const { user } = useUser();
-
   const [listing, setListing] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -53,11 +53,11 @@ export default function ProductDetailsPage() {
     router.push(`/item/${listing.id}/editar`);
   }
 
-  async function handleDelete() {
-    if (!confirm("Tem certeza que deseja deletar este anúncio?")) {
-      return;
-    }
+  function openDeleteModal() {
+    setIsModalOpen(true);
+  }
 
+  async function confirmDelete() {
     try {
       const response = await fetch(`/api/v1/listings/${listing.id}`, {
         method: "DELETE",
@@ -67,10 +67,11 @@ export default function ProductDetailsPage() {
         throw new Error("Falha ao deletar anúncio");
       }
 
-      alert("Anúncio deletado com sucesso!");
       router.push("/configuracoes/meus-anuncios");
     } catch (err) {
       alert("Erro ao deletar anúncio: " + err.message);
+    } finally {
+      setIsModalOpen(false);
     }
   }
 
@@ -109,7 +110,6 @@ export default function ProductDetailsPage() {
   return (
     <div className={styles.pageContainer}>
       <div className={styles.container}>
-
         <header className={styles.header}>
           <SearchBar />
         </header>
@@ -134,7 +134,8 @@ export default function ProductDetailsPage() {
               <div className={styles.detailItem}>
                 <div className={styles.detailLabel}>Quantidade</div>
                 <div className={styles.detailValue}>
-                  {listing.quantity} disponível{listing.quantity > 1 ? "is" : ""}
+                  {listing.quantity}{" "}
+                  {listing.quantity === 1 ? "disponível" : "disponíveis"}
                 </div>
               </div>
 
@@ -185,7 +186,7 @@ export default function ProductDetailsPage() {
                   </button>
                   <button
                     className={styles.deleteButton}
-                    onClick={handleDelete}
+                    onClick={openDeleteModal}
                   >
                     🗑️ Deletar Anúncio
                   </button>
@@ -212,6 +213,14 @@ export default function ProductDetailsPage() {
           </div>
         </div>
       </div>
+
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={confirmDelete}
+        title="Excluir anúncio"
+        message="Tem certeza que deseja excluir este anúncio? Essa ação não poderá ser desfeita."
+      />
     </div>
   );
 }

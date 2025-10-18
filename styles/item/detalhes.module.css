@@ -4,26 +4,8 @@
 .header {
   display: flex;
   gap: 1.5rem;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
 }
-
-.backLink {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: #fbb829;
-  text-decoration: none;
-  font-family: "Montserrat", sans-serif;
-  font-size: 1rem;
-  margin-bottom: 30px;
-  transition: all 0.3s ease;
-}
-
-.backLink:hover {
-  color: #ffffff;
-  transform: translateX(-5px);
-}
-
 /* Loading and Error */
 .errorMessage {
   text-align: center;

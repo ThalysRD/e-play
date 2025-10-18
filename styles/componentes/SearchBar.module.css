@@ -8,6 +8,7 @@
   border-bottom: 1.5px solid #fff;
 }
 .searchBar input {
+  font-weight: bold;
   flex-grow: 1; 
   border: none;
   outline: 1px;
@@ -23,9 +24,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #e53935; /* Vermelho */
+  background-color: #e53935;
   color: white;
-  border-radius: 50%; /* Círculo perfeito */
+  border-radius: 50%;
   width: 32px;
   height: 32px;
   flex-shrink: 0;

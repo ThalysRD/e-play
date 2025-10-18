@@ -32,7 +32,7 @@ const ConfiguracoesPage = () => {
                     <p><span className={styles.label}>Email:</span> {user.email}</p>
                   </div>
                   <div className={styles.column}>
-                    <p><span className={styles.label}>Sobre mim:</span> {user.profile_bio || 'Não informado'}</p>
+                    <p><span className={`${styles.label} ${styles.bioLabel}`}>Sobre mim:</span> {user.profile_bio || 'Não informado'}</p>
                   </div>
                 </div>
               </div>
