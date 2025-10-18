@@ -1,6 +1,7 @@
 import { ValidationError, NotFoundError } from "infra/errors.js";
 import database from "../infra/database.js";
 import user from "./user.js"
+import listingImages from "./listingImage.js";
 
 async function findListingsByTitle(listingTitle) {
   const listings = await runSelectQuery(listingTitle);
@@ -117,33 +118,59 @@ async function findOneById(listingId) {
 }
 
 async function create(userInputValues) {
-  await validateUserExists(userInputValues.userId)
+  await validateUserExists(userInputValues.userId);
 
-  const newListing = await runInsertQuery(userInputValues)
-  return newListing
+  const client = await database.connect();
 
+  try {
+    await client.query('BEGIN');
 
-  async function runInsertQuery(userInputValues) {
-    const results = await database.query({
-      text: `
-        INSERT INTO 
-          listings (user_id, category_id, title, description, price, condition, quantity)
-        VALUES 
-          ($1,$2,$3,$4,$5,$6,$7)
-        RETURNING
-          *
-      ;`,
-      values: [
-        userInputValues.userId,
-        userInputValues.categoryId,
-        userInputValues.title,
-        userInputValues.description,
-        userInputValues.price,
-        userInputValues.condition,
-        userInputValues.quantity
-      ]
-    })
-    return results.rows[0]
+    const listingQueryText = `
+      INSERT INTO 
+        listings (user_id, category_id, title, description, price, condition, quantity)
+      VALUES 
+        ($1,$2,$3,$4,$5,$6,$7)
+      RETURNING
+        *
+    ;`;
+
+    const listingValues = [
+      userInputValues.userId,
+      userInputValues.categoryId,
+      userInputValues.title,
+      userInputValues.description,
+      userInputValues.price,
+      userInputValues.condition,
+      userInputValues.quantity
+    ];
+
+    const listingResult = await client.query(listingQueryText, listingValues);
+    const newListing = listingResult.rows[0];
+
+    const images = userInputValues.images || [];
+    const createdImages = [];
+
+    for (const imageUrl of images) {
+      if (!imageUrl) continue;
+      const newImage = await listingImages.create(
+        {
+          listing_id: newListing.id,
+          image_url: imageUrl,
+        },
+        { client: client }
+      );
+      createdImages.push(newImage);
+    }
+
+    await client.query('COMMIT');
+    return { ...newListing, images: createdImages };
+
+  } catch (error) {
+    await client.query('ROLLBACK');
+    throw new Error(`Falha ao criar anúncio (transação revertida): ${error.message}`);
+
+  } finally {
+    client.release();
   }
 }
 
