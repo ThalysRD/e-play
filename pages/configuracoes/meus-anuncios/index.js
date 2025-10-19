@@ -144,7 +144,7 @@ export default function MeusAnuncios() {
                       ? listing.images[0].image_url
                       : null
                   }
-                  onEdit={() => router.push(`/item/${listing.id}/editar`)}
+                  onEdit={() => router.push(`/item/editar/${listing.id}`)}
                   onDelete={() => {
                     setSelectedListingId(listing.id);
                     setIsModalOpen(true);

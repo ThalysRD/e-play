@@ -3,6 +3,10 @@ import database from "../infra/database.js";
 import user from "./user.js"
 import listingImages from "./listingImage.js";
 
+function toSnakeCase(str) {
+  return str.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`);
+}
+
 async function findListingsByTitle(listingTitle) {
   const listings = await runSelectQuery(listingTitle);
   return listings;
@@ -177,6 +181,60 @@ async function create(userInputValues) {
   }
 }
 
+async function updateById(listingId, updatedFields) {
+  let client;
+  try {
+    client = await database.getNewClient();
+    await client.query('BEGIN');
+
+    const setClauses = [];
+    const values = [];
+    let valueCount = 1;
+
+    for (const key in updatedFields) {
+      if (key !== 'images' && updatedFields[key] !== undefined) {
+        setClauses.push(`${toSnakeCase(key)} = $${valueCount++}`);
+        values.push(updatedFields[key]);
+      }
+    }
+
+    if (setClauses.length > 0) {
+      values.push(listingId);
+      const updateQuery = {
+        text: `UPDATE listings SET ${setClauses.join(", ")} WHERE id = $${valueCount} RETURNING *`,
+        values: values,
+      };
+      await client.query(updateQuery);
+    }
+
+    if (updatedFields.images && updatedFields.images.length > 0) {
+      await client.query('DELETE FROM listing_images WHERE listing_id = $1', [listingId]);
+      for (const imageUrl of updatedFields.images) {
+        if (!imageUrl) continue;
+        await listingImages.create(
+          {
+            listing_id: listingId,
+            image_url: imageUrl,
+          },
+          { client: client }
+        );
+      }
+    }
+
+    await client.query('COMMIT');
+    return findOneById(listingId);
+
+  } catch (error) {
+    if (client) {
+      await client.query('ROLLBACK');
+    }
+    throw new Error(`Falha ao atualizar anúncio (transação revertida): ${error.message}`);
+  } finally {
+    if (client) {
+      client.end();
+    }
+  }
+}
 
 async function validateUserExists(userId) {
   const result = await user.findOneById(userId)
@@ -219,7 +277,8 @@ const listing = {
   findOneById,
   create,
   deleteById,
-  findListingsByTitle
+  findListingsByTitle,
+  updateById,
 }
 
 export default listing

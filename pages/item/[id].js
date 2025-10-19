@@ -50,7 +50,7 @@ export default function ProductDetailsPage() {
   }
 
   function handleEdit() {
-    router.push(`/item/${listing.id}/editar`);
+    router.push(`/item/editar/${listing.id}`);
   }
 
   function openDeleteModal() {
