@@ -7,7 +7,6 @@ import styles from "styles/item/criar-anuncio.module.css";
 
 const LOG_PREFIX = "[EditListing]";
 
-// timeout por upload (ms)
 const UPLOAD_TIMEOUT_MS = 60_000;
 
 async function sendRequest(url, { arg }) {
@@ -98,12 +97,8 @@ function EditListingForm() {
     }
   }, [id]);
 
-  // logs do ambiente local
   useEffect(() => {
     try {
-      // info do firebase storage
-      // (pode ajudar a ver se está pegando o bucket certo no docker)
-      // eslint-disable-next-line no-unsafe-optional-chaining
       const bucket = storage?.app?.options?.storageBucket;
       console.log(`${LOG_PREFIX} ambiente`, {
         online: navigator.onLine,
@@ -183,7 +178,6 @@ function EditListingForm() {
     setImagePreviews(newPreviews);
   };
 
-  // ----- uploads com LOGS e timeout
   function uploadSingleImageWithLogs(file) {
     return new Promise((resolve, reject) => {
       const timestamp = Date.now();
@@ -233,7 +227,6 @@ function EditListingForm() {
     console.time(`${LOG_PREFIX} uploadImagesToFirebase`);
     console.log(`${LOG_PREFIX} subindo imagens`, files.map(f => f.name));
 
-    // sobe em paralelo para acelerar e revelar se alguma trava isoladamente
     const results = await Promise.all(files.map(uploadSingleImageWithLogs));
 
     console.timeEnd(`${LOG_PREFIX} uploadImagesToFirebase`);
@@ -293,7 +286,6 @@ function EditListingForm() {
     }
   };
 
-  // limpa os ObjectURLs quando a lista muda ou ao desmontar
   useEffect(() => {
     return () => {
       imagePreviews.forEach((p) => {
