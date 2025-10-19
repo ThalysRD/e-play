@@ -59,7 +59,8 @@ async function postHandler(request, response) {
       images: createdImages,
       message: "Anúncio e imagens criados com sucesso",
     });
+
   } catch (error) {
-    return controller.errorHandler(error, request, response);
+    return controller.errorHandlers(error, request, response);
   }
 }

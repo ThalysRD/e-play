@@ -3,8 +3,6 @@ import { ValidationError, InternalServerError } from "infra/errors.js";
 
 async function create(userInputValues) {
 
-  const { client = database } = options;
-
   if (!userInputValues) {
     throw new ValidationError({
       message: "Dados da imagem são obrigatórios",
@@ -34,7 +32,7 @@ async function create(userInputValues) {
     const imageCreated = await runInsertQuery(listingId, imageUrl)
     return imageCreated
     async function runInsertQuery(listingId, imageUrl) {
-      const results = await client.query({
+      const results = await database.query({
         text: `
         INSERT INTO listing_images (
           listing_id,
