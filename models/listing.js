@@ -120,8 +120,10 @@ async function findOneById(listingId) {
 async function create(userInputValues) {
   await validateUserExists(userInputValues.userId);
 
+  let client;
   try {
-    await database.query('BEGIN')
+    client = await database.getNewClient();
+    await client.query('BEGIN');
 
     const listingQueryText = `
       INSERT INTO 
@@ -142,10 +144,7 @@ async function create(userInputValues) {
       userInputValues.quantity
     ];
 
-    const listingResult = await database.query({
-      text: listingQueryText,
-      values: listingValues
-    });
+    const listingResult = await client.query(listingQueryText, listingValues);
     const newListing = listingResult.rows[0];
 
     const images = userInputValues.images || [];
@@ -158,17 +157,23 @@ async function create(userInputValues) {
           listing_id: newListing.id,
           image_url: imageUrl,
         },
-        { database: database }
+        { client: client }
       );
       createdImages.push(newImage);
     }
 
-    await database.query('COMMIT');
+    await client.query('COMMIT');
     return { ...newListing, images: createdImages };
 
   } catch (error) {
-    await database.query('ROLLBACK');
+    if (client) {
+      await client.query('ROLLBACK');
+    }
     throw new Error(`Falha ao criar anúncio (transação revertida): ${error.message}`);
+  } finally {
+    if (client) {
+      client.end();
+    }
   }
 }
 

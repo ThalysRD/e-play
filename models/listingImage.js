@@ -1,7 +1,8 @@
 import database from "infra/database.js";
 import { ValidationError, InternalServerError } from "infra/errors.js";
 
-async function create(userInputValues) {
+async function create(userInputValues, options = {}) {
+  const { client = database } = options;
 
   if (!userInputValues) {
     throw new ValidationError({
@@ -32,7 +33,7 @@ async function create(userInputValues) {
     const imageCreated = await runInsertQuery(listingId, imageUrl)
     return imageCreated
     async function runInsertQuery(listingId, imageUrl) {
-      const results = await database.query({
+      const results = await client.query({
         text: `
         INSERT INTO listing_images (
           listing_id,
