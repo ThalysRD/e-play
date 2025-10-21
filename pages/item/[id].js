@@ -194,18 +194,18 @@ export default function ProductDetailsPage() {
               ) : (
                 <>
                   <button
-                    className={styles.buyButton}
-                    onClick={handleBuyNow}
-                    disabled={listing.quantity === 0}
-                  >
-                    {listing.quantity === 0 ? "Esgotado" : "Comprar Agora"}
-                  </button>
-                  <button
                     className={styles.cartButton}
                     onClick={handleAddToCart}
                     disabled={listing.quantity === 0}
                   >
                     Adicionar ao Carrinho
+                  </button>
+                  <button
+                    className={styles.buyButton}
+                    onClick={handleBuyNow}
+                    disabled={listing.quantity === 0}
+                  >
+                    {listing.quantity === 0 ? "Esgotado" : "Comprar Agora"}
                   </button>
                 </>
               )}

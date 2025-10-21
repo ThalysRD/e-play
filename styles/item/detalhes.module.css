@@ -35,7 +35,7 @@
 }
 
 .mainImageContainer {
-  width: 100%;
+  max-width: 100%;
   height: 500px;
   background: var(--cor-amarelo-escuro2);
   border-radius: 15px;
@@ -197,25 +197,22 @@
 }
 
 .buyButton {
-  background: #fbb829;
-  color: #1a2333;
-}
-
-.buyButton:hover {
-  background: #e6a623;
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(251, 184, 41, 0.4);
-}
-
-.cartButton {
-  background: #de3277;
+  background: var(--cor-verde-escuro);
   color: #ffffff;
 }
 
-.cartButton:hover {
-  background: #c42965;
+.buyButton:hover {
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(222, 50, 119, 0.4);
+  box-shadow: 0 5px 15px #009a5f73;
+}
+
+.cartButton {
+  background: var(--cor-amarelo-medio);
+}
+
+.cartButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(251, 184, 41, 0.4);
 }
 
 .buyButton:disabled,
