@@ -140,8 +140,6 @@ function PersonalInfosForm({ onOpenModal, user }) {
         }
     }
 
-
-
     return (
         <form className={styles.personalForm} key={user?.id} onSubmit={onSubmit}>
             <div className={styles.formBackground}>

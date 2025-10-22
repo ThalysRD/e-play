@@ -20,7 +20,6 @@ async function postHandler(request, response) {
   return response.status(201).json(newUser);
 }
 
-
 async function patchHandler(request, response) {
   const userInputValues = request.body
 

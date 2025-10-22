@@ -5,14 +5,10 @@ import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage } from "../../../firebase";
 import styles from "styles/item/criar-anuncio.module.css";
 
-const LOG_PREFIX = "[CreateListing]";
-
 // timeout por upload (ms)
 const UPLOAD_TIMEOUT_MS = 60_000;
 
 async function sendRequest(url, { arg }) {
-  console.time(`${LOG_PREFIX} sendRequest`);
-  console.log(`${LOG_PREFIX} POST ${url}`, { payloadPreview: { ...arg, images: `[${arg.images?.length || 0}]` } });
 
   try {
     const response = await fetch(url, {
@@ -21,25 +17,19 @@ async function sendRequest(url, { arg }) {
       body: JSON.stringify(arg),
     });
 
-    console.log(`${LOG_PREFIX} sendRequest response`, { status: response.status });
-
     if (!response.ok) {
       let errorMessage = "Erro ao criar anúncio";
       try {
         const errorData = await response.json();
         errorMessage = errorData.message || errorMessage;
-        console.error(`${LOG_PREFIX} sendRequest not ok -> body`, errorData);
       } catch (e) {
-        console.warn(`${LOG_PREFIX} sendRequest: falhou ao parsear erro JSON`, e);
       }
       throw new Error(errorMessage);
     }
 
     const json = await response.json();
-    console.log(`${LOG_PREFIX} sendRequest ok`, json);
     return json;
   } finally {
-    console.timeEnd(`${LOG_PREFIX} sendRequest`);
   }
 }
 
@@ -66,40 +56,23 @@ function CreateListingForm() {
 
   const { trigger, isMutating } = useSWRMutation("/api/v1/listings", sendRequest);
 
-  // logs do ambiente local
   useEffect(() => {
-    try {
-      // info do firebase storage
-      // (pode ajudar a ver se está pegando o bucket certo no docker)
-      // eslint-disable-next-line no-unsafe-optional-chaining
-      const bucket = storage?.app?.options?.storageBucket;
-      console.log(`${LOG_PREFIX} ambiente`, {
-        online: navigator.onLine,
-        userAgent: navigator.userAgent,
-        bucket,
-        time: new Date().toISOString(),
-      });
-    } catch (e) {
-      console.warn(`${LOG_PREFIX} não consegui ler info do storage`, e);
-    }
+    // Inicializar se necessário
   }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log(`${LOG_PREFIX} handleChange`, { name, value });
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files || []);
-    console.log(`${LOG_PREFIX} handleImageChange -> recebidos`, files.map(f => ({ name: f.name, size: f.size, type: f.type })));
 
     if (files.length === 0) return;
 
     const totalImages = imageFiles.length + files.length;
     if (totalImages > 6) {
       const msg = `Você pode adicionar no máximo 6 imagens. Você já tem ${imageFiles.length} imagem(ns).`;
-      console.warn(`${LOG_PREFIX} validação`, msg);
       setError(msg);
       e.target.value = "";
       return;
@@ -109,7 +82,6 @@ function CreateListingForm() {
     const invalidFiles = files.filter(file => file.size > maxSize);
     if (invalidFiles.length > 0) {
       const msg = "Algumas imagens são maiores que 5MB. Por favor, escolha imagens menores.";
-      console.warn(`${LOG_PREFIX} validação`, { msg, invalidFiles: invalidFiles.map(f => f.name) });
       setError(msg);
       e.target.value = "";
       return;
@@ -119,7 +91,6 @@ function CreateListingForm() {
     const invalidTypes = files.filter(file => !validTypes.includes(file.type));
     if (invalidTypes.length > 0) {
       const msg = "Apenas imagens JPG, PNG e WEBP são permitidas.";
-      console.warn(`${LOG_PREFIX} validação`, { msg, invalidTypes: invalidTypes.map(f => ({ name: f.name, type: f.type })) });
       setError(msg);
       e.target.value = "";
       return;
@@ -131,17 +102,11 @@ function CreateListingForm() {
     const newPreviews = files.map(file => URL.createObjectURL(file));
     setImagePreviews(prev => [...prev, ...newPreviews]);
 
-    console.log(`${LOG_PREFIX} imagens adicionadas`, {
-      totalFiles: newFiles.length,
-      added: files.map(f => f.name),
-    });
-
     e.target.value = "";
     setError("");
   };
 
   const removeImage = (index) => {
-    console.log(`${LOG_PREFIX} removeImage`, { index, file: imageFiles[index]?.name });
     const newFiles = imageFiles.filter((_, i) => i !== index);
     const newPreviews = imagePreviews.filter((_, i) => i !== index);
 
@@ -160,12 +125,10 @@ function CreateListingForm() {
       const path = `listings/${timestamp}_${randomString}_${safeName}`;
       const storageRef = ref(storage, path);
 
-      console.log(`${LOG_PREFIX} iniciando upload`, { file: file.name, size: file.size, type: file.type, path });
-
       const task = uploadBytesResumable(storageRef, file);
 
       const to = setTimeout(() => {
-        console.error(`${LOG_PREFIX} TIMEOUT no upload`, { file: file.name, ms: UPLOAD_TIMEOUT_MS });
+        console.error(`TIMEOUT no upload`, { file: file.name, ms: UPLOAD_TIMEOUT_MS });
         try { task.cancel(); } catch { }
         reject(new Error(`Tempo esgotado ao enviar ${file.name}`));
       }, UPLOAD_TIMEOUT_MS);
@@ -174,21 +137,19 @@ function CreateListingForm() {
         "state_changed",
         (snapshot) => {
           const pct = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-          console.log(`${LOG_PREFIX} progresso`, { file: file.name, pct, state: snapshot.state, transferred: snapshot.bytesTransferred, total: snapshot.totalBytes });
         },
         (err) => {
           clearTimeout(to);
-          console.error(`${LOG_PREFIX} erro no upload`, { file: file.name, err });
+          console.error(`erro no upload`, { file: file.name, err });
           reject(err);
         },
         async () => {
           clearTimeout(to);
           try {
             const url = await getDownloadURL(storageRef);
-            console.log(`${LOG_PREFIX} upload concluído`, { file: file.name, url });
             resolve(url);
           } catch (e) {
-            console.error(`${LOG_PREFIX} falha ao obter downloadURL`, { file: file.name, e });
+            console.error(`falha ao obter downloadURL`, { file: file.name, e });
             reject(e);
           }
         }
@@ -198,14 +159,10 @@ function CreateListingForm() {
 
   async function uploadImagesToFirebase(files) {
     if (!files || files.length === 0) return [];
-    console.time(`${LOG_PREFIX} uploadImagesToFirebase`);
-    console.log(`${LOG_PREFIX} subindo imagens`, files.map(f => f.name));
 
     // sobe em paralelo para acelerar e revelar se alguma trava isoladamente
     const results = await Promise.all(files.map(uploadSingleImageWithLogs));
 
-    console.timeEnd(`${LOG_PREFIX} uploadImagesToFirebase`);
-    console.log(`${LOG_PREFIX} todas as imagens enviadas`, results);
     return results;
   }
 
@@ -214,26 +171,17 @@ function CreateListingForm() {
     setError("");
     setSuccess(false);
 
-    console.log(`${LOG_PREFIX} handleSubmit -> dados`, {
-      formData,
-      imagesCount: imageFiles.length,
-    });
-
-    if (!formData.title.trim()) { setError("O título é obrigatório"); console.warn(`${LOG_PREFIX} validação`, "titulo"); return; }
-    if (!formData.price || Number(formData.price) <= 0) { setError("O preço deve ser maior que zero"); console.warn(`${LOG_PREFIX} validação`, "preco"); return; }
-    if (!formData.categoryId) { setError("Selecione uma categoria"); console.warn(`${LOG_PREFIX} validação`, "categoria"); return; }
-    if (!formData.quantity || Number(formData.quantity) < 1) { setError("A quantidade deve ser no mínimo 1"); console.warn(`${LOG_PREFIX} validação`, "quantidade"); return; }
+    if (!formData.title.trim()) { setError("O título é obrigatório"); return; }
+    if (!formData.price || Number(formData.price) <= 0) { setError("O preço deve ser maior que zero"); return; }
+    if (!formData.categoryId) { setError("Selecione uma categoria"); return; }
+    if (!formData.quantity || Number(formData.quantity) < 1) { setError("A quantidade deve ser no mínimo 1"); return; }
 
     let imageUrls = [];
 
     try {
       if (imageFiles.length > 0) {
         setUploadingImages(true);
-        console.time(`${LOG_PREFIX} bloco-upload`);
         imageUrls = await uploadImagesToFirebase(imageFiles);
-        console.timeEnd(`${LOG_PREFIX} bloco-upload`);
-      } else {
-        console.log(`${LOG_PREFIX} nenhum arquivo para upload`);
       }
 
       const dataToSend = {
@@ -246,18 +194,14 @@ function CreateListingForm() {
         images: imageUrls,
       };
 
-      console.log(`${LOG_PREFIX} enviando payload para API`, dataToSend);
       const result = await trigger(dataToSend);
 
-      console.log(`${LOG_PREFIX} anúncio criado`, result);
       setSuccess(true);
       setTimeout(() => router.push(`/item/${result.id}`), 1500);
     } catch (err) {
-      console.error(`${LOG_PREFIX} erro geral no handleSubmit`, err);
       setError(err?.message || "Erro ao criar anúncio");
     } finally {
       setUploadingImages(false);
-      console.log(`${LOG_PREFIX} finalizou handleSubmit`);
     }
   };
 

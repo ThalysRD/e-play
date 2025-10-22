@@ -29,4 +29,23 @@ async function query(queryobject) {
     client?.end();
   }
 }
-export default { query, getNewClient };
+
+async function transaction(callback) {
+  let client;
+  try {
+    client = await getNewClient();
+    await client.query('BEGIN');
+    const result = await callback(client);
+    await client.query('COMMIT');
+    return result;
+  } catch (error) {
+    if (client) {
+      await client.query('ROLLBACK');
+    }
+    throw error;
+  } finally {
+    client?.end();
+  }
+}
+
+export default { query, getNewClient, transaction };

@@ -23,6 +23,12 @@ export default function ProductDetailsPage() {
     }
   }, [id]);
 
+  useEffect(() => {
+    if (router.isReady && router.query.refresh) {
+      fetchListing();
+    }
+  }, [router.query.refresh]);
+
   async function fetchListing() {
     try {
       setLoading(true);
@@ -35,6 +41,7 @@ export default function ProductDetailsPage() {
       const data = await response.json();
       setListing(data);
     } catch (err) {
+      console.error('[ProductDetails] Error fetching listing:', err);
       setError(err.message);
     } finally {
       setLoading(false);

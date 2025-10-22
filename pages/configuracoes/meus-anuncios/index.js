@@ -7,7 +7,6 @@ import ListingCardEdit from "components/ListingCardEdit";
 import Modal from "components/ModalPadrao";
 import { FaPlus } from "react-icons/fa";
 
-
 export default function MeusAnuncios() {
   const router = useRouter();
   const { user, isLoading: userLoading, isError: userError } = useUser();

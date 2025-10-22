@@ -16,8 +16,12 @@ async function getHandler(request, response) {
     const { id } = request.query;
 
     const listingData = await listing.findOneById(id);
+    const images = await listing.findImagesById(id);
 
-    return response.status(200).json(listingData);
+    return response.status(200).json({
+      ...listingData,
+      images
+    });
   } catch (error) {
     return controller.errorHandlers.onError(error, request, response);
   }
@@ -46,9 +50,19 @@ async function patchHandler(request, response) {
       return response.status(403).json({ error: "Você não tem permissão para editar este anúncio" });
     }
 
+    const finalImages = request.body.images || [];
+    if (finalImages.length === 0) {
+      return response.status(400).json({ error: "O anúncio deve ter pelo menos 1 imagem" });
+    }
+
     const updatedListing = await listing.updateById(id, request.body);
 
-    return response.status(200).json(updatedListing);
+    const images = await listing.findImagesById(id);
+
+    return response.status(200).json({
+      ...updatedListing,
+      images
+    });
   } catch (error) {
     return controller.errorHandlers.onError(error, request, response);
   }

@@ -191,9 +191,15 @@
   transition: all 0.3s ease;
 }
 
-.removeImageBtn:hover {
+.removeImageBtn:hover:not(:disabled) {
   background: #c42968;
   transform: scale(1.1);
+}
+
+.removeImageBtn:disabled {
+  background: #999;
+  cursor: not-allowed;
+  opacity: 0.5;
 }
 
 .addImageBtn {
@@ -228,7 +234,9 @@
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
   color: var(--cor-texto);
 }
 
@@ -271,7 +279,7 @@
   display: flex;
   align-self: center;
   justify-content: center;
-  animation: fadeIn 0.3s ease-in; 
+  animation: fadeIn 0.3s ease-in;
 }
 
 .successMessage {
