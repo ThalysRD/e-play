@@ -11,7 +11,6 @@ router.post(postHandler);
 
 export default router.handler(controller.errorHandlers);
 
-
 async function getHandler(request, response) {
   try {
     const listings = await listing.findAll();
@@ -39,24 +38,8 @@ async function postHandler(request, response) {
       userId: userSession.user_id,
     });
 
-    const images = userInputValues.listing_images ?? userInputValues.images ?? [];
-
-    let createdImages = [];
-    if (Array.isArray(images) && images.length > 0) {
-      createdImages = await Promise.all(
-        images.map((img) => {
-          const imageUrl = typeof img === "string" ? img : img.image_url || img.url;
-          return listingImages.create({
-            listing_id: newListing.id,
-            image_url: imageUrl,
-          });
-        })
-      );
-    }
-
     return response.status(201).json({
       ...newListing,
-      images: createdImages,
       message: "Anúncio e imagens criados com sucesso",
     });
 

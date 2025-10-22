@@ -5,7 +5,6 @@ import SearchBar from "components/SearchBar";
 import load from "styles/componentes/loading.module.css";
 import ListingCard from "components/ListingCard";
 
-
 export default function CatalogoPage() {
   const router = useRouter();
   const q = typeof router.query?.query === "string" ? router.query.query : "";

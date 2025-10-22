@@ -4,7 +4,6 @@ import authentication from "models/authentication.js";
 import session from "models/session.js";
 import * as cookie from "cookie"
 
-
 const router = createRouter();
 
 router.post(postHandler);
@@ -25,7 +24,6 @@ async function postHandler(request, response) {
     httpOnly: true
   })
   response.setHeader("Set-Cookie", setCookie)
-
 
   return response.status(201).json(newSession)
 }
