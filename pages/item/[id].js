@@ -189,11 +189,11 @@ export default function ProductDetailsPage() {
               <div className={styles.detailItem}>
                 <div className={styles.detailLabel}>Categoria</div>
                 <div className={styles.detailValue}>
-                  {listing.category_id === "1" && "PlayStation"}
-                  {listing.category_id === "2" && "Xbox"}
-                  {listing.category_id === "3" && "Nintendo"}
-                  {listing.category_id === "4" && "PC"}
-                  {listing.category_id === "5" && "Retro"}
+                  {listing.category_id === 1 && "PlayStation"}
+                  {listing.category_id === 2 && "Xbox"}
+                  {listing.category_id === 3 && "Nintendo"}
+                  {listing.category_id === 4 && "PC"}
+                  {listing.category_id === 5 && "Retro"}
                 </div>
               </div>
 

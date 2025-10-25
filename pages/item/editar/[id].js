@@ -4,6 +4,7 @@ import useSWRMutation from "swr/mutation";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage } from "../../../firebase";
 import styles from "styles/item/criar-anuncio.module.css";
+import load from "styles/componentes/loading.module.css";
 
 const UPLOAD_TIMEOUT_MS = 60_000;
 
@@ -52,6 +53,7 @@ function EditListingForm() {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const { trigger, isMutating } = useSWRMutation(
     id ? `/api/v1/listings/${id}` : null,
@@ -82,9 +84,11 @@ function EditListingForm() {
 
       const imageUrls = (listing.images || []).map(img => img.image_url);
       setImages(imageUrls);
+      setLoading(false);
     } catch (err) {
       console.error(`${LOG_PREFIX} erro ao carregar`, err);
       setError(err.message);
+      setLoading(false);
     }
   }
 
@@ -228,6 +232,16 @@ function EditListingForm() {
       });
     };
   }, [images]);
+
+  if (loading) {
+    return (
+      <div className={styles.pageContainer}>
+        <div className={load.loadingContainer}>
+          <div className={load.spinner}></div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <form onSubmit={handleSubmit} className={styles.registerForm}>
