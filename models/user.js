@@ -265,6 +265,7 @@ const user = {
   findOneByEmail,
   update,
   setPermissions,
+  findOneWithListingsByUsername
 };
 
 export default user;
