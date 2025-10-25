@@ -2,6 +2,7 @@ import { createRouter } from "next-connect";
 import controller from "infra/controller.js";
 import activation from "models/activation.js";
 import session from "models/session.js";
+import user from "models/user.js";
 import * as cookie from "cookie";
 
 const router = createRouter();
@@ -21,7 +22,28 @@ async function patchHandler(request, response) {
     }
 
     const validActivationToken = await activation.findOneyValidById(activationTokenId);
+
     if (!validActivationToken) {
+      // Token inválido ou expirado - buscar usuário e enviar novo token
+      try {
+        // Tentar buscar o token expirado para obter o user_id
+        const expiredToken = await activation.findExpiredToken(activationTokenId);
+
+        if (expiredToken) {
+          // Token existe mas expirou - enviar novo
+          const userData = await user.findOneById(expiredToken.user_id);
+          const newToken = await activation.create(expiredToken.user_id);
+          await activation.sendEmailToUser(userData, newToken);
+
+          return response.status(400).json({
+            message: "Seu token expirou, mas enviamos um novo link para seu email!",
+            tokenExpired: true,
+          });
+        }
+      } catch (err) {
+        // Token não existe ou erro ao buscar
+      }
+
       return response.status(400).json({
         message: "Token inválido ou expirado",
       });

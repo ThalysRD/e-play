@@ -149,10 +149,29 @@ async function sendEmailToUser(user, activationToken) {
   });
 }
 
+async function findExpiredToken(tokenId) {
+  const results = await database.query({
+    text: `
+      SELECT
+        *
+      FROM
+        user_activation_tokens
+      WHERE
+        id = $1
+        AND used_at IS NULL
+      LIMIT
+        1
+    ;`,
+    values: [tokenId],
+  });
+  return results.rows[0];
+}
+
 const activation = {
   create,
   sendEmailToUser,
   findOneyValidById,
+  findExpiredToken,
   markTokenUsed,
   activateUserByUserId,
 };
