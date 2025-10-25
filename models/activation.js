@@ -92,6 +92,7 @@ async function sendEmailToUser(user, activationToken) {
     
 ${webserver.origin}/cadastro/ativar/${activationToken.id}
 
+Este link expira em 15 minutos.
     `,
   });
 }

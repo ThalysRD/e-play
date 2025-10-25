@@ -193,7 +193,18 @@ function RegisterForm() {
           </div>
         )}
 
-        {error && <div className={styles.errorMessage}>❌ {error}</div>}
+        {error && (
+          <div className={styles.errorMessage}>
+            ❌ {error}
+            {error.includes("email") && error.includes("utilizado") && (
+              <div className={styles.errorHelp}>
+                <Link href="/recuperar-senha" className={styles.recoveryLink}>
+                  Recuperar senha
+                </Link>
+              </div>
+            )}
+          </div>
+        )}
 
         {/*<div className={styles.optionsRow}>
           <label className={styles.rememberMe}>

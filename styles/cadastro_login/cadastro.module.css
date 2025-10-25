@@ -138,6 +138,26 @@
   color: #fff;
 }
 
+.errorHelp {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.recoveryLink {
+  color: var(--cor-amarelo-medio);
+  text-decoration: none;
+  font-weight: 600;
+  transition: opacity 0.2s ease;
+}
+
+.recoveryLink:hover {
+  opacity: 0.8;
+  text-decoration: underline;
+}
+
 /* Botão criar conta */
 .createButton {
   background: var(--cor-rosa-medio);
@@ -299,4 +319,55 @@
       font-size: 9px;
     }
   }
+}
+
+/* Botões */
+.submitButton {
+  background: var(--cor-rosa-medio);
+  color: var(--cor-texto);
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  width: 100%;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 15px;
+}
+
+.submitButton:hover:not(:disabled) {
+  background: var(--cor-rosa-claro);
+  box-shadow: 0 5px 24px rgba(236, 64, 121, 0.463);
+  transform: translateY(-2px);
+}
+
+.submitButton:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Links */
+.link {
+  color: var(--cor-secundaria);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.link:hover {
+  color: var(--cor-amarelo-claro);
+  text-decoration: underline;
+}
+
+.forgotLink {
+  color: var(--cor-secundaria);
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.3s ease;
+}
+
+.forgotLink:hover {
+  color: var(--cor-amarelo-claro);
+  text-decoration: underline;
 }

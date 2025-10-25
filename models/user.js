@@ -197,7 +197,6 @@ async function update(userInputValues) {
 
 async function setPermissions(userId, permissions) {
   const updatedUser = await runUpdateQuery(userId, permissions);
-  console.log(updatedUser);
   return updatedUser;
   async function runUpdateQuery(userId, permissions) {
     const results = await database.query({
@@ -247,7 +246,7 @@ async function validateUniqueEmail(email) {
   if (results.rowCount > 0) {
     throw new ValidationError({
       message: "O email informado já está sendo utilizado.",
-      action: "Utilize outro e-mail para realizar essa operação.",
+      action: "Você pode tentar fazer login ou recuperar sua senha.",
     });
   }
 }

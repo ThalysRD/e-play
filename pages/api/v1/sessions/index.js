@@ -2,6 +2,8 @@ import { createRouter } from "next-connect";
 import controller from "infra/controller.js";
 import authentication from "models/authentication.js";
 import session from "models/session.js";
+import activation from "models/activation.js";
+import user from "models/user.js";
 import * as cookie from "cookie";
 
 const router = createRouter();
@@ -17,6 +19,16 @@ async function postHandler(request, response) {
     userInputValues.email,
     userInputValues.password,
   );
+
+  if (!authenticatedUser.permissions.includes("create:sessions")) {
+    const newActivationToken = await activation.create(authenticatedUser.id);
+    await activation.sendEmailToUser(authenticatedUser, newActivationToken);
+
+
+    return response.status(403).json({
+      message: "Você precisa confirmar seu email para fazer login. Um novo link de ativação foi enviado para seu email.",
+    });
+  }
 
   const newSession = await session.create(authenticatedUser.id);
 

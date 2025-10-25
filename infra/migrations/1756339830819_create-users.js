@@ -27,6 +27,12 @@ exports.up = (pgm) => {
       type: "varchar[]",
       notNull: true,
     },
+    cart_items: {
+      type: "varchar[]",
+    },
+    wish_list: {
+      type: "varchar[]",
+    },
     cpf: {
       type: "varchar(11)",
       unique: true,
