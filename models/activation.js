@@ -88,7 +88,7 @@ async function sendEmailToUser(user, activationToken) {
   await email.send({
     from: "E-Play <contato@lojaeplay.com.br>",
     to: user.email,
-    suject: "Ative seu cadastro no E-Play!",
+    subject: "Ative seu cadastro no E-Play!",
     text: `${user.username}, clique no link abaixo para finalizar seu cadastro no E-Play:
     
 ${webserver.origin}/cadastro/ativar/${activationToken.id}
