@@ -42,7 +42,6 @@ async function markTokenUsed(activationToken) {
           user_activation_tokens
         SET
           used_at = timezone('utc', now()),
-          used = True,
           updated_at = timezone('utc', now())
         WHERE
           id = $1
