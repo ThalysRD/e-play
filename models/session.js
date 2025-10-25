@@ -69,8 +69,8 @@ async function renew(sessionId) {
 }
 
 async function expireById(sessionId) {
-  const expiredSessionObject = await runUpdateQuery(sessionId)
-  return expiredSessionObject
+  const expiredSessionObject = await runUpdateQuery(sessionId);
+  return expiredSessionObject;
 
   async function runUpdateQuery(sessionId) {
     const results = await database.query({
@@ -88,7 +88,7 @@ async function expireById(sessionId) {
       values: [sessionId],
     });
 
-    return results.rows[0]
+    return results.rows[0];
   }
 }
 

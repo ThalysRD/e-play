@@ -22,7 +22,7 @@
   border-radius: 16px;
 }
 
-.optionsContainer{
+.optionsContainer {
   border-radius: 20px;
   width: 100%;
   display: flex;
@@ -31,7 +31,9 @@
   gap: 20px;
 }
 
-.formInfosPessoais, .formSenha, .formProfilePicture{
+.formInfosPessoais,
+.formSenha,
+.formProfilePicture {
   margin: 10px;
   display: flex;
   flex-direction: column;
@@ -39,7 +41,7 @@
   border-bottom: 2px solid var(--cor-primaria);
 }
 
-.title{
+.title {
   font: 18px;
   font-weight: bold;
 }
@@ -51,8 +53,8 @@
 
 /* ----------------- Imagem de Perfil ----------------- */
 .profilePicContainer {
-  position: relative; 
-  width: 100px; 
+  position: relative;
+  width: 100px;
   height: 100px;
 }
 .profilePic {
@@ -67,7 +69,7 @@
   position: absolute;
   bottom: 2px;
   right: -10px;
-  background-color:  var(--cor-rosa-medio);
+  background-color: var(--cor-rosa-medio);
   border: none;
   border-radius: 50%;
   width: 40px;
@@ -82,7 +84,7 @@
 }
 
 .editProfilePicButton:hover {
-    background-color: var(--cor-rosa-escuro);
+  background-color: var(--cor-rosa-escuro);
 }
 
 /* ----------------- Inputs e Labels ----------------- */
@@ -101,7 +103,10 @@
   font-size: 14px;
   color: var(--cor-texto);
   outline: none;
-  transition: border 0.25s, box-shadow 0.25s, background 0.25s;
+  transition:
+    border 0.25s,
+    box-shadow 0.25s,
+    background 0.25s;
 }
 
 .input {
@@ -149,14 +154,34 @@
   justify-self: center;
   align-self: center;
 }
-.personalFormContainer .fieldGroup:nth-child(2) { grid-column: 2 / 4; grid-row: 1 / 2; }
-.personalFormContainer .fieldGroup:nth-child(3) { grid-column: 2 / 3; grid-row: 2 / 3; }
-.personalFormContainer .fieldGroup:nth-child(4) { grid-column: 3 / 4; grid-row: 2 / 3; }
-.personalFormContainer .fieldGroup:nth-child(5) { grid-column: 2 / 3; grid-row: 3 / 4; }
-.personalFormContainer .fieldGroup:nth-child(6) { grid-column: 3 / 4; grid-row: 3 / 4; }
-.personalFormContainer .fieldGroup:nth-child(7) { grid-column: 2 / 3; grid-row: 4 / 5; }
-.personalFormContainer .fieldGroup:nth-child(8) { grid-column: 3 / 4; grid-row: 4 / 5; }
-
+.personalFormContainer .fieldGroup:nth-child(2) {
+  grid-column: 2 / 4;
+  grid-row: 1 / 2;
+}
+.personalFormContainer .fieldGroup:nth-child(3) {
+  grid-column: 2 / 3;
+  grid-row: 2 / 3;
+}
+.personalFormContainer .fieldGroup:nth-child(4) {
+  grid-column: 3 / 4;
+  grid-row: 2 / 3;
+}
+.personalFormContainer .fieldGroup:nth-child(5) {
+  grid-column: 2 / 3;
+  grid-row: 3 / 4;
+}
+.personalFormContainer .fieldGroup:nth-child(6) {
+  grid-column: 3 / 4;
+  grid-row: 3 / 4;
+}
+.personalFormContainer .fieldGroup:nth-child(7) {
+  grid-column: 2 / 3;
+  grid-row: 4 / 5;
+}
+.personalFormContainer .fieldGroup:nth-child(8) {
+  grid-column: 3 / 4;
+  grid-row: 4 / 5;
+}
 
 /* ----------------- Password Form (coluna única) ----------------- */
 .passwordFormContainer {
@@ -183,7 +208,9 @@
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
   color: var(--cor-texto);
 }
 
@@ -198,11 +225,14 @@
   width: 25vh;
 }
 
-.buttonSave:hover { background-color: var(--cor-rosa-escuro); }
-.buttonCancel:hover { background: var(--cor-primaria); }
+.buttonSave:hover {
+  background-color: var(--cor-rosa-escuro);
+}
+.buttonCancel:hover {
+  background: var(--cor-primaria);
+}
 
-
-.successMessage, 
+.successMessage,
 .errorMessage {
   max-width: 560px;
   padding: 12px;
@@ -212,16 +242,16 @@
   display: flex;
   align-self: center;
   justify-content: center;
-  animation: fadeIn 0.3s ease-in; 
+  animation: fadeIn 0.3s ease-in;
 }
 .successMessage {
   background: var(--cor-sucess);
   color: #ffffff;
-  animation: fadeIn 0.3s ease-in; 
+  animation: fadeIn 0.3s ease-in;
 }
 
 .errorMessage {
   background: var(--cor-error);
   color: #ffffff;
-  animation: fadeIn 0.3s ease-in; 
+  animation: fadeIn 0.3s ease-in;
 }

@@ -1,10 +1,10 @@
 import { ValidationError, NotFoundError } from "infra/errors.js";
 import database from "../infra/database.js";
-import user from "./user.js"
+import user from "./user.js";
 import listingImages from "./listingImage.js";
 
 function toSnakeCase(str) {
-  return str.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`);
+  return str.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
 }
 
 async function findListingsByTitle(listingTitle) {
@@ -161,10 +161,13 @@ async function create(userInputValues) {
           userInputValues.description,
           userInputValues.price,
           userInputValues.condition,
-          userInputValues.quantity
+          userInputValues.quantity,
         ];
 
-        const listingResult = await client.query(listingQueryText, listingValues);
+        const listingResult = await client.query(
+          listingQueryText,
+          listingValues,
+        );
         const listing = listingResult.rows[0];
 
         const images = userInputValues.images || [];
@@ -174,7 +177,7 @@ async function create(userInputValues) {
           if (!imageUrl) continue;
           const newImage = await listingImages.create(
             { listing_id: listing.id, image_url: imageUrl },
-            { client }
+            { client },
           );
           createdImages.push(newImage);
         }
@@ -200,13 +203,13 @@ async function updateById(listingId, updatedFields) {
     try {
       const result = await database.transaction(async (client) => {
         const allowedFields = {
-          'title': true,
-          'description': true,
-          'price': true,
-          'condition': true,
-          'quantity': true,
-          'category_id': true,
-          'categoryId': 'category_id'
+          title: true,
+          description: true,
+          price: true,
+          condition: true,
+          quantity: true,
+          category_id: true,
+          categoryId: "category_id",
         };
 
         const setClauses = [];
@@ -214,11 +217,16 @@ async function updateById(listingId, updatedFields) {
         let valueCount = 1;
 
         for (const key in updatedFields) {
-          if (key === 'images') continue;
+          if (key === "images") continue;
 
-          const fieldName = allowedFields[key] === true ? key : allowedFields[key];
+          const fieldName =
+            allowedFields[key] === true ? key : allowedFields[key];
 
-          if (fieldName && updatedFields[key] !== undefined && updatedFields[key] !== null) {
+          if (
+            fieldName &&
+            updatedFields[key] !== undefined &&
+            updatedFields[key] !== null
+          ) {
             setClauses.push(`${fieldName} = $${valueCount++}`);
             values.push(updatedFields[key]);
           }
@@ -238,7 +246,7 @@ async function updateById(listingId, updatedFields) {
 
           await client.query(
             `DELETE FROM listing_images WHERE listing_id = $1`,
-            [listingId]
+            [listingId],
           );
 
           if (finalImages.length > 0) {
@@ -249,7 +257,7 @@ async function updateById(listingId, updatedFields) {
               await client.query(
                 `INSERT INTO listing_images (listing_id, image_url, display_order, created_at, updated_at) 
                  VALUES ($1, $2, $3, NOW(), NOW())`,
-                [listingId, imageUrl, i]
+                [listingId, imageUrl, i],
               );
             }
           }
@@ -268,7 +276,7 @@ async function updateById(listingId, updatedFields) {
 }
 
 async function validateUserExists(userId) {
-  const result = await user.findOneById(userId)
+  const result = await user.findOneById(userId);
   if (!result) {
     throw new ValidationError({
       message: "O usuário informado não existe no sistema",
@@ -319,6 +327,6 @@ const listing = {
   deleteById,
   findListingsByTitle,
   updateById,
-}
+};
 
-export default listing
+export default listing;

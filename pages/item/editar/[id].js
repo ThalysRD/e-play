@@ -55,7 +55,7 @@ function EditListingForm() {
 
   const { trigger, isMutating } = useSWRMutation(
     id ? `/api/v1/listings/${id}` : null,
-    sendRequest
+    sendRequest,
   );
 
   useEffect(() => {
@@ -161,7 +161,7 @@ function EditListingForm() {
           } catch (err) {
             reject(err);
           }
-        }
+        },
       );
     });
   }
@@ -238,7 +238,9 @@ function EditListingForm() {
 
         <div className={styles.formContainer}>
           <div className={styles.fieldGroup}>
-            <label htmlFor="title" className={styles.label}>Título do Anúncio</label>
+            <label htmlFor="title" className={styles.label}>
+              Título do Anúncio
+            </label>
             <input
               id="title"
               name="title"
@@ -252,7 +254,9 @@ function EditListingForm() {
           </div>
 
           <div className={styles.fieldGroup}>
-            <label htmlFor="description" className={styles.label}>Descrição</label>
+            <label htmlFor="description" className={styles.label}>
+              Descrição
+            </label>
             <textarea
               id="description"
               name="description"
@@ -267,7 +271,9 @@ function EditListingForm() {
 
           <div className={styles.rowGroup}>
             <div className={styles.fieldGroupHalf}>
-              <label htmlFor="price" className={styles.label}>Preço (R$)</label>
+              <label htmlFor="price" className={styles.label}>
+                Preço (R$)
+              </label>
               <input
                 id="price"
                 name="price"
@@ -282,7 +288,9 @@ function EditListingForm() {
             </div>
 
             <div className={styles.fieldGroupHalf}>
-              <label htmlFor="quantity" className={styles.label}>Quantidade</label>
+              <label htmlFor="quantity" className={styles.label}>
+                Quantidade
+              </label>
               <input
                 id="quantity"
                 name="quantity"
@@ -295,7 +303,9 @@ function EditListingForm() {
             </div>
 
             <div className={styles.fieldGroupHalf}>
-              <label htmlFor="condition" className={styles.label}>Condição</label>
+              <label htmlFor="condition" className={styles.label}>
+                Condição
+              </label>
               <select
                 id="condition"
                 name="condition"
@@ -310,7 +320,9 @@ function EditListingForm() {
             </div>
 
             <div className={styles.fieldGroupHalf}>
-              <label htmlFor="categoryId" className={styles.label}>Categoria</label>
+              <label htmlFor="categoryId" className={styles.label}>
+                Categoria
+              </label>
               <select
                 id="categoryId"
                 name="categoryId"
@@ -364,7 +376,11 @@ function EditListingForm() {
         </div>
 
         {error && <div className={styles.errorMessage}>❌ {error}</div>}
-        {success && <div className={styles.successMessage}>✅ Anúncio atualizado com sucesso! Redirecionando...</div>}
+        {success && (
+          <div className={styles.successMessage}>
+            ✅ Anúncio atualizado com sucesso! Redirecionando...
+          </div>
+        )}
 
         <button
           type="submit"

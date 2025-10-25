@@ -3,35 +3,38 @@ import { NotFoundError } from "infra/errors";
 
 // Enumerate de status validos
 const ORDER_STATUS = {
-  PENDING: 'pending',
-  PROCESSING: 'processing',
-  SHIPPED: 'shipped',
-  DELIVERED: 'delivered',
-  CANCELED: 'canceled'
+  PENDING: "pending",
+  PROCESSING: "processing",
+  SHIPPED: "shipped",
+  DELIVERED: "delivered",
+  CANCELED: "canceled",
 };
 
 // Validações
 function validateOrderData(orderData) {
   const errors = [];
-  
+
   if (!orderData.total_amount || orderData.total_amount <= 0) {
     errors.push("Total amount deve ser maior que zero");
   }
-  
-  if (orderData.status && !Object.values(ORDER_STATUS).includes(orderData.status)) {
+
+  if (
+    orderData.status &&
+    !Object.values(ORDER_STATUS).includes(orderData.status)
+  ) {
     errors.push(`Status inválido: ${orderData.status}`);
   }
-  
+
   if (!orderData.shipping_address) {
     errors.push("Endereço de entrega é obrigatório");
   }
-  
+
   if (!orderData.payment_method) {
     errors.push("Método de pagamento é obrigatório");
   }
-  
+
   if (errors.length > 0) {
-    throw new Error(`Dados inválidos: ${errors.join(', ')}`);
+    throw new Error(`Dados inválidos: ${errors.join(", ")}`);
   }
 }
 
@@ -116,12 +119,12 @@ async function create(userId, orderData) {
   // Validar dados do pedido
   validateOrderData(orderData);
 
-  const { 
-    total_amount, 
+  const {
+    total_amount,
     status = ORDER_STATUS.PENDING,
     items = [],
     shipping_address,
-    payment_method 
+    payment_method,
   } = orderData;
 
   const results = await database.query({
@@ -138,12 +141,12 @@ async function create(userId, orderData) {
       ) VALUES ($1, $2, $3, $4::jsonb, $5, $6, NOW(), NOW()) 
       RETURNING *`,
     values: [
-      userId, 
-      total_amount, 
-      status, 
+      userId,
+      total_amount,
+      status,
       JSON.stringify(items), // Se a coluna for JSONB, o Postgres fara a conversao
-      shipping_address, 
-      payment_method
+      shipping_address,
+      payment_method,
     ],
   });
 
@@ -161,7 +164,9 @@ async function updateStatus(orderId, newStatus) {
 
   // Valida se o status eh valido
   if (!Object.values(ORDER_STATUS).includes(newStatus)) {
-    throw new Error(`Status inválido: ${newStatus}. Use um dos seguintes: ${Object.values(ORDER_STATUS).join(', ')}`);
+    throw new Error(
+      `Status inválido: ${newStatus}. Use um dos seguintes: ${Object.values(ORDER_STATUS).join(", ")}`,
+    );
   }
 
   const results = await database.query({
@@ -207,10 +212,10 @@ async function cancelById(orderId) {
         AND status NOT IN ($3, $4)
       RETURNING *;`,
     values: [
-      orderId, 
-      ORDER_STATUS.CANCELED, 
-      ORDER_STATUS.CANCELED, 
-      ORDER_STATUS.DELIVERED
+      orderId,
+      ORDER_STATUS.CANCELED,
+      ORDER_STATUS.CANCELED,
+      ORDER_STATUS.DELIVERED,
     ],
   });
 
@@ -218,7 +223,7 @@ async function cancelById(orderId) {
     // buscar o pedido para dar uma mensagem mais especifica
     const existingOrder = await database.query({
       text: "SELECT status FROM orders WHERE id = $1",
-      values: [orderId]
+      values: [orderId],
     });
 
     if (existingOrder.rowCount === 0) {
@@ -231,9 +236,10 @@ async function cancelById(orderId) {
     const currentStatus = existingOrder.rows[0].status;
     throw new Error({
       message: `Não foi possível cancelar o pedido com status '${currentStatus}'.`,
-      action: currentStatus === ORDER_STATUS.DELIVERED 
-        ? "Pedidos entregues não podem ser cancelados." 
-        : "O pedido já está cancelado.",
+      action:
+        currentStatus === ORDER_STATUS.DELIVERED
+          ? "Pedidos entregues não podem ser cancelados."
+          : "O pedido já está cancelado.",
     });
   }
 
@@ -277,7 +283,7 @@ async function getUserOrderStats(userId) {
       userId,
       ORDER_STATUS.PENDING,
       ORDER_STATUS.DELIVERED,
-      ORDER_STATUS.CANCELED
+      ORDER_STATUS.CANCELED,
     ],
   });
 
@@ -293,7 +299,7 @@ const order = {
   findAllByStatus,
   getUserOrderStats,
   // Exportar tambem as constantes de status
-  STATUS: ORDER_STATUS
+  STATUS: ORDER_STATUS,
 };
 
 export default order;

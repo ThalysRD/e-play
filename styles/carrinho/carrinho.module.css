@@ -65,7 +65,9 @@
   border-radius: 10px;
   text-decoration: none;
   display: inline-block;
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
   cursor: pointer;
 }
 
@@ -315,4 +317,3 @@
     justify-content: center;
   }
 }
-

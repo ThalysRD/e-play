@@ -54,7 +54,10 @@ function CreateListingForm() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
 
-  const { trigger, isMutating } = useSWRMutation("/api/v1/listings", sendRequest);
+  const { trigger, isMutating } = useSWRMutation(
+    "/api/v1/listings",
+    sendRequest,
+  );
 
   useEffect(() => {
     // Inicializar se necessário
@@ -79,7 +82,7 @@ function CreateListingForm() {
     }
 
     const maxSize = 5 * 1024 * 1024;
-    const invalidFiles = files.filter(file => file.size > maxSize);
+    const invalidFiles = files.filter((file) => file.size > maxSize);
     if (invalidFiles.length > 0) {
       const msg = "Algumas imagens são maiores que 5MB. Por favor, escolha imagens menores.";
       setError(msg);
@@ -87,8 +90,10 @@ function CreateListingForm() {
       return;
     }
 
-    const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
-    const invalidTypes = files.filter(file => !validTypes.includes(file.type));
+    const validTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+    const invalidTypes = files.filter(
+      (file) => !validTypes.includes(file.type),
+    );
     if (invalidTypes.length > 0) {
       const msg = "Apenas imagens JPG, PNG e WEBP são permitidas.";
       setError(msg);
@@ -110,7 +115,9 @@ function CreateListingForm() {
     const newFiles = imageFiles.filter((_, i) => i !== index);
     const newPreviews = imagePreviews.filter((_, i) => i !== index);
 
-    try { URL.revokeObjectURL(imagePreviews[index]); } catch { }
+    try {
+      URL.revokeObjectURL(imagePreviews[index]);
+    } catch {}
 
     setImageFiles(newFiles);
     setImagePreviews(newPreviews);
@@ -152,7 +159,7 @@ function CreateListingForm() {
             console.error(`falha ao obter downloadURL`, { file: file.name, e });
             reject(e);
           }
-        }
+        },
       );
     });
   }
@@ -209,7 +216,9 @@ function CreateListingForm() {
   useEffect(() => {
     return () => {
       imagePreviews.forEach((p) => {
-        try { URL.revokeObjectURL(p); } catch { }
+        try {
+          URL.revokeObjectURL(p);
+        } catch {}
       });
     };
   }, [imagePreviews]);
@@ -224,7 +233,9 @@ function CreateListingForm() {
         <div className={styles.formContainer}>
           {/* Título */}
           <div className={styles.fieldGroup}>
-            <label htmlFor="title" className={styles.label}>Título do Anúncio</label>
+            <label htmlFor="title" className={styles.label}>
+              Título do Anúncio
+            </label>
             <input
               id="title"
               name="title"
@@ -239,7 +250,9 @@ function CreateListingForm() {
 
           {/* Descrição */}
           <div className={styles.fieldGroup}>
-            <label htmlFor="description" className={styles.label}>Descrição</label>
+            <label htmlFor="description" className={styles.label}>
+              Descrição
+            </label>
             <textarea
               id="description"
               name="description"
@@ -255,7 +268,9 @@ function CreateListingForm() {
           {/* Preço, Quantidade, Condição e Categoria */}
           <div className={styles.rowGroup}>
             <div className={styles.fieldGroupHalf}>
-              <label htmlFor="price" className={styles.label}>Preço (R$)</label>
+              <label htmlFor="price" className={styles.label}>
+                Preço (R$)
+              </label>
               <input
                 id="price"
                 name="price"
@@ -270,7 +285,9 @@ function CreateListingForm() {
             </div>
 
             <div className={styles.fieldGroupHalf}>
-              <label htmlFor="quantity" className={styles.label}>Quantidade</label>
+              <label htmlFor="quantity" className={styles.label}>
+                Quantidade
+              </label>
               <input
                 id="quantity"
                 name="quantity"
@@ -283,7 +300,9 @@ function CreateListingForm() {
             </div>
 
             <div className={styles.fieldGroupHalf}>
-              <label htmlFor="condition" className={styles.label}>Condição</label>
+              <label htmlFor="condition" className={styles.label}>
+                Condição
+              </label>
               <select
                 id="condition"
                 name="condition"
@@ -298,7 +317,9 @@ function CreateListingForm() {
             </div>
 
             <div className={styles.fieldGroupHalf}>
-              <label htmlFor="categoryId" className={styles.label}>Categoria</label>
+              <label htmlFor="categoryId" className={styles.label}>
+                Categoria
+              </label>
               <select
                 id="categoryId"
                 name="categoryId"
@@ -318,7 +339,9 @@ function CreateListingForm() {
 
           {/* Imagens */}
           <div className={styles.fieldGroup}>
-            <label className={styles.label}>Imagens do Produto (até 6 imagens)</label>
+            <label className={styles.label}>
+              Imagens do Produto (até 6 imagens)
+            </label>
             <input
               type="file"
               accept="image/jpeg,image/jpg,image/png,image/webp"
@@ -335,7 +358,11 @@ function CreateListingForm() {
               <div className={styles.imagePreviewContainer}>
                 {imagePreviews.map((preview, index) => (
                   <div key={index} className={styles.imagePreviewItem}>
-                    <img src={preview} alt={`Preview ${index + 1}`} className={styles.imagePreview} />
+                    <img
+                      src={preview}
+                      alt={`Preview ${index + 1}`}
+                      className={styles.imagePreview}
+                    />
                     <button
                       type="button"
                       onClick={() => removeImage(index)}
@@ -351,14 +378,22 @@ function CreateListingForm() {
         </div>
 
         {error && <div className={styles.errorMessage}>❌ {error}</div>}
-        {success && <div className={styles.successMessage}>✅ Anúncio criado com sucesso! Redirecionando...</div>}
+        {success && (
+          <div className={styles.successMessage}>
+            ✅ Anúncio criado com sucesso! Redirecionando...
+          </div>
+        )}
 
         <button
           type="submit"
           className={styles.createButton}
           disabled={isMutating || uploadingImages}
         >
-          {uploadingImages ? "Enviando imagens..." : isMutating ? "Criando..." : "Criar Anúncio"}
+          {uploadingImages
+            ? "Enviando imagens..."
+            : isMutating
+              ? "Criando..."
+              : "Criar Anúncio"}
         </button>
       </div>
     </form>

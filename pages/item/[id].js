@@ -215,10 +215,7 @@ export default function ProductDetailsPage() {
             <div className={styles.actionButtons}>
               {isOwnListing ? (
                 <>
-                  <button
-                    className={styles.editButton}
-                    onClick={handleEdit}
-                  >
+                  <button className={styles.editButton} onClick={handleEdit}>
                     ✏️ Editar Anúncio
                   </button>
                   <button

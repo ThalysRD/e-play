@@ -9,7 +9,7 @@
   overflow: hidden;
 }
 .loginLogo {
-  margin-bottom: 40px; 
+  margin-bottom: 40px;
   width: 200px;
   z-index: 10;
 }
@@ -18,7 +18,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 50vh; 
+  height: 50vh;
 }
 .spinner {
   width: 50px;
@@ -94,7 +94,10 @@
   color: #fff;
   font-size: 14px;
   outline: none;
-  transition: border 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+  transition:
+    border 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease;
 }
 .input::placeholder {
   color: var(--cor-texto-terciario);
@@ -102,7 +105,7 @@
 .input:focus {
   border-color: var(--cor-borda);
   box-shadow: 0 0 8px rgba(251, 184, 41, 0.677);
-  background: rgba(255,255,255,0.02);
+  background: rgba(255, 255, 255, 0.02);
 }
 .input:-webkit-autofill,
 .input:-webkit-autofill:hover,
@@ -126,8 +129,8 @@
 .checkbox {
   accent-color: var(--cor-amarelo-medio);
   margin-right: 6px;
-} 
-.rememberMe{
+}
+.rememberMe {
   font-size: 10px;
   display: flex;
   align-items: center;
@@ -154,7 +157,9 @@
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
   z-index: 2;
 }
 .loginButton:hover:not(:disabled) {
@@ -178,7 +183,7 @@
   text-decoration: none;
   transition: color 0.2s;
 }
-.createAccountLink:hover{
+.createAccountLink:hover {
   color: var(--cor-amarelo-claro);
   text-decoration: underline;
 }

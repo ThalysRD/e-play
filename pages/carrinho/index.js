@@ -17,9 +17,9 @@ const CarrinhoPage = () => {
   const router = useRouter();
 
   const formatarPreco = (preco) => {
-    return new Intl.NumberFormat('pt-BR', {
-      style: 'currency',
-      currency: 'BRL',
+    return new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
     }).format(preco);
   };
 
@@ -36,7 +36,7 @@ const CarrinhoPage = () => {
           <p>Adicione seus jogos ao carrinho para continuar comprando!</p>
           <button
             className={styles.voltarCatalogo}
-            onClick={() => router.push('/')}
+            onClick={() => router.push("/")}
           >
             Voltar ao Catálogo
           </button>
@@ -112,8 +112,8 @@ const CarrinhoPage = () => {
 
           <div className={styles.freteInfo}>
             {calcularFrete() === 0
-              ? '🎉 Frete Grátis!'
-              : 'Frete grátis acima de R$ 200,00'}
+              ? "🎉 Frete Grátis!"
+              : "Frete grátis acima de R$ 200,00"}
           </div>
 
           <div className={styles.resumoLinha}>
@@ -125,7 +125,7 @@ const CarrinhoPage = () => {
             <span>Frete:</span>
             <span>
               {calcularFrete() === 0
-                ? 'Grátis'
+                ? "Grátis"
                 : formatarPreco(calcularFrete())}
             </span>
           </div>

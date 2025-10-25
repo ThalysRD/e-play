@@ -36,7 +36,10 @@ export default function LoginPage() {
           Termos de Uso
         </a>
         <span className={styles.linkSeparator}>|</span>
-        <a href="/politicas-de-privacidade" className={styles.privacyPolicyLink}>
+        <a
+          href="/politicas-de-privacidade"
+          className={styles.privacyPolicyLink}
+        >
           Políticas de Privacidade
         </a>
       </div>
@@ -52,7 +55,10 @@ function LoginForm() {
   });
   const [error, setError] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
-  const { trigger, isMutating } = useSWRMutation("/api/v1/sessions", sendLoginRequest);
+  const { trigger, isMutating } = useSWRMutation(
+    "/api/v1/sessions",
+    sendLoginRequest,
+  );
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -80,10 +86,10 @@ function LoginForm() {
     if (isSuccess) {
       const timer = setTimeout(() => {
         router.push("/");
-      }, 800)
+      }, 800);
       return () => clearTimeout(timer);
     }
-  }, [isSuccess, router])
+  }, [isSuccess, router]);
 
   if (isSuccess) {
     return (
@@ -96,7 +102,6 @@ function LoginForm() {
   return (
     <form onSubmit={handleSubmit} className={styles.loginForm}>
       <div className={styles.formBackground}>
-
         <h2 className={styles.title}>Bem vindo de volta!</h2>
         <div className={styles.fieldGroup}>
           <div className={styles.inputContainer}>
@@ -142,7 +147,11 @@ function LoginForm() {
 
         {error && <div className={styles.errorMessage}>❌ {error}</div>}
 
-        <button type="submit" className={styles.loginButton} disabled={isMutating}>
+        <button
+          type="submit"
+          className={styles.loginButton}
+          disabled={isMutating}
+        >
           {isMutating ? "Entrando..." : "Entrar"}
         </button>
 
@@ -153,6 +162,6 @@ function LoginForm() {
           </Link>
         </p>
       </div>
-    </form >
+    </form>
   );
 }

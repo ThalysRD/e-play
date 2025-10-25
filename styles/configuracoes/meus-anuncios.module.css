@@ -8,7 +8,7 @@
   margin-bottom: 0.5rem;
   margin-top: 0.7rem;
 }
-.divider{
+.divider {
   background-color: var(--cor-borda);
   height: 0.5px;
   width: 100vh;
@@ -54,7 +54,9 @@
   border-radius: 10px;
   text-decoration: none;
   display: inline-block;
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
   cursor: pointer;
 }
 
@@ -72,14 +74,15 @@
   border-radius: 10px;
   text-decoration: none;
   display: inline-block;
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
   cursor: pointer;
 }
 
 .createButton2:hover {
   background: var(--cor-rosa-escuro);
 }
-
 
 /* Grid de Anúncios */
 .listingsGrid {

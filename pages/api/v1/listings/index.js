@@ -42,7 +42,6 @@ async function postHandler(request, response) {
       ...newListing,
       message: "Anúncio e imagens criados com sucesso",
     });
-
   } catch (error) {
     return controller.errorHandlers(error, request, response);
   }

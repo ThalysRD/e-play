@@ -9,7 +9,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh; 
+  height: 100vh;
   background-color: var(--cor-secundaria);
 }
 .spinner {
@@ -36,12 +36,12 @@
   padding: 20px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; 
+  justify-content: space-between;
   position: fixed; /* Fixa o elemento na tela */
-  height: 100vh;   /* Garante que ocupe 100% da altura da tela */
-  top: 0;          /* Alinha no topo */
-  left: 0;         /* Alinha na esquerda */
-  z-index: 1000; 
+  height: 100vh; /* Garante que ocupe 100% da altura da tela */
+  top: 0; /* Alinha no topo */
+  left: 0; /* Alinha na esquerda */
+  z-index: 1000;
 }
 
 .greeting {
@@ -49,13 +49,13 @@
   font-weight: 600;
   margin-bottom: 40px;
 }
-.navLoginCadastro{
+.navLoginCadastro {
   display: flex;
   flex-direction: column;
   margin: 5px;
   margin-bottom: 50px;
 }
-.navLinkLoginCadastro{
+.navLinkLoginCadastro {
   text-decoration: none;
   color: var(--cor-texto);
   font-size: 13px;
@@ -63,7 +63,8 @@
 .navItemLoginCadastro {
   display: flex;
   align-items: center;
-  border-radius: 10px;  color: var(--cor-texto);
+  border-radius: 10px;
+  color: var(--cor-texto);
 }
 .navItemLoginCadastro span {
   display: block;
@@ -109,7 +110,7 @@
 
 /* ------- Wrapper para o conteúdo e footer ------- */
 .contentWrapper {
-  min-height: 100vh; 
+  min-height: 100vh;
   display: flex;
   flex: 1;
   flex-direction: column;

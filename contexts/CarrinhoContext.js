@@ -6,7 +6,7 @@ const CarrinhoContext = createContext();
 export const useCarrinho = () => {
   const context = useContext(CarrinhoContext);
   if (!context) {
-    throw new Error('useCarrinho deve ser usado dentro de um CarrinhoProvider');
+    throw new Error("useCarrinho deve ser usado dentro de um CarrinhoProvider");
   }
   return context;
 };
@@ -62,7 +62,7 @@ export const CarrinhoProvider = ({ children }) => {
         return itensAtuais.map((item) =>
           item.id === produto.id
             ? { ...item, quantidade: item.quantidade + 1 }
-            : item
+            : item,
         );
       }
 
@@ -71,7 +71,9 @@ export const CarrinhoProvider = ({ children }) => {
   };
 
   const removerItem = (produtoId) => {
-    setItens((itensAtuais) => itensAtuais.filter((item) => item.id !== produtoId));
+    setItens((itensAtuais) =>
+      itensAtuais.filter((item) => item.id !== produtoId),
+    );
   };
 
   const atualizarQuantidade = (produtoId, novaQuantidade) => {
@@ -82,8 +84,8 @@ export const CarrinhoProvider = ({ children }) => {
 
     setItens((itensAtuais) =>
       itensAtuais.map((item) =>
-        item.id === produtoId ? { ...item, quantidade: novaQuantidade } : item
-      )
+        item.id === produtoId ? { ...item, quantidade: novaQuantidade } : item,
+      ),
     );
   };
 
@@ -92,7 +94,10 @@ export const CarrinhoProvider = ({ children }) => {
   };
 
   const calcularSubtotal = () => {
-    return itens.reduce((total, item) => total + item.preco * item.quantidade, 0);
+    return itens.reduce(
+      (total, item) => total + item.preco * item.quantidade,
+      0,
+    );
   };
 
   const calcularFrete = () => {
@@ -104,7 +109,10 @@ export const CarrinhoProvider = ({ children }) => {
     return calcularSubtotal() + calcularFrete();
   };
 
-  const quantidadeTotal = itens.reduce((total, item) => total + item.quantidade, 0);
+  const quantidadeTotal = itens.reduce(
+    (total, item) => total + item.quantidade,
+    0,
+  );
 
   return (
     <CarrinhoContext.Provider

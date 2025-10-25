@@ -9,9 +9,8 @@ export default function ListingCard({ listing }) {
   }
 
   const firstImage = listing.images?.[0];
-  const quantityText = listing.quantity > 1
-    ? `${listing.quantity} disponíveis`
-    : '1 disponível';
+  const quantityText =
+    listing.quantity > 1 ? `${listing.quantity} disponíveis` : "1 disponível";
 
   return (
     <div className={styles.listingCard} onClick={handleClick}>

@@ -1,5 +1,5 @@
 exports.up = (pgm) => {
-  pgm.createType('listing_condition', ['Novo', 'Usado', 'Recondicionado']);
+  pgm.createType("listing_condition", ["Novo", "Usado", "Recondicionado"]);
 
   pgm.createTable("listings", {
     id: {

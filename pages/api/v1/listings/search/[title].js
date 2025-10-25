@@ -13,7 +13,7 @@ async function getHandler(request, response) {
 
   if (!title || title.trim() === "") {
     return response.status(400).json({
-      error: "Título é obrigatório"
+      error: "Título é obrigatório",
     });
   }
 

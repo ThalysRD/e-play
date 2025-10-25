@@ -7,10 +7,10 @@ exports.up = (pgm) => {
       unique: true,
     },
     created_at: {
-      type: 'timestamp',
+      type: "timestamp",
       notNull: true,
-      default: pgm.func('current_timestamp'),
-    }
+      default: pgm.func("current_timestamp"),
+    },
   });
 
   pgm.sql(`

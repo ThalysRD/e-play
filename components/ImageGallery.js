@@ -31,8 +31,9 @@ export default function ImageGallery({ images, title }) {
           {images.map((image, index) => (
             <div
               key={image.id}
-              className={`${styles.thumbnail} ${index === selectedIndex ? styles.active : ""
-                }`}
+              className={`${styles.thumbnail} ${
+                index === selectedIndex ? styles.active : ""
+              }`}
               onClick={() => setSelectedIndex(index)}
             >
               <img

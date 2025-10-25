@@ -36,7 +36,7 @@ export default function MeusAnuncios() {
 
       const allListings = await response.json();
       const userListings = allListings.filter(
-        (listing) => listing.user_id === user.id
+        (listing) => listing.user_id === user.id,
       );
       setListings(userListings);
     } catch (err) {
@@ -115,20 +115,22 @@ export default function MeusAnuncios() {
             <button
               className={styles.createButton}
               onClick={() => router.push("/item/criar")}
-            ><FaPlus style={{ marginRight: "8px" }} />
-              Criar anúncio
-            </button>
-          </div>
-        ) : (
-          <><div style={{ marginTop: "40px" }}>
-            <button
-              className={styles.createButton2}
-              onClick={() => router.push("/item/criar")}
             >
               <FaPlus style={{ marginRight: "8px" }} />
               Criar anúncio
             </button>
           </div>
+        ) : (
+          <>
+            <div style={{ marginTop: "40px" }}>
+              <button
+                className={styles.createButton2}
+                onClick={() => router.push("/item/criar")}
+              >
+                <FaPlus style={{ marginRight: "8px" }} />
+                Criar anúncio
+              </button>
+            </div>
             <div className={styles.listingsGrid}>
               {listings.map((listing) => (
                 <ListingCardEdit
