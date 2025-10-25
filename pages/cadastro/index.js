@@ -189,7 +189,7 @@ function RegisterForm() {
 
         {success && (
           <div className={styles.successMessage}>
-            ✅ Conta criada com sucesso!
+            ✅ Conta criada com sucesso! Verifique seu e-mail.
           </div>
         )}
 

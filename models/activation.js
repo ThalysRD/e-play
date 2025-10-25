@@ -84,15 +84,67 @@ async function create(userId) {
 }
 
 async function sendEmailToUser(user, activationToken) {
+  const activationUrl = `${webserver.origin}/cadastro/ativar/${activationToken.id}`;
+
   await email.send({
     from: "E-Play <contato@lojaeplay.com.br>",
     to: user.email,
-    subject: "Ative seu cadastro no E-Play!",
-    text: `${user.username}, clique no link abaixo para finalizar seu cadastro no E-Play:
-    
-${webserver.origin}/cadastro/ativar/${activationToken.id}
-
-Este link expira em 15 minutos.
+    subject: "Ative seu cadastro no E-Play! 🎮",
+    html: `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        </head>
+        <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; line-height: 1.6; color: #333; background: #f5f5f5;">
+          <div style="max-width: 600px; margin: 0 auto; background: white; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); overflow: hidden;">
+            <!-- Header -->
+            <div style="background: linear-gradient(135deg, #3c1053 0%, #000428 100%); padding: 40px 20px; text-align: center;">
+              <h1 style="color: white; margin: 0; font-size: 24px;">🎮 E-Play</h1>
+            </div>
+            
+            <!-- Content -->
+            <div style="padding: 40px 30px;">
+              <h2 style="color: #3c1053; font-size: 20px; margin-top: 0;">Bem-vindo, ${user.username}!</h2>
+              
+              <p style="color: #666; font-size: 16px; margin: 20px 0;">
+                Obrigado por se cadastrar no <strong>E-Play</strong>! Para finalizar seu cadastro e começar a comprar e vender, clique no botão abaixo:
+              </p>
+              
+              <!-- CTA Button -->
+              <div style="text-align: center; margin: 30px 0;">
+                <a href="${activationUrl}" style="display: inline-block; background: #ec4079; color: white; text-decoration: none; padding: 14px 40px; border-radius: 8px; font-weight: 600; font-size: 16px; transition: background 0.2s;">
+                  Ativar minha conta
+                </a>
+              </div>
+              
+              <p style="color: #999; font-size: 14px; text-align: center; margin: 20px 0;">
+                Ou copie e cole este link no seu navegador:
+              </p>
+              
+              <p style="background: #f9f9f9; padding: 15px; border-radius: 6px; word-break: break-all; font-size: 13px; color: #666;">
+                ${activationUrl}
+              </p>
+              
+              <p style="color: #999; font-size: 12px; margin-top: 20px; border-top: 1px solid #e0e0e0; padding-top: 20px;">
+                ⏱️ <strong>Este link expira em 15 minutos</strong>
+              </p>
+              
+              <p style="color: #999; font-size: 12px; margin-top: 10px;">
+                Se você não se cadastrou, ignore este email.
+              </p>
+            </div>
+            
+            <!-- Footer -->
+            <div style="background: #f5f5f5; padding: 20px; text-align: center; border-top: 1px solid #e0e0e0;">
+              <p style="color: #999; font-size: 12px; margin: 0;">
+                E-Play © 2025 | Todos os direitos reservados
+              </p>
+            </div>
+          </div>
+        </body>
+      </html>
     `,
   });
 }
