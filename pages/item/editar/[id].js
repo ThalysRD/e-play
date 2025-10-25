@@ -75,7 +75,7 @@ function EditListingForm() {
         title: listing.title,
         description: listing.description,
         price: listing.price,
-        condition: listing.listing_condition,
+        condition: listing.condition,
         quantity: listing.quantity,
         categoryId: listing.category_id,
       });

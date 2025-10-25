@@ -1,17 +1,24 @@
-.carrinhoContainer {
-  padding: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
+
+.header {
+  background-color: var(--cor-secundaria);
+  border-radius: 16px;
+  color: var(--cor-texto);
+  padding: 10px 10px 20px 20px;
+}
+
+.divider{
+  background-color: var(--cor-borda);
+  height: 2px;
+  width: 100vh;
 }
 
 .carrinhoHeader {
   margin-bottom: 2rem;
 }
 
-.carrinhoHeader h1 {
-  color: var(--cor-texto);
-  font-size: 2rem;
+.carrinhoHeader h2 {
   margin-bottom: 0.5rem;
+  margin-top: 0.7rem;
 }
 
 .carrinhoHeader p {
@@ -76,7 +83,7 @@
   gap: 1.5rem;
   align-items: center;
   transition: all 0.3s ease;
-  border: 2px solid transparent;
+  border: 1px solid transparent;
 }
 
 .itemCarrinho:hover {
@@ -187,7 +194,6 @@
   height: fit-content;
   position: sticky;
   top: 2rem;
-  border: 2px solid var(--cor-borda);
 }
 
 .resumoPedido h2 {

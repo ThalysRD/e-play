@@ -24,7 +24,7 @@ const CarrinhoPage = () => {
   };
 
   const handleFinalizarCompra = () => {
-    router.push('/finalizacao-compra');
+    router.push('/carrinho/finalizacao-compra');
   };
 
   if (itens.length === 0) {
@@ -47,8 +47,10 @@ const CarrinhoPage = () => {
   return (
     <div className={styles.carrinhoContainer}>
       <div className={styles.carrinhoHeader}>
-        <h1>Meu Carrinho</h1>
-        <p>Você tem {itens.length} {itens.length === 1 ? 'item' : 'itens'} no carrinho</p>
+        <header className={styles.header}>
+          <h2>Meu carrinho</h2>
+          <div className={styles.divider}></div>
+        </header>
       </div>
 
       <div className={styles.carrinhoContent}>
