@@ -28,10 +28,9 @@ async function create(userInputValues, options = {}) {
     });
   }
 
-
   try {
-    const imageCreated = await runInsertQuery(listingId, imageUrl)
-    return imageCreated
+    const imageCreated = await runInsertQuery(listingId, imageUrl);
+    return imageCreated;
     async function runInsertQuery(listingId, imageUrl) {
       const results = await client.query({
         text: `

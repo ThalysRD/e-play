@@ -135,10 +135,33 @@ async function update(userInputValues) {
         userWithNewValues.zipCode || null,
         userWithNewValues.profileImageUrl || null,
         userWithNewValues.phoneNumber || null,
-        userWithNewValues.profileBio || null
+        userWithNewValues.profileBio || null,
       ],
     });
 
+    return results.rows[0];
+  }
+}
+
+async function setPermissions(userId, permissions) {
+  const updatedUser = await runUpdateQuery(userId, permissions);
+  console.log(updatedUser);
+  return updatedUser;
+  async function runUpdateQuery(userId, permissions) {
+    const results = await database.query({
+      text: `
+        UPDATE
+          users
+        SET
+          permissions = $2,
+          updated_at = timezone('utc', now())
+        WHERE
+          id = $1
+        RETURNING
+          *
+      ;`,
+      values: [userId, permissions],
+    });
     return results.rows[0];
   }
 }
@@ -188,7 +211,8 @@ const user = {
   validateUniqueEmail,
   validateUniqueUsername,
   findOneByEmail,
-  update
+  update,
+  setPermissions,
 };
 
 export default user;

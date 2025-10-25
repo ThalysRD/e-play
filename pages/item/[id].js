@@ -41,7 +41,7 @@ export default function ProductDetailsPage() {
       const data = await response.json();
       setListing(data);
     } catch (err) {
-      console.error('[ProductDetails] Error fetching listing:', err);
+      console.error("[ProductDetails] Error fetching listing:", err);
       setError(err.message);
     } finally {
       setLoading(false);
@@ -185,10 +185,7 @@ export default function ProductDetailsPage() {
             <div className={styles.actionButtons}>
               {isOwnListing ? (
                 <>
-                  <button
-                    className={styles.editButton}
-                    onClick={handleEdit}
-                  >
+                  <button className={styles.editButton} onClick={handleEdit}>
                     ✏️ Editar Anúncio
                   </button>
                   <button

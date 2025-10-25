@@ -104,7 +104,7 @@
 .price {
   font-size: 3.5rem;
   font-weight: bold;
-  color: var(--cor-amarelo-medio)
+  color: var(--cor-amarelo-medio);
 }
 
 .detailsGrid {

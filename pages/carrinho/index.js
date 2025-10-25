@@ -17,14 +17,14 @@ const CarrinhoPage = () => {
   const router = useRouter();
 
   const formatarPreco = (preco) => {
-    return new Intl.NumberFormat('pt-BR', {
-      style: 'currency',
-      currency: 'BRL',
+    return new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
     }).format(preco);
   };
 
   const handleFinalizarCompra = () => {
-    router.push('/finalizacao-compra');
+    router.push("/finalizacao-compra");
   };
 
   if (itens.length === 0) {
@@ -35,7 +35,7 @@ const CarrinhoPage = () => {
           <p>Adicione seus jogos ao carrinho para continuar comprando!</p>
           <button
             className={styles.voltarCatalogo}
-            onClick={() => router.push('/')}
+            onClick={() => router.push("/")}
           >
             Voltar ao Catálogo
           </button>
@@ -48,7 +48,10 @@ const CarrinhoPage = () => {
     <div className={styles.carrinhoContainer}>
       <div className={styles.carrinhoHeader}>
         <h1>Meu Carrinho</h1>
-        <p>Você tem {itens.length} {itens.length === 1 ? 'item' : 'itens'} no carrinho</p>
+        <p>
+          Você tem {itens.length} {itens.length === 1 ? "item" : "itens"} no
+          carrinho
+        </p>
       </div>
 
       <div className={styles.carrinhoContent}>
@@ -56,7 +59,7 @@ const CarrinhoPage = () => {
           {itens.map((item) => (
             <div key={item.id} className={styles.itemCarrinho}>
               <img
-                src={item.imagem || '/placeholder-game.png'}
+                src={item.imagem || "/placeholder-game.png"}
                 alt={item.nome}
                 className={styles.itemImagem}
               />
@@ -70,15 +73,21 @@ const CarrinhoPage = () => {
                 <div className={styles.quantidadeControle}>
                   <button
                     className={styles.quantidadeBtn}
-                    onClick={() => atualizarQuantidade(item.id, item.quantidade - 1)}
+                    onClick={() =>
+                      atualizarQuantidade(item.id, item.quantidade - 1)
+                    }
                     disabled={item.quantidade <= 1}
                   >
                     <IoRemove />
                   </button>
-                  <span className={styles.quantidadeValor}>{item.quantidade}</span>
+                  <span className={styles.quantidadeValor}>
+                    {item.quantidade}
+                  </span>
                   <button
                     className={styles.quantidadeBtn}
-                    onClick={() => atualizarQuantidade(item.id, item.quantidade + 1)}
+                    onClick={() =>
+                      atualizarQuantidade(item.id, item.quantidade + 1)
+                    }
                   >
                     <IoAdd />
                   </button>
@@ -101,8 +110,8 @@ const CarrinhoPage = () => {
 
           <div className={styles.freteInfo}>
             {calcularFrete() === 0
-              ? '🎉 Frete Grátis!'
-              : 'Frete grátis acima de R$ 200,00'}
+              ? "🎉 Frete Grátis!"
+              : "Frete grátis acima de R$ 200,00"}
           </div>
 
           <div className={styles.resumoLinha}>
@@ -114,7 +123,7 @@ const CarrinhoPage = () => {
             <span>Frete:</span>
             <span>
               {calcularFrete() === 0
-                ? 'Grátis'
+                ? "Grátis"
                 : formatarPreco(calcularFrete())}
             </span>
           </div>
@@ -137,4 +146,3 @@ const CarrinhoPage = () => {
 };
 
 export default CarrinhoPage;
-

@@ -122,10 +122,7 @@ async function checkUserPurchase(userId, productId) {
           AND o.status = 'delivered'
           AND o.items::jsonb @> $2::jsonb
         LIMIT 1;`,
-      values: [
-        userId,
-        JSON.stringify([{ product_id: productId }])
-      ],
+      values: [userId, JSON.stringify([{ product_id: productId }])],
     });
 
     return results.rowCount > 0 ? results.rows[0] : null;
@@ -160,25 +157,32 @@ async function checkExistingReview(userId, productId) {
 async function create(userId, productId, reviewData) {
   // Verifica se o usuário comprou o produto
   const purchase = await checkUserPurchase(userId, productId);
-  
+
   if (!purchase) {
     throw new ValidationError({
       message: "Você precisa ter comprado este produto para avaliá-lo.",
-      action: "Apenas clientes que compraram o produto podem deixar avaliações.",
+      action:
+        "Apenas clientes que compraram o produto podem deixar avaliações.",
     });
   }
 
   // Verifica se já existe uma avaliação deste usuário para este produto
   const existingReview = await checkExistingReview(userId, productId);
-  
+
   if (existingReview) {
     throw new ValidationError({
       message: "Você já avaliou este produto.",
-      action: "Você pode editar sua avaliação existente ao invés de criar uma nova.",
+      action:
+        "Você pode editar sua avaliação existente ao invés de criar uma nova.",
     });
   }
 
-  const newReview = await runInsertQuery(userId, productId, reviewData, purchase.order_id);
+  const newReview = await runInsertQuery(
+    userId,
+    productId,
+    reviewData,
+    purchase.order_id,
+  );
   return newReview;
 
   async function runInsertQuery(userId, productId, reviewData, orderId) {
@@ -190,7 +194,7 @@ async function create(userId, productId, reviewData) {
       cons = null,
       recommended = true,
       verified_purchase = true,
-      images = []
+      images = [],
     } = reviewData;
 
     // Validação do rating
@@ -228,7 +232,7 @@ async function create(userId, productId, reviewData) {
         cons,
         recommended,
         verified_purchase,
-        JSON.stringify(images)
+        JSON.stringify(images),
       ],
     });
 
@@ -244,15 +248,8 @@ async function update(reviewId, userId, reviewData) {
   return updatedReview;
 
   async function runUpdateQuery(reviewId, userId, reviewData) {
-    const {
-      rating,
-      title,
-      comment,
-      pros,
-      cons,
-      recommended,
-      images
-    } = reviewData;
+    const { rating, title, comment, pros, cons, recommended, images } =
+      reviewData;
 
     // Validação do rating se fornecido
     if (rating !== undefined && (rating < 1 || rating > 5)) {
@@ -291,13 +288,14 @@ async function update(reviewId, userId, reviewData) {
         pros,
         cons,
         recommended,
-        images ? JSON.stringify(images) : undefined
+        images ? JSON.stringify(images) : undefined,
       ],
     });
 
     if (results.rowCount === 0) {
       throw new NotFoundError({
-        message: "Avaliação não encontrada ou você não tem permissão para editá-la.",
+        message:
+          "Avaliação não encontrada ou você não tem permissão para editá-la.",
         action: "Verifique se você é o autor desta avaliação.",
       });
     }
@@ -364,7 +362,8 @@ async function addHelpful(reviewId, userId) {
     if (checkResults.rowCount > 0) {
       throw new ValidationError({
         message: "Você já marcou esta avaliação como útil.",
-        action: "Cada usuário pode marcar uma avaliação como útil apenas uma vez.",
+        action:
+          "Cada usuário pode marcar uma avaliação como útil apenas uma vez.",
       });
     }
 

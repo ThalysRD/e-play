@@ -39,7 +39,6 @@ export default function HomePage() {
 
       <main className={styles.mainContent}>
         <div className={styles.container}>
-
           {loading && (
             <div className={load.loadingContainer}>
               <div className={load.spinner}></div>

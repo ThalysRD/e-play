@@ -20,7 +20,7 @@ async function getHandler(request, response) {
 
     return response.status(200).json({
       ...listingData,
-      images
+      images,
     });
   } catch (error) {
     return controller.errorHandlers.onError(error, request, response);
@@ -47,12 +47,16 @@ async function patchHandler(request, response) {
     }
 
     if (existingListing.user_id !== userSession.user_id) {
-      return response.status(403).json({ error: "Você não tem permissão para editar este anúncio" });
+      return response
+        .status(403)
+        .json({ error: "Você não tem permissão para editar este anúncio" });
     }
 
     const finalImages = request.body.images || [];
     if (finalImages.length === 0) {
-      return response.status(400).json({ error: "O anúncio deve ter pelo menos 1 imagem" });
+      return response
+        .status(400)
+        .json({ error: "O anúncio deve ter pelo menos 1 imagem" });
     }
 
     const updatedListing = await listing.updateById(id, request.body);
@@ -61,7 +65,7 @@ async function patchHandler(request, response) {
 
     return response.status(200).json({
       ...updatedListing,
-      images
+      images,
     });
   } catch (error) {
     return controller.errorHandlers.onError(error, request, response);
@@ -84,7 +88,9 @@ async function deleteHandler(request, response) {
 
     await listing.deleteById(id);
 
-    return response.status(200).json({ success: true, message: "Anúncio deletado com sucesso" });
+    return response
+      .status(200)
+      .json({ success: true, message: "Anúncio deletado com sucesso" });
   } catch (error) {
     return controller.errorHandlers.onError(error, request, response);
   }

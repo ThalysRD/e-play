@@ -34,13 +34,13 @@ async function transaction(callback) {
   let client;
   try {
     client = await getNewClient();
-    await client.query('BEGIN');
+    await client.query("BEGIN");
     const result = await callback(client);
-    await client.query('COMMIT');
+    await client.query("COMMIT");
     return result;
   } catch (error) {
     if (client) {
-      await client.query('ROLLBACK');
+      await client.query("ROLLBACK");
     }
     throw error;
   } finally {

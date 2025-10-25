@@ -47,7 +47,9 @@
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
   color: var(--cor-texto);
 }
 
@@ -62,7 +64,7 @@
 }
 
 .confirmButton {
-border: none;
+  border: none;
   background-color: var(--cor-rosa-medio);
   color: #fff;
 }

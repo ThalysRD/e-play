@@ -55,7 +55,7 @@ function EditListingForm() {
 
   const { trigger, isMutating } = useSWRMutation(
     id ? `/api/v1/listings/${id}` : null,
-    sendRequest
+    sendRequest,
   );
 
   useEffect(() => {
@@ -80,17 +80,17 @@ function EditListingForm() {
         categoryId: listing.category_id,
       });
 
-      const imageUrls = (listing.images || []).map(img => img.image_url);
+      const imageUrls = (listing.images || []).map((img) => img.image_url);
       setImages(imageUrls);
     } catch (err) {
-      console.error(`${LOG_PREFIX} erro ao carregar`, err);
+      console.error("Erro ao carregar anúncio:", err);
       setError(err.message);
     }
   }
 
   function handleChange(e) {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   }
 
   async function handleImageChange(e) {
@@ -104,14 +104,14 @@ function EditListingForm() {
     }
 
     const maxSize = 5 * 1024 * 1024;
-    if (files.some(f => f.size > maxSize)) {
+    if (files.some((f) => f.size > maxSize)) {
       setError("Imagens maiores que 5MB não são permitidas");
       e.target.value = "";
       return;
     }
 
-    const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
-    if (files.some(f => !validTypes.includes(f.type))) {
+    const validTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+    if (files.some((f) => !validTypes.includes(f.type))) {
       setError("Apenas JPG, PNG e WEBP são permitidos");
       e.target.value = "";
       return;
@@ -120,9 +120,9 @@ function EditListingForm() {
     setUploading(true);
     try {
       const uploadedUrls = await Promise.all(
-        files.map(file => uploadImageToFirebase(file))
+        files.map((file) => uploadImageToFirebase(file)),
       );
-      setImages(prev => [...prev, ...uploadedUrls]);
+      setImages((prev) => [...prev, ...uploadedUrls]);
       setError("");
     } catch (err) {
       setError(err.message);
@@ -148,7 +148,7 @@ function EditListingForm() {
 
       task.on(
         "state_changed",
-        () => { },
+        () => {},
         (err) => {
           clearTimeout(timeout);
           reject(err);
@@ -161,7 +161,7 @@ function EditListingForm() {
           } catch (err) {
             reject(err);
           }
-        }
+        },
       );
     });
   }
@@ -171,7 +171,7 @@ function EditListingForm() {
       setError("O anúncio deve ter pelo menos 1 imagem");
       return;
     }
-    setImages(prev => prev.filter((_, i) => i !== index));
+    setImages((prev) => prev.filter((_, i) => i !== index));
   }
 
   async function handleSubmit(e) {
@@ -214,17 +214,22 @@ function EditListingForm() {
       const result = await trigger(dataToSend);
 
       setSuccess(true);
-      setTimeout(() => router.push(`/item/${result.id}?refresh=${Date.now()}`), 1500);
+      setTimeout(
+        () => router.push(`/item/${result.id}?refresh=${Date.now()}`),
+        1500,
+      );
     } catch (err) {
-      console.error(`${LOG_PREFIX} erro`, err);
+      console.error("Erro ao atualizar anúncio:", err);
       setError(err?.message || "Erro ao atualizar anúncio");
     }
   }
 
   useEffect(() => {
     return () => {
-      images.forEach(url => {
-        try { URL.revokeObjectURL(url); } catch { }
+      images.forEach((url) => {
+        try {
+          URL.revokeObjectURL(url);
+        } catch {}
       });
     };
   }, [images]);
@@ -238,7 +243,9 @@ function EditListingForm() {
 
         <div className={styles.formContainer}>
           <div className={styles.fieldGroup}>
-            <label htmlFor="title" className={styles.label}>Título do Anúncio</label>
+            <label htmlFor="title" className={styles.label}>
+              Título do Anúncio
+            </label>
             <input
               id="title"
               name="title"
@@ -252,7 +259,9 @@ function EditListingForm() {
           </div>
 
           <div className={styles.fieldGroup}>
-            <label htmlFor="description" className={styles.label}>Descrição</label>
+            <label htmlFor="description" className={styles.label}>
+              Descrição
+            </label>
             <textarea
               id="description"
               name="description"
@@ -267,7 +276,9 @@ function EditListingForm() {
 
           <div className={styles.rowGroup}>
             <div className={styles.fieldGroupHalf}>
-              <label htmlFor="price" className={styles.label}>Preço (R$)</label>
+              <label htmlFor="price" className={styles.label}>
+                Preço (R$)
+              </label>
               <input
                 id="price"
                 name="price"
@@ -282,7 +293,9 @@ function EditListingForm() {
             </div>
 
             <div className={styles.fieldGroupHalf}>
-              <label htmlFor="quantity" className={styles.label}>Quantidade</label>
+              <label htmlFor="quantity" className={styles.label}>
+                Quantidade
+              </label>
               <input
                 id="quantity"
                 name="quantity"
@@ -295,7 +308,9 @@ function EditListingForm() {
             </div>
 
             <div className={styles.fieldGroupHalf}>
-              <label htmlFor="condition" className={styles.label}>Condição</label>
+              <label htmlFor="condition" className={styles.label}>
+                Condição
+              </label>
               <select
                 id="condition"
                 name="condition"
@@ -310,7 +325,9 @@ function EditListingForm() {
             </div>
 
             <div className={styles.fieldGroupHalf}>
-              <label htmlFor="categoryId" className={styles.label}>Categoria</label>
+              <label htmlFor="categoryId" className={styles.label}>
+                Categoria
+              </label>
               <select
                 id="categoryId"
                 name="categoryId"
@@ -329,7 +346,9 @@ function EditListingForm() {
           </div>
 
           <div className={styles.fieldGroup}>
-            <label className={styles.label}>Imagens do Produto (até 6 imagens)</label>
+            <label className={styles.label}>
+              Imagens do Produto (até 6 imagens)
+            </label>
             <input
               type="file"
               accept="image/jpeg,image/jpg,image/png,image/webp"
@@ -346,13 +365,21 @@ function EditListingForm() {
               <div className={styles.imagePreviewContainer}>
                 {images.map((image, index) => (
                   <div key={index} className={styles.imagePreviewItem}>
-                    <img src={image} alt={`Preview ${index + 1}`} className={styles.imagePreview} />
+                    <img
+                      src={image}
+                      alt={`Preview ${index + 1}`}
+                      className={styles.imagePreview}
+                    />
                     <button
                       type="button"
                       onClick={() => removeImage(index)}
                       className={styles.removeImageBtn}
                       disabled={images.length === 1}
-                      title={images.length === 1 ? "Precisa ter pelo menos 1 imagem" : "Remover imagem"}
+                      title={
+                        images.length === 1
+                          ? "Precisa ter pelo menos 1 imagem"
+                          : "Remover imagem"
+                      }
                     >
                       ✕
                     </button>
@@ -364,14 +391,22 @@ function EditListingForm() {
         </div>
 
         {error && <div className={styles.errorMessage}>❌ {error}</div>}
-        {success && <div className={styles.successMessage}>✅ Anúncio atualizado com sucesso! Redirecionando...</div>}
+        {success && (
+          <div className={styles.successMessage}>
+            ✅ Anúncio atualizado com sucesso! Redirecionando...
+          </div>
+        )}
 
         <button
           type="submit"
           className={styles.createButton}
           disabled={isMutating || uploading}
         >
-          {uploading ? "Enviando imagens..." : isMutating ? "Salvando..." : "Salvar Alterações"}
+          {uploading
+            ? "Enviando imagens..."
+            : isMutating
+              ? "Salvando..."
+              : "Salvar Alterações"}
         </button>
       </div>
     </form>

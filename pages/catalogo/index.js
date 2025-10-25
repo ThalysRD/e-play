@@ -25,7 +25,9 @@ export default function CatalogoPage() {
       try {
         setLoading(true);
         setErr("");
-        const res = await fetch(`/api/v1/listings/search/${encodeURIComponent(q)}`);
+        const res = await fetch(
+          `/api/v1/listings/search/${encodeURIComponent(q)}`,
+        );
         if (!res.ok) throw new Error("Sem resultados para a pesquisa.");
         const data = await res.json();
         if (!cancelled) setResults(Array.isArray(data) ? data : []);
@@ -53,10 +55,11 @@ export default function CatalogoPage() {
 
       <main className={styles.mainContent}>
         <div className={styles.container}>
-
-          {q && loading && <div className={load.loadingContainer}>
-            <div className={load.spinner}></div>
-          </div>}
+          {q && loading && (
+            <div className={load.loadingContainer}>
+              <div className={load.spinner}></div>
+            </div>
+          )}
 
           {q && !loading && !err && results.length === 0 && (
             <p className={styles.notFound}>Nenhum resultado para “{q}”.</p>
@@ -65,7 +68,9 @@ export default function CatalogoPage() {
           {q && !loading && !err && results.length > 0 && (
             <div>
               <section className={styles.resultsSection}>
-                <h3 className={styles.sectionTitle}>Resultados para “{q}” ({results.length}):</h3>
+                <h3 className={styles.sectionTitle}>
+                  Resultados para “{q}” ({results.length}):
+                </h3>
                 <div className={styles.listingsGrid}>
                   {results.map((listing) => (
                     <ListingCard key={listing.id} listing={listing} />

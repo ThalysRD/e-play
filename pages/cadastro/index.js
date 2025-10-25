@@ -33,8 +33,10 @@ export default function RegisterPage() {
           Termos de Uso
         </a>
         <span className={styles.linkSeparator}>|</span>
-        <a href="/politicas-de-privacidade"
-          className={styles.privacyPolicyLink}>
+        <a
+          href="/politicas-de-privacidade"
+          className={styles.privacyPolicyLink}
+        >
           Políticas de Privacidade
         </a>
       </div>
