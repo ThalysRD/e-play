@@ -59,11 +59,6 @@ async function patchHandler(request, response) {
         .json({ error: "O anúncio deve ter pelo menos 1 imagem" });
     }
 
-    const finalImages = request.body.images || [];
-    if (finalImages.length === 0) {
-      return response.status(400).json({ error: "O anúncio deve ter pelo menos 1 imagem" });
-    }
-
     const updatedListing = await listing.updateById(id, request.body);
 
     const images = await listing.findImagesById(id);
