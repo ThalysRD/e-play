@@ -56,10 +56,9 @@ export default function ProductDetailsPage() {
     if (showToast) {
       const timer = setTimeout(() => {
         setShowToast(false);
-        setToastMessage("Adicionado ao carrinho!"); // Limpa a mensagem
-      }, 5000); // 5000ms = 5 segundos
+        setToastMessage("Adicionado ao carrinho!");
+      }, 5000);
 
-      // Limpa o timer se o componente for desmontado
       return () => clearTimeout(timer);
     }
   }, [showToast]);
@@ -154,7 +153,20 @@ export default function ProductDetailsPage() {
 
           {/* Informações do Produto */}
           <div className={styles.productInfo}>
-            <h1 className={styles.title}>{listing.title}</h1>
+            <div className={styles.row}>
+              {listing.username && (
+                <div className={styles.seller}>
+                  <div>Visite a loja</div>
+                  <Link
+                    href={`/vendedor/${listing.username}`}
+                    className={styles.sellerName}
+                  >
+                    {listing.username}
+                  </Link>
+                </div>
+              )}
+              <h1 className={styles.title}>{listing.title}</h1>
+            </div>
 
             <div className={styles.price}>
               R$ {Number(listing.price).toFixed(2)}
@@ -197,16 +209,6 @@ export default function ProductDetailsPage() {
               <div className={styles.description}>
                 <div className={styles.descriptionTitle}>Descrição</div>
                 <p className={styles.descriptionText}>{listing.description}</p>
-              </div>
-            )}
-
-            {listing.username && (
-              <div className={styles.seller}>
-                <div className={styles.sellerTitle}>Vendedor</div>
-                <div className={styles.sellerName}>{listing.username}</div>
-                {listing.email && (
-                  <div className={styles.sellerEmail}>{listing.email}</div>
-                )}
               </div>
             )}
 

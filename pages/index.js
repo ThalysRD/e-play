@@ -59,13 +59,12 @@ export default function HomePage() {
               <section className={styles.featuredSection}>
                 <h2 className={styles.sectionTitle}>Recomendados 🔥</h2>
                 <div className={styles.listingsGrid}>
-                  {listings.slice(0, 8).map((listing) => (
+                  {listings.slice(0, 4).map((listing) => (
                     <ListingCard key={listing.id} listing={listing} />
                   ))}
                 </div>
               </section>
 
-              {/* 
               <section className={styles.featuredSection}>
                 <h2 className={styles.sectionTitle}>Mais Vendidos 🏆</h2>
                 <div className={styles.listingsGrid}>
@@ -83,7 +82,6 @@ export default function HomePage() {
                   ))}
                 </div>
               </section>
-              */}
 
               <section className={styles.catalogSection}>
                 <h2 className={styles.sectionTitle}>Todos os Anúncios 📚</h2>

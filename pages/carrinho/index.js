@@ -24,7 +24,8 @@ const CarrinhoPage = () => {
   };
 
   const handleFinalizarCompra = () => {
-    router.push('/carrinho/finalizacao-compra');
+    /*router.push('/carrinho/finalizacao-compra');*/
+    alert("Funcionalidade de compra em desenvolvimento!");
   };
 
   if (itens.length === 0) {
@@ -55,47 +56,55 @@ const CarrinhoPage = () => {
 
       <div className={styles.carrinhoContent}>
         <div className={styles.carrinhoItens}>
-          {itens.map((item) => (
-            <div key={item.id} className={styles.itemCarrinho}>
-              <img
-                src={item.imagem || '/placeholder-game.png'}
-                alt={item.nome}
-                className={styles.itemImagem}
-              />
+          {itens.map((item) => {
+            const firstImage = item.imagem?.[0];
 
-              <div className={styles.itemDetalhes}>
-                <h3 className={styles.itemNome}>{item.nome}</h3>
-                <p className={styles.itemPreco}>{formatarPreco(item.preco)}</p>
-              </div>
+            return (
+              <div key={item.id} className={styles.itemCarrinho}>
+                {firstImage ? (
+                  <img
+                    src={firstImage.image_url}
+                    alt={item.nome}
+                    className={styles.itemImagem}
+                  />
+                ) : (
+                  <div className={styles.noImage}>🖼️</div>
+                )}
 
-              <div className={styles.itemControles}>
-                <div className={styles.quantidadeControle}>
-                  <button
-                    className={styles.quantidadeBtn}
-                    onClick={() => atualizarQuantidade(item.id, item.quantidade - 1)}
-                    disabled={item.quantidade <= 1}
-                  >
-                    <IoRemove />
-                  </button>
-                  <span className={styles.quantidadeValor}>{item.quantidade}</span>
-                  <button
-                    className={styles.quantidadeBtn}
-                    onClick={() => atualizarQuantidade(item.id, item.quantidade + 1)}
-                  >
-                    <IoAdd />
-                  </button>
+                <div className={styles.itemDetalhes}>
+                  <h3 className={styles.itemNome}>{item.nome}</h3>
+                  <p className={styles.itemPreco}>{formatarPreco(item.preco)}</p>
                 </div>
 
-                <button
-                  className={styles.removerBtn}
-                  onClick={() => removerItem(item.id)}
-                >
-                  <IoTrash />
-                  Remover
-                </button>
+                <div className={styles.itemControles}>
+                  <div className={styles.quantidadeControle}>
+                    <button
+                      className={styles.quantidadeBtn}
+                      onClick={() => atualizarQuantidade(item.id, item.quantidade - 1)}
+                      disabled={item.quantidade <= 1}
+                    >
+                      <IoRemove />
+                    </button>
+                    <span className={styles.quantidadeValor}>{item.quantidade}</span>
+                    <button
+                      className={styles.quantidadeBtn}
+                      onClick={() => atualizarQuantidade(item.id, item.quantidade + 1)}
+                    >
+                      <IoAdd />
+                    </button>
+                  </div>
+
+                  <button
+                    className={styles.removerBtn}
+                    onClick={() => removerItem(item.id)}
+                  >
+                    <IoTrash />
+                    Remover
+                  </button>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         <div className={styles.resumoPedido}>
@@ -139,4 +148,3 @@ const CarrinhoPage = () => {
 };
 
 export default CarrinhoPage;
-

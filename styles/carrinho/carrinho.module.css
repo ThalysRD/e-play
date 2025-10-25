@@ -99,6 +99,18 @@
   background: var(--cor-primaria);
 }
 
+.noImage {
+  background: var(--cor-amarelo-escuro-hoover);
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 20px;
+  width: 120px;
+  height: 120px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .itemDetalhes {
   flex: 1;
   display: flex;
@@ -262,6 +274,22 @@
   color: var(--cor-texto-terciario);
   font-size: 0.9rem;
   text-align: center;
+}
+
+.toastNotification {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--cor-erro);
+  color: white;
+  padding: 16px 24px;
+  border-radius: 8px;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  font-size: 1rem;
+  font-weight: 500;
+  animation: toast-in 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 }
 
 @media (max-width: 968px) {

@@ -1,6 +1,3 @@
-.pageContainer {
-  min-height: 100vh;
-}
 .header {
   display: flex;
   gap: 1.5rem;
@@ -21,7 +18,7 @@
 .productContainer {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 40px;
+  gap: 30px;
   background: var(--cor-secundaria);
   border-radius: 20px;
   padding: 30px;
@@ -94,11 +91,29 @@
   gap: 20px;
 }
 
+.row{
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.seller{
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+}
+.sellerName {
+  color: var(--cor-amarelo-medio);
+}
+.sellerName:hover {
+  color: var(--cor-texto);
+}
+
 .title {
   font-size: 25px;
   font-weight: 700;
   color: #ffffff;
-  margin: 0;
+  margin-top: 0;
+  margin-bottom: 20px;
 }
 
 .price {
@@ -111,7 +126,6 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 15px;
-  margin: 10px 0;
 }
 
 .detailItem {
@@ -151,35 +165,10 @@
   white-space: pre-wrap;
 }
 
-.seller {
-  background: var(--cor-amarelo-escuro2);
-  padding: 20px;
-  border-radius: 10px;
-}
-
-.sellerTitle {
-  font-size: 1.3rem;
-  font-weight: 600;
-  color: var(--cor-amarelo-medio);
-  margin-bottom: 10px;
-}
-
-.sellerName {
-  font-size: 1.2rem;
-  font-weight: 600;
-}
-
-.sellerEmail {
-  font-size: 1rem;
-  color: rgba(255, 255, 255, 0.7);
-  margin-top: 5px;
-}
-
 /* Action Buttons */
 .actionButtons {
   display: flex;
   gap: 15px;
-  margin-top: 0px;
 }
 
 .buyButton,
@@ -196,6 +185,15 @@
   text-transform: uppercase;
 }
 
+.cartButton {
+  background: var(--cor-amarelo-medio);
+  color: var(--cor-secundaria);
+}
+
+.cartButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(251, 184, 41, 0.4);
+}
 .buyButton {
   background: var(--cor-verde-escuro);
   color: #ffffff;
@@ -206,14 +204,6 @@
   box-shadow: 0 5px 15px #009a5f73;
 }
 
-.cartButton {
-  background: var(--cor-amarelo-medio);
-}
-
-.cartButton:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(251, 184, 41, 0.4);
-}
 
 .buyButton:disabled,
 .cartButton:disabled {

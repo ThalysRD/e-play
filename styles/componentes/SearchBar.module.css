@@ -2,10 +2,9 @@
   display: flex;
   align-items: center;
   background-color: var(--cor-search-bar);
-  border-radius: 50px;
+  border-radius: 15px;
   padding: 0.5rem 0.5rem 0.5rem 1rem;
   min-width: 400px; 
-  border-bottom: 1.5px solid #fff;
 }
 .searchBar input {
   font-weight: bold;
