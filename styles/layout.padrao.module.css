@@ -206,3 +206,20 @@
   height: auto;
   object-fit: contain;
 }
+.cartBadge {
+  top: 6px;
+  right: 12px;
+  background-color: var(--cor-amarelo-medio);
+  color: var(--cor-secundaria);
+  border-radius: 10px; 
+  height: 18px;
+  min-width: 18px;
+  padding: 0 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: bold;
+  line-height: 1;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}

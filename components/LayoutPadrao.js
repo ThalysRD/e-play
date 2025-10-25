@@ -6,11 +6,13 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import LogoIMG from "./LogoFooter";
 import useUser from "../hooks/useUser";
+import { useCarrinho } from "../contexts/CarrinhoContext";
 
 export default function LayoutPadrao({ children }) {
   const router = useRouter();
 
   const { user, isLoading, mutate } = useUser();
+  const { quantidadeTotal } = useCarrinho();
   const [isModalOpen, setIsModalOpen] = useState(false);
   if (isLoading) {
     return (
@@ -62,11 +64,14 @@ export default function LayoutPadrao({ children }) {
             </Link>
 
             <Link href="/carrinho" className={styles.navLink}>
-              <li
-                className={`${styles.navItem} ${router.pathname.startsWith("/carrinho") ? styles.active : ""}`}
-              >
+              <li className={`${styles.navItem} ${styles.cartNavItem} ${router.pathname.startsWith("/carrinho") ? styles.active : ""}`}>
                 <IoCart size={20} />
                 <span>Carrinho</span>
+                {quantidadeTotal > 0 && (
+                  <span className={styles.cartBadge}>
+                    {quantidadeTotal}
+                  </span>
+                )}
               </li>
             </Link>
 

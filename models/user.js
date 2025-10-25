@@ -59,6 +59,58 @@ async function findOneByEmail(email) {
   }
 }
 
+async function findOneWithListingsByUsername(username) {
+  const userFound = await runSelectQuery(username);
+  return userFound;
+
+  async function runSelectQuery(username) {
+    const results = await database.query({
+      text: `
+        SELECT
+          u.*,
+          COALESCE(
+            (
+              SELECT json_agg(listing_with_images ORDER BY listing_with_images.created_at DESC)
+              FROM (
+                SELECT
+                  l.*,
+                  (
+                    SELECT COALESCE(
+                      json_agg(
+                        json_build_object(
+                          'id', li.id,
+                          'image_url', li.image_url,
+                          'display_order', li.display_order
+                        ) ORDER BY li.display_order
+                      ), '[]'::json
+                    )
+                    FROM listing_images li
+                    WHERE li.listing_id = l.id
+                  ) as images
+                FROM listings l
+                WHERE l.user_id = u.id
+              ) as listing_with_images
+            ), '[]'::json
+          ) as listings
+        FROM
+          users u
+        WHERE
+          u.username = $1
+        LIMIT 1;
+      `,
+      values: [username],
+    });
+
+    if (results.rowCount === 0) {
+      throw new NotFoundError({
+        message: "O nome de usuário informado não foi encontrado no sistema",
+        action: "Verifique se o nome de usuário está correto",
+      });
+    }
+    return results.rows[0];
+  }
+}
+
 async function create(userInputValues) {
   await validateUniqueEmail(userInputValues.email);
   await validateUniqueUsername(userInputValues.username);

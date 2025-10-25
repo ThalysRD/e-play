@@ -7,6 +7,7 @@ import useUser from "hooks/useUser";
 import SearchBar from "components/SearchBar";
 import Modal from "components/ModalPadrao";
 import ImageGallery from "components/ImageGallery";
+import { useCarrinho } from "contexts/CarrinhoContext";
 
 export default function ProductDetailsPage() {
   const router = useRouter();
@@ -16,6 +17,9 @@ export default function ProductDetailsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { adicionarItem } = useCarrinho();
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
 
   useEffect(() => {
     if (id) {
@@ -41,18 +45,41 @@ export default function ProductDetailsPage() {
       const data = await response.json();
       setListing(data);
     } catch (err) {
-      console.error("[ProductDetails] Error fetching listing:", err);
+      console.error('[ProductDetails] Error fetching listing:', err);
       setError(err.message);
     } finally {
       setLoading(false);
     }
   }
 
+  useEffect(() => {
+    if (showToast) {
+      const timer = setTimeout(() => {
+        setShowToast(false);
+        setToastMessage("Adicionado ao carrinho!");
+      }, 5000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [showToast]);
+
   function handleAddToCart() {
-    alert("Funcionalidade de carrinho em desenvolvimento!");
+    if (!listing) return;
+    const itemParaAdicionar = {
+      id: listing.id,
+      nome: listing.title,
+      preco: Number(listing.price),
+      imagem: listing.images && listing.images.length > 0 ? listing.images[0] : null,
+      estoque: listing.quantity
+    };
+
+    adicionarItem(itemParaAdicionar);
+    setToastMessage(`"${listing.title}" foi adicionado ao carrinho!`);
+    setShowToast(true);
   }
 
   function handleBuyNow() {
+    /*router.push('/carrinho/finalizacao-compra');*/
     alert("Funcionalidade de compra em desenvolvimento!");
   }
 
@@ -126,7 +153,20 @@ export default function ProductDetailsPage() {
 
           {/* Informações do Produto */}
           <div className={styles.productInfo}>
-            <h1 className={styles.title}>{listing.title}</h1>
+            <div className={styles.row}>
+              {listing.username && (
+                <div className={styles.seller}>
+                  <div>Visite a loja</div>
+                  <Link
+                    href={`/vendedor/${listing.username}`}
+                    className={styles.sellerName}
+                  >
+                    {listing.username}
+                  </Link>
+                </div>
+              )}
+              <h1 className={styles.title}>{listing.title}</h1>
+            </div>
 
             <div className={styles.price}>
               R$ {Number(listing.price).toFixed(2)}
@@ -172,16 +212,6 @@ export default function ProductDetailsPage() {
               </div>
             )}
 
-            {listing.username && (
-              <div className={styles.seller}>
-                <div className={styles.sellerTitle}>Vendedor</div>
-                <div className={styles.sellerName}>{listing.username}</div>
-                {listing.email && (
-                  <div className={styles.sellerEmail}>{listing.email}</div>
-                )}
-              </div>
-            )}
-
             <div className={styles.actionButtons}>
               {isOwnListing ? (
                 <>
@@ -198,18 +228,18 @@ export default function ProductDetailsPage() {
               ) : (
                 <>
                   <button
-                    className={styles.buyButton}
-                    onClick={handleBuyNow}
-                    disabled={listing.quantity === 0}
-                  >
-                    {listing.quantity === 0 ? "Esgotado" : "Comprar Agora"}
-                  </button>
-                  <button
                     className={styles.cartButton}
                     onClick={handleAddToCart}
                     disabled={listing.quantity === 0}
                   >
                     Adicionar ao Carrinho
+                  </button>
+                  <button
+                    className={styles.buyButton}
+                    onClick={handleBuyNow}
+                    disabled={listing.quantity === 0}
+                  >
+                    {listing.quantity === 0 ? "Esgotado" : "Comprar Agora"}
                   </button>
                 </>
               )}
@@ -225,6 +255,12 @@ export default function ProductDetailsPage() {
         title="Excluir anúncio"
         message="Tem certeza que deseja excluir este anúncio? Essa ação não poderá ser desfeita."
       />
+
+      {showToast && (
+        <div className={styles.toastNotification}>
+          ✅ {toastMessage}
+        </div>
+      )}
     </div>
   );
 }

@@ -271,28 +271,75 @@ function PersonalInfosForm({ onOpenModal, user }) {
           </div>
         </div>
 
-        <Message
-          kind={
-            msg?.includes("sucesso") ? "success" : msg ? "error" : undefined
-          }
-        >
-          {msg}
-        </Message>
+    return (
+        <form className={styles.personalForm} key={user?.id} onSubmit={onSubmit}>
+            <div className={styles.formBackground}>
+                <div className={styles.personalFormContainer}>
+                    <div className={styles.profilePicContainer}>
+                        <img
+                            src={user?.profile_image_url || "/assets/AvatarPadrao.svg"}
+                            className={styles.profilePic}
+                            alt="Avatar do perfil"
+                        />
+                        <button type="button" className={styles.editProfilePicButton} title="Trocar foto (implementar)">
+                            <FaPencilAlt />
+                        </button>
+                    </div>
 
-        <div className={styles.buttonsContainer}>
-          <button
-            type="button"
-            onClick={onOpenModal}
-            className={`${styles.button} ${styles.buttonCancel}`}
-            disabled={busy}
-          >
-            Cancelar
-          </button>
-          <SubmitButton busy={busy}>Salvar mudanças</SubmitButton>
-        </div>
-      </div>
-    </form>
-  );
+                    <div className={`${styles.fieldGroup} ${styles.fieldGroupBio}`}>
+                        <label htmlFor="profile_bio" className={styles.label}>Sobre mim</label>
+                        <textarea
+                            id="profile_bio"
+                            name="profile_bio"
+                            rows={5}
+                            maxLength={400}
+                            className={`${styles.input} ${styles.bioTextarea}`}
+                            defaultValue={user?.profile_bio || ""}
+                        />
+                    </div>
+
+                    <div className={styles.fieldGroup}>
+                        <label htmlFor="name" className={styles.label}>Nome*</label>
+                        <input id="name" name="name" type="text" className={styles.input} defaultValue={user?.name || ""} />
+                    </div>
+
+                    <div className={styles.fieldGroup}>
+                        <label htmlFor="username" className={styles.label}>Username*</label>
+                        <input id="username" name="username" type="text" className={styles.input} defaultValue={user?.username || ""} />
+                    </div>
+
+                    <div className={styles.fieldGroup}>
+                        <label htmlFor="email" className={styles.label}>Email*</label>
+                        <input id="email" name="email" type="email" className={styles.input} defaultValue={user?.email || ""} />
+                    </div>
+
+                    <div className={styles.fieldGroup}>
+                        <label htmlFor="phone_number" className={styles.label}>Telefone</label>
+                        <input id="phone_number" name="phone_number" type="text" className={styles.input} defaultValue={user?.phone_number || ""} />
+                    </div>
+
+                    <div className={styles.fieldGroup}>
+                        <label htmlFor="cpf" className={styles.label}>CPF</label>
+                        <input id="cpf" name="cpf" type="text" className={styles.input} defaultValue={user?.cpf || ""} />
+                    </div>
+
+                    <div className={styles.fieldGroup}>
+                        <label htmlFor="cnpj" className={styles.label}>CNPJ</label>
+                        <input id="cnpj" name="cnpj" type="text" className={styles.input} defaultValue={user?.cnpj || ""} />
+                    </div>
+                </div>
+
+                <Message kind={msg?.includes("sucesso") ? "success" : msg ? "error" : undefined}>{msg}</Message>
+
+                <div className={styles.buttonsContainer}>
+                    <button type="button" onClick={onOpenModal} className={`${styles.button} ${styles.buttonCancel}`} disabled={busy}>
+                        Cancelar
+                    </button>
+                    <SubmitButton busy={busy}>Salvar mudanças</SubmitButton>
+                </div>
+            </div>
+        </form>
+    );
 }
 
 function PasswordForm({ onOpenModal }) {

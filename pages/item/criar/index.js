@@ -9,6 +9,7 @@ import styles from "styles/item/criar-anuncio.module.css";
 const UPLOAD_TIMEOUT_MS = 60_000;
 
 async function sendRequest(url, { arg }) {
+
   try {
     const response = await fetch(url, {
       method: "POST",
@@ -21,7 +22,8 @@ async function sendRequest(url, { arg }) {
       try {
         const errorData = await response.json();
         errorMessage = errorData.message || errorMessage;
-      } catch (e) {}
+      } catch (e) {
+      }
       throw new Error(errorMessage);
     }
 
@@ -82,8 +84,7 @@ function CreateListingForm() {
     const maxSize = 5 * 1024 * 1024;
     const invalidFiles = files.filter((file) => file.size > maxSize);
     if (invalidFiles.length > 0) {
-      const msg =
-        "Algumas imagens são maiores que 5MB. Por favor, escolha imagens menores.";
+      const msg = "Algumas imagens são maiores que 5MB. Por favor, escolha imagens menores.";
       setError(msg);
       e.target.value = "";
       return;
@@ -103,8 +104,8 @@ function CreateListingForm() {
     const newFiles = [...imageFiles, ...files];
     setImageFiles(newFiles);
 
-    const newPreviews = files.map((file) => URL.createObjectURL(file));
-    setImagePreviews((prev) => [...prev, ...newPreviews]);
+    const newPreviews = files.map(file => URL.createObjectURL(file));
+    setImagePreviews(prev => [...prev, ...newPreviews]);
 
     e.target.value = "";
     setError("");
@@ -134,22 +135,15 @@ function CreateListingForm() {
       const task = uploadBytesResumable(storageRef, file);
 
       const to = setTimeout(() => {
-        console.error(`TIMEOUT no upload`, {
-          file: file.name,
-          ms: UPLOAD_TIMEOUT_MS,
-        });
-        try {
-          task.cancel();
-        } catch {}
+        console.error(`TIMEOUT no upload`, { file: file.name, ms: UPLOAD_TIMEOUT_MS });
+        try { task.cancel(); } catch { }
         reject(new Error(`Tempo esgotado ao enviar ${file.name}`));
       }, UPLOAD_TIMEOUT_MS);
 
       task.on(
         "state_changed",
         (snapshot) => {
-          const pct = Math.round(
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100,
-          );
+          const pct = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
         },
         (err) => {
           clearTimeout(to);
@@ -184,22 +178,10 @@ function CreateListingForm() {
     setError("");
     setSuccess(false);
 
-    if (!formData.title.trim()) {
-      setError("O título é obrigatório");
-      return;
-    }
-    if (!formData.price || Number(formData.price) <= 0) {
-      setError("O preço deve ser maior que zero");
-      return;
-    }
-    if (!formData.categoryId) {
-      setError("Selecione uma categoria");
-      return;
-    }
-    if (!formData.quantity || Number(formData.quantity) < 1) {
-      setError("A quantidade deve ser no mínimo 1");
-      return;
-    }
+    if (!formData.title.trim()) { setError("O título é obrigatório"); return; }
+    if (!formData.price || Number(formData.price) <= 0) { setError("O preço deve ser maior que zero"); return; }
+    if (!formData.categoryId) { setError("Selecione uma categoria"); return; }
+    if (!formData.quantity || Number(formData.quantity) < 1) { setError("A quantidade deve ser no mínimo 1"); return; }
 
     let imageUrls = [];
 

@@ -53,18 +53,7 @@ export default function SearchBar({
       setLoading(false);
       onSearchEnd?.();
     }
-  }, [
-    term,
-    mode,
-    resultsPage,
-    paramName,
-    router,
-    apiEndpoint,
-    onResults,
-    onSearchStart,
-    onSearchEnd,
-    onError,
-  ]);
+  }, [term, mode, resultsPage, paramName, router, apiEndpoint, onResults, onSearchStart, onSearchEnd, onError]);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -74,9 +63,7 @@ export default function SearchBar({
   return (
     <form
       onSubmit={handleSubmit}
-      className={
-        className ? `${styles.searchBar} ${className}` : styles.searchBar
-      }
+      className={className ? `${styles.searchBar} ${className}` : styles.searchBar}
       role="search"
     >
       <input

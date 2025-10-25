@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import useUser from '../hooks/useUser';
 
 const CarrinhoContext = createContext();
 
@@ -12,21 +13,46 @@ export const useCarrinho = () => {
 
 export const CarrinhoProvider = ({ children }) => {
   const [itens, setItens] = useState([]);
+  const { user } = useUser();
 
   useEffect(() => {
-    const itensArmazenados = localStorage.getItem("carrinho");
+    if (localStorage.getItem('carrinho')) {
+      localStorage.removeItem('carrinho');
+    }
+
+    if (!user || !user.id) {
+      setItens([]);
+      return;
+    }
+
+    const cartKey = `carrinho_${user.id}`;
+
+    const itensArmazenados = localStorage.getItem(cartKey);
+
     if (itensArmazenados) {
       try {
         setItens(JSON.parse(itensArmazenados));
       } catch (error) {
-        console.error("Erro ao carregar carrinho:", error);
+        console.error('Erro ao carregar carrinho:', error);
+        setItens([]);
       }
+    } else {
+      setItens([]);
     }
-  }, []);
+  }, [user]);
 
   useEffect(() => {
-    localStorage.setItem("carrinho", JSON.stringify(itens));
-  }, [itens]);
+    if (user && user.id) {
+      const cartKey = `carrinho_${user.id}`;
+
+      if (itens.length > 0) {
+        localStorage.setItem(cartKey, JSON.stringify(itens));
+      } else {
+        localStorage.removeItem(cartKey);
+      }
+    }
+
+  }, [itens, user]);
 
   const adicionarItem = (produto) => {
     setItens((itensAtuais) => {
