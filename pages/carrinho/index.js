@@ -57,13 +57,12 @@ const CarrinhoPage = () => {
       <div className={styles.carrinhoContent}>
         <div className={styles.carrinhoItens}>
           {itens.map((item) => {
-            const firstImage = item.imagem?.[0];
-
+            console.log("Item do carrinho:", item);
             return (
               <div key={item.id} className={styles.itemCarrinho}>
-                {firstImage ? (
+                {item.imagem?.image_url ? (
                   <img
-                    src={firstImage.image_url}
+                    src={item.imagem.image_url}
                     alt={item.nome}
                     className={styles.itemImagem}
                   />
