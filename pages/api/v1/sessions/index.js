@@ -20,10 +20,10 @@ async function postHandler(request, response) {
     userInputValues.password,
   );
 
-  if (!authenticatedUser.permissions.includes("create:sessions")) {
+  if (!authenticatedUser.permissions.includes("create:session")) {
+    const userData = await user.findOneById(authenticatedUser.id);
     const newActivationToken = await activation.create(authenticatedUser.id);
-    await activation.sendEmailToUser(authenticatedUser, newActivationToken);
-
+    await activation.sendEmailToUser(userData, newActivationToken);
 
     return response.status(403).json({
       message: "Você precisa confirmar seu email para fazer login. Um novo link de ativação foi enviado para seu email.",
