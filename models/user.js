@@ -251,6 +251,24 @@ async function validateUniqueEmail(email) {
   }
 }
 
+async function updateWishlist(userId, wishList) {
+  const results = await database.query({
+    text: `
+      UPDATE
+        users
+      SET
+        wish_list = $2,
+        updated_at = timezone('utc', now())
+      WHERE
+        id = $1
+      RETURNING
+        wish_list
+    ;`,
+    values: [userId, wishList || []],
+  });
+  return results.rows[0];
+}
+
 async function hashPasswordInObject(userInputValues) {
   const hashedPassword = await password.hash(userInputValues.password);
   userInputValues.password = hashedPassword;
@@ -264,7 +282,8 @@ const user = {
   findOneByEmail,
   update,
   setPermissions,
-  findOneWithListingsByUsername
+  findOneWithListingsByUsername,
+  updateWishlist,
 };
 
 export default user;

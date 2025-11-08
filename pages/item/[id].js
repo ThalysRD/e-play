@@ -8,6 +8,9 @@ import SearchBar from "components/SearchBar";
 import Modal from "components/ModalPadrao";
 import ImageGallery from "components/ImageGallery";
 import { useCarrinho } from "contexts/CarrinhoContext";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStar as faStarSolid } from "@fortawesome/free-solid-svg-icons";
+import { faStar as faStarRegular } from "@fortawesome/free-regular-svg-icons"
 
 export default function ProductDetailsPage() {
   const router = useRouter();
@@ -20,6 +23,8 @@ export default function ProductDetailsPage() {
   const { adicionarItem } = useCarrinho();
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
+  const [isInWishlist, setIsInWishlist] = useState(false);
+  const [isUpdatingWishlist, setIsUpdatingWishlist] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -109,6 +114,44 @@ export default function ProductDetailsPage() {
     }
   }
 
+  useEffect(() => {
+    if (user && listing) {
+      setIsInWishlist(user.wish_list?.includes(listing.id) || false);
+    }
+  }, [user, listing]);
+
+  async function handleToggleWishlist() {
+    if (!user || !listing || isUpdatingWishlist) return;
+    setIsUpdatingWishlist(true);
+    const previousState = isInWishlist;
+    setIsInWishlist(!previousState);
+
+    try {
+      const response = await fetch("/api/v1/user/wishlist", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ listingId: listing.id }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Falha ao atualizar a lista de desejos");
+      }
+      setToastMessage(
+        !previousState
+          ? "Adicionado aos favoritos!"
+          : "Removido dos favoritos!"
+      );
+      setShowToast(true);
+    } catch (err) {
+      console.error(err);
+      setIsInWishlist(previousState);
+      alert("Erro ao atualizar favoritos. Tente novamente.");
+    } finally {
+      setIsUpdatingWishlist(false);
+    }
+  }
+
+
   const isOwnListing = user && listing && user.id === listing.user_id;
 
   if (loading) {
@@ -153,6 +196,19 @@ export default function ProductDetailsPage() {
 
           {/* Informações do Produto */}
           <div className={styles.productInfo}>
+
+            {isOwnListing ? null : (
+              <button
+                className={`${styles.fav} ${isInWishlist ? styles.isFavorited : ""}`}
+                onClick={handleToggleWishlist}
+                disabled={isUpdatingWishlist}
+              >
+                <FontAwesomeIcon
+                  icon={isInWishlist ? faStarSolid : faStarRegular}
+                />
+              </button>
+            )}
+
             <div className={styles.row}>
               {listing.username && (
                 <div className={styles.seller}>
@@ -163,6 +219,7 @@ export default function ProductDetailsPage() {
                   >
                     {listing.username}
                   </Link>
+
                 </div>
               )}
               <h1 className={styles.title}>{listing.title}</h1>
