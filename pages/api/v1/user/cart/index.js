@@ -36,13 +36,16 @@ async function postHandler(request, response) {
         if (!listingId) {
             return response.status(400).json({ error: "listingId é obrigatório" });
         }
-        const updatedCart = await cart.addItemForUser(
+        await cart.addItemForUser(
             userId,
             listingId,
             Number(quantity) || 1,
             priceLocked ?? null
         );
-        return response.status(200).json(updatedCart);
+        // Retornar apenas o item adicionado em vez do carrinho completo
+        const c = await cart.getOrCreateByUserId(userId);
+        const cartItem = await cartItems.getItemByListingId(c.id, listingId);
+        return response.status(200).json({ success: true, item: cartItem });
     } catch (error) {
         return controller.errorHandlers.onError(error, request, response);
     }
@@ -60,8 +63,9 @@ async function patchHandler(request, response) {
         }
         const c = await cart.getOrCreateByUserId(userId);
         await cartItems.setItemQuantity(c.id, listingId, Number(quantity));
-        const updatedCart = await cart.getWithItemsByUserId(userId);
-        return response.status(200).json(updatedCart);
+        // Retornar apenas o item atualizado em vez do carrinho completo
+        const cartItem = await cartItems.getItemByListingId(c.id, listingId);
+        return response.status(200).json({ success: true, item: cartItem });
     } catch (error) {
         return controller.errorHandlers.onError(error, request, response);
     }
@@ -76,8 +80,8 @@ async function deleteHandler(request, response) {
         }
         const c = await cart.getOrCreateByUserId(userId);
         await cartItems.removeItem(c.id, listingId);
-        const updatedCart = await cart.getWithItemsByUserId(userId);
-        return response.status(200).json(updatedCart);
+        // Retornar apenas confirmação em vez do carrinho completo
+        return response.status(200).json({ success: true, itemRemoved: listingId });
     } catch (error) {
         return controller.errorHandlers.onError(error, request, response);
     }
