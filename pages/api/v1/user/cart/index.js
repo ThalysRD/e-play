@@ -36,15 +36,13 @@ async function postHandler(request, response) {
         if (!listingId) {
             return response.status(400).json({ error: "listingId é obrigatório" });
         }
-        await cart.addItemForUser(
+        const updatedCart = await cart.addItemForUser(
             userId,
             listingId,
             Number(quantity) || 1,
             priceLocked ?? null
         );
-        const c = await cart.getOrCreateByUserId(userId);
-        const cartItem = await cartItems.getItem(c.id, listingId);
-        return response.status(200).json({ success: true, item: cartItem });
+        return response.status(200).json(updatedCart);
     } catch (error) {
         return controller.errorHandlers.onError(error, request, response);
     }
@@ -62,9 +60,8 @@ async function patchHandler(request, response) {
         }
         const c = await cart.getOrCreateByUserId(userId);
         await cartItems.setItemQuantity(c.id, listingId, Number(quantity));
-        // Retornar apenas o item atualizado em vez do carrinho completo
-        const cartItem = await cartItems.getItem(c.id, listingId);
-        return response.status(200).json({ success: true, item: cartItem });
+        const updatedCart = await cart.getWithItemsByUserId(userId);
+        return response.status(200).json(updatedCart);
     } catch (error) {
         return controller.errorHandlers.onError(error, request, response);
     }
@@ -79,7 +76,8 @@ async function deleteHandler(request, response) {
         }
         const c = await cart.getOrCreateByUserId(userId);
         await cartItems.removeItem(c.id, listingId);
-        return response.status(200).json({ success: true, itemRemoved: listingId });
+        const updatedCart = await cart.getWithItemsByUserId(userId);
+        return response.status(200).json(updatedCart);
     } catch (error) {
         return controller.errorHandlers.onError(error, request, response);
     }
