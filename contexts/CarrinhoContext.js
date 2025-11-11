@@ -14,88 +14,121 @@ export const useCarrinho = () => {
 export const CarrinhoProvider = ({ children }) => {
   const [itens, setItens] = useState([]);
   const { user } = useUser();
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (localStorage.getItem('carrinho')) {
-      localStorage.removeItem('carrinho');
-    }
-
     if (!user || !user.id) {
       setItens([]);
+      setIsLoading(false);
       return;
     }
 
-    const cartKey = `carrinho_${user.id}`;
-
-    const itensArmazenados = localStorage.getItem(cartKey);
-
-    if (itensArmazenados) {
+    const fetchCart = async () => {
       try {
-        setItens(JSON.parse(itensArmazenados));
-      } catch (error) {
-        console.error('Erro ao carregar carrinho:', error);
+        setIsLoading(true);
+        setError(null);
+        const response = await fetch('/api/v1/user/cart');
+        if (!response.ok) {
+          if (response.status === 404) {
+            setItens([]);
+            return;
+          }
+          throw new Error('Falha ao buscar o carrinho');
+        }
+        const cartData = await response.json();
+        setItens(cartData.items || []);
+      } catch (err) {
+        console.error('Erro ao carregar carrinho:', err);
+        setError(err.message);
         setItens([]);
+      } finally {
+        setIsLoading(false);
       }
-    } else {
-      setItens([]);
-    }
+    };
+    fetchCart();
   }, [user]);
 
-  useEffect(() => {
-    if (user && user.id) {
-      const cartKey = `carrinho_${user.id}`;
-
-      if (itens.length > 0) {
-        localStorage.setItem(cartKey, JSON.stringify(itens));
-      } else {
-        localStorage.removeItem(cartKey);
+  const adicionarItem = async (itemData) => {
+    try {
+      const response = await fetch('/api/v1/user/cart', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(itemData),
+      });
+      if (!response.ok) {
+        throw new Error('Falha ao adicionar item');
       }
+      const updatedCart = await response.json();
+      setItens(updatedCart.items || []);
+    } catch (err) {
+      console.error("Erro em adicionarItem:", err);
+      throw err;
     }
+  };
 
-  }, [itens, user]);
-
-  const adicionarItem = (produto) => {
-    setItens((itensAtuais) => {
-      const itemExistente = itensAtuais.find((item) => item.id === produto.id);
-
-      if (itemExistente) {
-        return itensAtuais.map((item) =>
-          item.id === produto.id
-            ? { ...item, quantidade: item.quantidade + 1 }
-            : item,
-        );
+  const removerItem = async (productId) => {
+    try {
+      const response = await fetch(`/api/v1/user/cart`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ listingId: productId }),
+      });
+      if (!response.ok) {
+        throw new Error('Falha ao remover item');
       }
-
-      return [...itensAtuais, { ...produto, quantidade: 1 }];
-    });
+      setItens((itensAtuais) =>
+        itensAtuais.filter((item) => item.listing_id !== productId),
+      );
+    } catch (err) {
+      console.error("Erro em removerItem:", err);
+      throw err;
+    }
   };
 
-  const removerItem = (produtoId) => {
-    setItens((itensAtuais) =>
-      itensAtuais.filter((item) => item.id !== produtoId),
-    );
-  };
-
-  const atualizarQuantidade = (produtoId, novaQuantidade) => {
+  const atualizarQuantidade = async (productId, novaQuantidade) => {
     if (novaQuantidade < 1) {
-      removerItem(produtoId);
-      return;
+      return removerItem(productId);
     }
+    try {
+      const response = await fetch(`/api/v1/user/cart`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          listingId: productId,
+          quantity: novaQuantidade
+        }),
+      });
 
-    setItens((itensAtuais) =>
-      itensAtuais.map((item) =>
-        item.id === produtoId ? { ...item, quantidade: novaQuantidade } : item,
-      ),
-    );
+      if (!response.ok) {
+        throw new Error('Falha ao atualizar quantidade');
+      }
+      setItens((itensAtuais) =>
+        itensAtuais.map((item) =>
+          item.listing_id === productId ? { ...item, quantity: novaQuantidade } : item,
+        ),
+      );
+    } catch (err) {
+      console.error("Erro em atualizarQuantidade:", err);
+      throw err;
+    }
   };
 
-  const limparCarrinho = () => {
-    setItens([]);
+  const limparCarrinho = async () => {
+    try {
+      await fetch('/api/v1/user/cart', {
+        method: 'DELETE',
+      });
+      setItens([]);
+    } catch (err) {
+      console.error("Erro em limparCarrinho:", err);
+      throw err;
+    }
   };
 
   const calcularSubtotal = () => {
     return itens.reduce(
-      (total, item) => total + item.preco * item.quantidade,
+      (total, item) => total + (Number(item.price_locked) * item.quantity),
       0,
     );
   };
@@ -110,7 +143,7 @@ export const CarrinhoProvider = ({ children }) => {
   };
 
   const quantidadeTotal = itens.reduce(
-    (total, item) => total + item.quantidade,
+    (total, item) => total + item.quantity,
     0,
   );
 
@@ -126,6 +159,8 @@ export const CarrinhoProvider = ({ children }) => {
         calcularFrete,
         calcularTotal,
         quantidadeTotal,
+        isLoading,
+        error
       }}
     >
       {children}

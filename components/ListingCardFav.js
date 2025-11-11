@@ -1,7 +1,6 @@
 import { useRouter } from "next/router";
 import styles from "styles/componentes/ListingCardFav.module.css";
 
-// 1. Receba 'onDelete' e 'disabled' nas props
 export default function ListingCardFav({ listing, onDelete, disabled }) {
     const router = useRouter();
 
@@ -9,12 +8,8 @@ export default function ListingCardFav({ listing, onDelete, disabled }) {
         router.push(`/item/${listing.id}`);
     }
 
-    // 2. Crie uma função 'wrapper' para o clique no delete
     function handleDeleteClick(event) {
-        // 3. Impedir que o clique "vaze" para o card
         event.stopPropagation();
-
-        // 4. Chame a função 'onDelete' recebida
         if (onDelete) {
             onDelete();
         }
@@ -25,7 +20,6 @@ export default function ListingCardFav({ listing, onDelete, disabled }) {
         listing.quantity > 1 ? `${listing.quantity} disponíveis` : "1 disponível";
 
     return (
-        // Este div navega para o item
         <div className={styles.listingCard} onClick={handleClick}>
             <div className={styles.imageContainer}>
                 {firstImage ? (
@@ -55,12 +49,7 @@ export default function ListingCardFav({ listing, onDelete, disabled }) {
                         R$ {Number(listing.price).toFixed(2)}
                     </p>
 
-                    {/* 5. Atualize o botão */}
-                    <button
-                        className={styles.deleteButton}
-                        onClick={handleDeleteClick} // Chame a função wrapper
-                        disabled={disabled}          // Passe a prop 'disabled'
-                    >
+                    <button className={styles.deleteButton} onClick={handleDeleteClick} disabled={disabled}>
                         🗑️ Deletar
                     </button>
                 </div>

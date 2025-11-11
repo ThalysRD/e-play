@@ -8,9 +8,9 @@ import SearchBar from "components/SearchBar";
 import Modal from "components/ModalPadrao";
 import ImageGallery from "components/ImageGallery";
 import { useCarrinho } from "contexts/CarrinhoContext";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar as faStarSolid } from "@fortawesome/free-solid-svg-icons";
-import { faStar as faStarRegular } from "@fortawesome/free-regular-svg-icons"
+import { faStar as faStarRegular } from "@fortawesome/free-regular-svg-icons";
 
 export default function ProductDetailsPage() {
   const router = useRouter();
@@ -20,75 +20,87 @@ export default function ProductDetailsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
   const { adicionarItem } = useCarrinho();
-  const [showToast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
   const [isInWishlist, setIsInWishlist] = useState(false);
   const [isUpdatingWishlist, setIsUpdatingWishlist] = useState(false);
 
+  const [toast, setToast] = useState({
+    visible: false,
+    type: "success",
+    message: "",
+  });
+
+  function showSuccess(message) {
+    setToast({ visible: true, type: "success", message });
+  }
+
+  function showError(message) {
+    setToast({ visible: true, type: "error", message });
+  }
+
   useEffect(() => {
-    if (id) {
-      fetchListing();
-    }
+    if (id) fetchListing();
   }, [id]);
 
   useEffect(() => {
     if (router.isReady && router.query.refresh) {
       fetchListing();
     }
-  }, [router.query.refresh]);
+  }, [router.isReady, router.query.refresh]);
 
   async function fetchListing() {
     try {
       setLoading(true);
+      setError("");
       const response = await fetch(`/api/v1/listings/${id}`);
-
       if (!response.ok) {
         throw new Error("Anúncio não encontrado");
       }
-
       const data = await response.json();
       setListing(data);
     } catch (err) {
-      console.error('[ProductDetails] Error fetching listing:', err);
-      setError(err.message);
+      console.error("[ProductDetails] Error fetching listing:", err);
+      setError(err.message || "Falha ao carregar anúncio");
     } finally {
       setLoading(false);
     }
   }
 
   useEffect(() => {
-    if (showToast) {
-      const timer = setTimeout(() => {
-        setShowToast(false);
-        setToastMessage("Adicionado ao carrinho!");
-      }, 5000);
+    if (!toast.visible) return;
+    const t = setTimeout(() => {
+      setToast((prev) => ({ ...prev, visible: false }));
+    }, 5000);
+    return () => clearTimeout(t);
+  }, [toast.visible]);
 
-      return () => clearTimeout(timer);
-    }
-  }, [showToast]);
-
-  function handleAddToCart() {
-    if (!listing) return;
+  async function handleAddToCart() {
+    if (!listing || isAddingToCart) return;
+    setIsAddingToCart(true);
     const itemParaAdicionar = {
-      id: listing.id,
-      nome: listing.title,
-      preco: Number(listing.price),
-      imagem: listing.images && listing.images.length > 0 ? listing.images[0] : null,
-      estoque: listing.quantity
+      listingId: listing.id,
+      quantity: 1,
+      priceLocked: Number(listing.price),
     };
-
-    adicionarItem(itemParaAdicionar);
-    setToastMessage(`"${listing.title}" foi adicionado ao carrinho!`);
-    setShowToast(true);
+    try {
+      await adicionarItem(itemParaAdicionar);
+      showSuccess(`"${listing.title}" foi adicionado ao carrinho!`);
+    } catch (err) {
+      console.error("Erro ao adicionar ao carrinho:", err);
+      showError("Falha ao adicionar o item. Tente novamente.");
+    } finally {
+      setIsAddingToCart(false);
+    }
   }
 
   function handleBuyNow() {
-    /*router.push('/carrinho/finalizacao-compra');*/
+    // router.push('/carrinho/finalizacao-compra');
     alert("Funcionalidade de compra em desenvolvimento!");
   }
 
   function handleEdit() {
+    if (!listing) return;
     router.push(`/item/editar/${listing.id}`);
   }
 
@@ -97,15 +109,12 @@ export default function ProductDetailsPage() {
   }
 
   async function confirmDelete() {
+    if (!listing) return;
     try {
       const response = await fetch(`/api/v1/listings/${listing.id}`, {
         method: "DELETE",
       });
-
-      if (!response.ok) {
-        throw new Error("Falha ao deletar anúncio");
-      }
-
+      if (!response.ok) throw new Error("Falha ao deletar anúncio");
       router.push("/configuracoes/meus-anuncios");
     } catch (err) {
       alert("Erro ao deletar anúncio: " + err.message);
@@ -132,25 +141,17 @@ export default function ProductDetailsPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ listingId: listing.id }),
       });
+      if (!response.ok) throw new Error("Falha ao atualizar a lista de desejos");
 
-      if (!response.ok) {
-        throw new Error("Falha ao atualizar a lista de desejos");
-      }
-      setToastMessage(
-        !previousState
-          ? "Adicionado aos favoritos!"
-          : "Removido dos favoritos!"
-      );
-      setShowToast(true);
+      showSuccess(!previousState ? "Adicionado aos favoritos!" : "Removido dos favoritos!");
     } catch (err) {
       console.error(err);
       setIsInWishlist(previousState);
-      alert("Erro ao atualizar favoritos. Tente novamente.");
+      showError("Erro ao atualizar favoritos. Tente novamente.");
     } finally {
       setIsUpdatingWishlist(false);
     }
   }
-
 
   const isOwnListing = user && listing && user.id === listing.user_id;
 
@@ -196,16 +197,15 @@ export default function ProductDetailsPage() {
 
           {/* Informações do Produto */}
           <div className={styles.productInfo}>
-
             {isOwnListing ? null : (
               <button
                 className={`${styles.fav} ${isInWishlist ? styles.isFavorited : ""}`}
                 onClick={handleToggleWishlist}
                 disabled={isUpdatingWishlist}
+                aria-label={isInWishlist ? "Remover dos favoritos" : "Adicionar aos favoritos"}
+                title={isInWishlist ? "Remover dos favoritos" : "Adicionar aos favoritos"}
               >
-                <FontAwesomeIcon
-                  icon={isInWishlist ? faStarSolid : faStarRegular}
-                />
+                <FontAwesomeIcon icon={isInWishlist ? faStarSolid : faStarRegular} />
               </button>
             )}
 
@@ -213,13 +213,9 @@ export default function ProductDetailsPage() {
               {listing.username && (
                 <div className={styles.seller}>
                   <div>Visite a loja</div>
-                  <Link
-                    href={`/vendedor/${listing.username}`}
-                    className={styles.sellerName}
-                  >
+                  <Link href={`/vendedor/${listing.username}`} className={styles.sellerName}>
                     {listing.username}
                   </Link>
-
                 </div>
               )}
               <h1 className={styles.title}>{listing.title}</h1>
@@ -238,8 +234,7 @@ export default function ProductDetailsPage() {
               <div className={styles.detailItem}>
                 <div className={styles.detailLabel}>Quantidade</div>
                 <div className={styles.detailValue}>
-                  {listing.quantity}{" "}
-                  {listing.quantity === 1 ? "disponível" : "disponíveis"}
+                  {listing.quantity} {listing.quantity === 1 ? "disponível" : "disponíveis"}
                 </div>
               </div>
 
@@ -275,10 +270,7 @@ export default function ProductDetailsPage() {
                   <button className={styles.editButton} onClick={handleEdit}>
                     ✏️ Editar Anúncio
                   </button>
-                  <button
-                    className={styles.deleteButton}
-                    onClick={openDeleteModal}
-                  >
+                  <button className={styles.deleteButton} onClick={openDeleteModal}>
                     🗑️ Deletar Anúncio
                   </button>
                 </>
@@ -287,9 +279,9 @@ export default function ProductDetailsPage() {
                   <button
                     className={styles.cartButton}
                     onClick={handleAddToCart}
-                    disabled={listing.quantity === 0}
+                    disabled={listing.quantity === 0 || isAddingToCart}
                   >
-                    Adicionar ao Carrinho
+                    {isAddingToCart ? "Adicionando..." : "Adicionar ao Carrinho"}
                   </button>
                   <button
                     className={styles.buyButton}
@@ -313,9 +305,18 @@ export default function ProductDetailsPage() {
         message="Tem certeza que deseja excluir este anúncio? Essa ação não poderá ser desfeita."
       />
 
-      {showToast && (
-        <div className={styles.toastNotification}>
-          ✅ {toastMessage}
+      {toast.visible && (
+        <div
+          className={
+            toast.type === "success"
+              ? styles.toastNotificationSuccess
+              : styles.toastNotificationError
+          }
+          role="status"
+          aria-live="polite"
+        >
+          {toast.type === "success" ? "✅ " : "❌ "}
+          {toast.message}
         </div>
       )}
     </div>
