@@ -42,9 +42,8 @@ async function postHandler(request, response) {
             Number(quantity) || 1,
             priceLocked ?? null
         );
-        // Retornar apenas o item adicionado em vez do carrinho completo
         const c = await cart.getOrCreateByUserId(userId);
-        const cartItem = await cartItems.getItemByListingId(c.id, listingId);
+        const cartItem = await cartItems.getItem(c.id, listingId);
         return response.status(200).json({ success: true, item: cartItem });
     } catch (error) {
         return controller.errorHandlers.onError(error, request, response);
@@ -64,7 +63,7 @@ async function patchHandler(request, response) {
         const c = await cart.getOrCreateByUserId(userId);
         await cartItems.setItemQuantity(c.id, listingId, Number(quantity));
         // Retornar apenas o item atualizado em vez do carrinho completo
-        const cartItem = await cartItems.getItemByListingId(c.id, listingId);
+        const cartItem = await cartItems.getItem(c.id, listingId);
         return response.status(200).json({ success: true, item: cartItem });
     } catch (error) {
         return controller.errorHandlers.onError(error, request, response);
@@ -80,7 +79,6 @@ async function deleteHandler(request, response) {
         }
         const c = await cart.getOrCreateByUserId(userId);
         await cartItems.removeItem(c.id, listingId);
-        // Retornar apenas confirmação em vez do carrinho completo
         return response.status(200).json({ success: true, itemRemoved: listingId });
     } catch (error) {
         return controller.errorHandlers.onError(error, request, response);
