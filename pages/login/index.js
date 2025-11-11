@@ -85,11 +85,13 @@ function LoginForm() {
   useEffect(() => {
     if (isSuccess) {
       const timer = setTimeout(() => {
-        router.push("/");
+        // Usar window.location.href para recarregar completamente a página
+        // Isso garante que o cookie seja reconhecido e os dados do usuário sejam fetched
+        window.location.href = "/";
       }, 800);
       return () => clearTimeout(timer);
     }
-  }, [isSuccess, router]);
+  }, [isSuccess]);
 
   if (isSuccess) {
     return (
