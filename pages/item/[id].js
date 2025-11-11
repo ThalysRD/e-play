@@ -4,6 +4,7 @@ import load from "styles/componentes/loading.module.css";
 import Link from "next/link";
 import styles from "styles/item/detalhes.module.css";
 import useUser from "hooks/useUser";
+import useCheckout from "hooks/useCheckout";
 import SearchBar from "components/SearchBar";
 import Modal from "components/ModalPadrao";
 import ImageGallery from "components/ImageGallery";
@@ -16,6 +17,7 @@ export default function ProductDetailsPage() {
   const router = useRouter();
   const { id } = router.query;
   const { user } = useUser();
+  const { checkout, isLoading: isCheckoutLoading } = useCheckout();
   const [listing, setListing] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -94,9 +96,23 @@ export default function ProductDetailsPage() {
     }
   }
 
-  function handleBuyNow() {
-    // router.push('/carrinho/finalizacao-compra');
-    alert("Funcionalidade de compra em desenvolvimento!");
+  async function handleBuyNow() {
+    if (!user) {
+      showError("Você precisa estar logado para comprar");
+      return;
+    }
+
+    if (!listing) {
+      showError("Produto não disponível");
+      return;
+    }
+
+    try {
+      await checkout(listing.id, 1, Number(listing.price));
+    } catch (err) {
+      console.error("Erro ao iniciar compra:", err);
+      showError(err.message || "Erro ao iniciar a compra. Tente novamente.");
+    }
   }
 
   function handleEdit() {
@@ -286,9 +302,13 @@ export default function ProductDetailsPage() {
                   <button
                     className={styles.buyButton}
                     onClick={handleBuyNow}
-                    disabled={listing.quantity === 0}
+                    disabled={listing.quantity === 0 || isCheckoutLoading}
                   >
-                    {listing.quantity === 0 ? "Esgotado" : "Comprar Agora"}
+                    {isCheckoutLoading
+                      ? "Processando..."
+                      : listing.quantity === 0
+                      ? "Esgotado"
+                      : "Comprar Agora"}
                   </button>
                 </>
               )}
