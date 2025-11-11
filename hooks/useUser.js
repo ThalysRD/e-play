@@ -1,4 +1,5 @@
 import useSWR from "swr";
+import { useEffect } from "react";
 
 const fetchUser = async (url) => {
   const response = await fetch(url, { credentials: "include" });
@@ -12,13 +13,20 @@ const fetchUser = async (url) => {
 };
 
 export default function useUser() {
-  const { data, error, isLoading, mutate } = useSWR("/api/v1/user", fetchUser, {
-    shouldRetryOnError: false,
-    revalidateOnFocus: true,
-    revalidateOnMount: true,
-    revalidateOnReconnect: true,
-    dedupingInterval: 0,
-  });
+  const { data, error, isLoading, mutate } = useSWR(
+    "/api/v1/user",
+    fetchUser,
+    {
+      shouldRetryOnError: false,
+      revalidateOnFocus: false,
+      revalidateOnMount: true,
+      revalidateOnReconnect: false, 
+      dedupingInterval: 5000,    
+      focusThrottleInterval: 600000, 
+    }
+  );
+
+
   return {
     user: data,
     isLoading,
