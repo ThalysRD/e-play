@@ -9,7 +9,7 @@ export function middleware(request) {
   const isAuthenticated = !!sessionId;
 
   const publicOnlyRoutes = ["/login", "/cadastro"];
-  const protectedRoutes = ["/item/criar", "/configuracoes", "/carrinho"];
+  const protectedRoutes = ["/item/criar", "/configuracoes"];
 
   if (isAuthenticated && publicOnlyRoutes.includes(pathname)) {
     return NextResponse.redirect(new URL("/", request.url));

@@ -102,6 +102,7 @@
   border-radius: 8px;
   object-fit: cover;
   background: var(--cor-primaria);
+  cursor:  pointer;
 }
 
 .noImage {

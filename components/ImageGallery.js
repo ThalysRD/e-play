@@ -25,26 +25,22 @@ export default function ImageGallery({ images, title }) {
           className={styles.mainImage}
         />
       </div>
-
-      {images.length > 1 && (
-        <div className={styles.thumbnails}>
-          {images.map((image, index) => (
-            <div
-              key={image.id}
-              className={`${styles.thumbnail} ${
-                index === selectedIndex ? styles.active : ""
+      <div className={styles.thumbnails}>
+        {images.map((image, index) => (
+          <div
+            key={image.id}
+            className={`${styles.thumbnail} ${index === selectedIndex ? styles.active : ""
               }`}
-              onClick={() => setSelectedIndex(index)}
-            >
-              <img
-                src={image.image_url}
-                alt={`${title} - ${index + 1}`}
-                className={styles.thumbnailImage}
-              />
-            </div>
-          ))}
-        </div>
-      )}
+            onClick={() => setSelectedIndex(index)}
+          >
+            <img
+              src={image.image_url}
+              alt={`${title} - ${index + 1}`}
+              className={styles.thumbnailImage}
+            />
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
