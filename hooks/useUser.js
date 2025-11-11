@@ -14,6 +14,10 @@ const fetchUser = async (url) => {
 export default function useUser() {
   const { data, error, isLoading, mutate } = useSWR("/api/v1/user", fetchUser, {
     shouldRetryOnError: false,
+    revalidateOnFocus: true,
+    revalidateOnMount: true,
+    revalidateOnReconnect: true,
+    dedupingInterval: 0,
   });
   return {
     user: data,
