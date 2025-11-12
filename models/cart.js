@@ -131,12 +131,68 @@ async function addItemForUser(userId, listingId, quantity = 1, priceLocked = nul
     return await getWithItemsByUserId(userId);
 }
 
+async function mergeItemsForUser(userId, itemsToSync) {
+    if (!userId || !itemsToSync || !Array.isArray(itemsToSync)) {
+        throw new ValidationError({
+            message: "userId e um array de itemsToSync são obrigatórios.",
+            action: "Forneça os valores corretos.",
+        });
+    }
+    if (itemsToSync.length === 0) {
+        return await getWithItemsByUserId(userId);
+    }
+    const cart = await getOrCreateByUserId(userId);
+    for (const item of itemsToSync) {
+        const { listing_id, quantity, price_locked } = item;
+        if (!listing_id || !quantity || Number(quantity) <= 0) {
+            continue;
+        }
+        const numQuantity = Number(quantity);
+        const numPriceLocked = price_locked !== undefined ? price_locked : null;
+
+        const existing = await database.query({
+            text: `
+              SELECT quantity
+              FROM cart_items
+              WHERE cart_id = $1 AND listing_id = $2
+              LIMIT 1;
+            `,
+            values: [cart.id, listing_id],
+        });
+        if (existing.rowCount > 0) {
+            const newQty = existing.rows[0].quantity + numQuantity;
+            await database.query({
+                text: `
+                UPDATE cart_items
+                SET quantity = $3,
+                    price_locked = COALESCE($4, price_locked)
+                WHERE cart_id = $1 AND listing_id = $2;
+                `,
+                values: [cart.id, listing_id, newQty, numPriceLocked],
+            });
+        } else {
+            await database.query({
+                text: `
+                INSERT INTO cart_items (cart_id, listing_id, quantity, price_locked)
+                VALUES ($1, $2, $3, $4);
+                `,
+                values: [cart.id, listing_id, numQuantity, numPriceLocked],
+            });
+        }
+    }
+    await database.query({
+        text: `UPDATE carts SET updated_at = timezone('utc', now()) WHERE id = $1;`,
+        values: [cart.id],
+    });
+    return await getWithItemsByUserId(userId);
+}
+
 const cart = {
     createForUser,
-    getByUserId,
     getOrCreateByUserId,
     getWithItemsByUserId,
     addItemForUser,
+    mergeItemsForUser,
 };
 
 export default cart;
