@@ -32,7 +32,15 @@ async function getHandler(request, response) {
 async function postHandler(request, response) {
     try {
         const userId = await requireUserId(request);
-        const { listingId, quantity = 1, priceLocked = null } = request.body || {};
+        const body = request.body || {};
+        if (Array.isArray(body.itemsToSync)) {
+            const updatedCart = await cart.mergeItemsForUser(
+                userId,
+                body.itemsToSync
+            );
+            return response.status(200).json(updatedCart);
+        }
+        const { listingId, quantity = 1, priceLocked = null } = body;
         if (!listingId) {
             return response.status(400).json({ error: "listingId é obrigatório" });
         }

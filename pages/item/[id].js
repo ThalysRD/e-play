@@ -81,7 +81,6 @@ export default function ProductDetailsPage() {
     if (!listing || isAddingToCart) return;
     setIsAddingToCart(true);
     const imageUrl = listing.images && listing.images.length > 0 ? listing.images[0].image_url : null;
-    console.log(listing.images[0])
     const itemParaAdicionar = {
       listing_id: listing.id,
       price_locked: Number(listing.price),

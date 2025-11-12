@@ -26,32 +26,54 @@ export const CarrinhoProvider = ({ children }) => {
     }
 
     if (user && user.id) {
-      const fetchCart = async () => {
+      const syncAndFetchCart = async () => {
         try {
-          localStorage.removeItem(LOCAL_CART_KEY);
           setIsCartLoading(true);
           setError(null);
-          const response = await fetch('/api/v1/user/cart');
-          if (!response.ok) {
-            if (response.status === 404) {
-              setItens([]);
-              return;
+          const localCartString = localStorage.getItem(LOCAL_CART_KEY);
+          let localItems = null;
+          if (localCartString) {
+            try {
+              localItems = JSON.parse(localCartString);
+            } catch (e) {
+              console.error("Erro ao parsear carrinho local:", e);
+              localStorage.removeItem(LOCAL_CART_KEY);
             }
-            throw new Error('Falha ao buscar o carrinho da API');
           }
-          const cartData = await response.json();
+          let cartData;
+          if (localItems && localItems.length > 0) {
+            console.log("Sincronizando carrinho local com o backend...");
+            const response = await fetch('/api/v1/user/cart', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ itemsToSync: localItems })
+            });
+            if (!response.ok) {
+              throw new Error('Falha ao sincronizar o carrinho local.');
+            }
+            cartData = await response.json();
+            localStorage.removeItem(LOCAL_CART_KEY);
+          } else {
+            const response = await fetch('/api/v1/user/cart');
+            if (!response.ok) {
+              if (response.status === 404) {
+                setItens([]);
+                return;
+              }
+              throw new Error('Falha ao buscar o carrinho da API');
+            }
+            cartData = await response.json();
+          }
           setItens(cartData.items || []);
-          localStorage.removeItem(LOCAL_CART_KEY);
         } catch (err) {
-          console.error('Erro ao carregar carrinho da API:', err);
+          console.error('Erro ao carregar/sincronizar carrinho:', err);
           setError(err.message);
           setItens([]);
         } finally {
           setIsCartLoading(false);
         }
       };
-      fetchCart();
-
+      syncAndFetchCart();
     } else {
       try {
         setIsCartLoading(true);
@@ -70,7 +92,6 @@ export const CarrinhoProvider = ({ children }) => {
       }
     }
   }, [user, isUserLoading]);
-
 
   useEffect(() => {
     if (user || isUserLoading) return;
@@ -177,24 +198,6 @@ export const CarrinhoProvider = ({ children }) => {
     }
   };
 
-  const limparCarrinho = async () => {
-    if (user && user.id) {
-      try {
-        await fetch('/api/v1/user/cart', {
-          method: 'DELETE',
-        });
-        setItens([]);
-      } catch (err) {
-        console.error("Erro em limparCarrinho (API):", err);
-        setError(err.message);
-        throw err;
-      }
-    } else {
-      setItens([]);
-      return Promise.resolve();
-    }
-  };
-
   const calcularSubtotal = () => {
     return itens.reduce(
       (total, item) => total + (Number(item.price_locked) * item.quantity),
@@ -223,7 +226,6 @@ export const CarrinhoProvider = ({ children }) => {
         adicionarItem,
         removerItem,
         atualizarQuantidade,
-        limparCarrinho,
         calcularSubtotal,
         calcularFrete,
         calcularTotal,
