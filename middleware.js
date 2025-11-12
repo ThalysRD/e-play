@@ -9,7 +9,7 @@ export function middleware(request) {
   const isAuthenticated = !!sessionId;
 
   const publicOnlyRoutes = ["/login", "/cadastro"];
-  const protectedRoutes = ["/item/criar", "/configuracoes"];
+  const protectedRoutes = ["/item/criar", "/configuracoes", "/carrinho/finalizacao-compra"];
 
   if (isAuthenticated && publicOnlyRoutes.includes(pathname)) {
     return NextResponse.redirect(new URL("/", request.url));
@@ -32,5 +32,6 @@ export const config = {
     "/item/criar",
     "/configuracoes/:path*",
     "/carrinho",
+    "/carrinho/finalizacao-compra",
   ],
 };

@@ -78,14 +78,19 @@ export default function ProductDetailsPage() {
   async function handleAddToCart() {
     if (!listing || isAddingToCart) return;
     setIsAddingToCart(true);
+    const imageUrl = listing.images && listing.images.length > 0 ? listing.images[0].image_url : null;
+    console.log(listing.images[0])
     const itemParaAdicionar = {
-      listingId: listing.id,
+      listing_id: listing.id,
+      price_locked: Number(listing.price),
       quantity: 1,
-      priceLocked: Number(listing.price),
+      title: listing.title,
+      image_url: imageUrl
     };
     try {
       await adicionarItem(itemParaAdicionar);
       showSuccess(`"${listing.title}" foi adicionado ao carrinho!`);
+
     } catch (err) {
       console.error("Erro ao adicionar ao carrinho:", err);
       showError("Falha ao adicionar o item. Tente novamente.");
