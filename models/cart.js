@@ -51,14 +51,12 @@ COALESCE(
         ci.price_locked,
         l.title,
         (
-          SELECT json_build_object(
-            'image_url', li.image_url
-          )
+          SELECT li.image_url
           FROM listing_images li
           WHERE li.listing_id = ci.listing_id
           ORDER BY li.display_order ASC
           LIMIT 1
-        ) AS imagem
+        ) AS image_url
       FROM cart_items ci
       INNER JOIN listings l ON ci.listing_id = l.id
       WHERE ci.cart_id = c.id

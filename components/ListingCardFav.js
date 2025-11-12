@@ -50,7 +50,7 @@ export default function ListingCardFav({ listing, onDelete, disabled }) {
                     </p>
 
                     <button className={styles.deleteButton} onClick={handleDeleteClick} disabled={disabled}>
-                        🗑️ Deletar
+                        🗑️ Remover
                     </button>
                 </div>
             </div>

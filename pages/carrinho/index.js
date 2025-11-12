@@ -20,6 +20,7 @@ const CarrinhoPage = () => {
   const router = useRouter();
 
   const [updatingItemId, setUpdatingItemId] = useState(null);
+  const [isRemoving, setIsRemoving] = useState(false);
 
   const formatarPreco = (preco) => {
     return new Intl.NumberFormat("pt-BR", {
@@ -29,8 +30,8 @@ const CarrinhoPage = () => {
   };
 
   const handleFinalizarCompra = () => {
-    /*router.push('/carrinho/finalizacao-compra');*/
-    alert("Funcionalidade de compra em desenvolvimento!");
+    router.push('/carrinho/finalizacao-compra');
+    /*alert("Funcionalidade de compra em desenvolvimento!");*/
   };
 
   const handleAtualizarQuantidade = async (productId, novaQuantidade) => {
@@ -52,12 +53,14 @@ const CarrinhoPage = () => {
   const handleRemoverItem = async (productId) => {
     if (updatingItemId) return;
     setUpdatingItemId(productId);
+    setIsRemoving(true);
     try {
       await removerItem(productId);
     } catch (err) {
       console.error("Falha ao remover item:", err);
       alert("Não foi possível remover o item. Tente novamente.");
     } finally {
+      setIsRemoving(false);
       setUpdatingItemId(null);
     }
   };
@@ -105,8 +108,8 @@ const CarrinhoPage = () => {
 
             return (
               <div key={item.listing_id} className={`${styles.itemCarrinho} ${isItemUpdating ? styles.itemUpdating : ''}`}>
-                {item.imagem?.image_url ? (
-                  <img src={item.imagem.image_url} alt={item.nome} className={styles.itemImagem} onClick={() => router.push(`/item/${item.listing_id}`)} />
+                {item.image_url ? (
+                  <img src={item.image_url} alt={item.nome} className={styles.itemImagem} onClick={() => router.push(`/item/${item.listing_id}`)} />
                 ) : (
                   <div className={styles.noImage} onClick={() => router.push(`/item/${item.listing_id}`)}>🖼️</div>
                 )}
@@ -139,8 +142,10 @@ const CarrinhoPage = () => {
                     className={styles.removerBtn}
                     onClick={() => handleRemoverItem(item.listing_id)}
                     disabled={isItemUpdating}
+                    aria-busy={isItemUpdating && isRemoving}
+                    title={isItemUpdating && isRemoving ? "Removendo..." : "Remover item do carrinho"}
                   >
-                    <IoTrash /> Remover
+                    {isItemUpdating && isRemoving ? "Removendo..." : (<><IoTrash /> Remover</>)}
                   </button>
                 </div>
               </div>

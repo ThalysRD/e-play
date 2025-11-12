@@ -187,6 +187,7 @@
 }
 
 .removerBtn {
+  width: 100%;
   background: var(--cor-laranja-medio);
   color: var(--cor-texto);
   border: none;
