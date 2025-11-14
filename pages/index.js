@@ -55,7 +55,7 @@ export default function HomePage() {
 
           {!loading && !error && listings.length > 0 && (
             <>
-              <section className={styles.featuredSection}>
+              {/*<section className={styles.featuredSection}>
                 <h2 className={styles.sectionTitle}>Recomendados 🔥</h2>
                 <div className={styles.listingsGrid}>
                   {listings.slice(0, 4).map((listing) => (
@@ -64,7 +64,7 @@ export default function HomePage() {
                 </div>
               </section>
 
-              {/*<section className={styles.featuredSection}>
+              <section className={styles.featuredSection}>
                 <h2 className={styles.sectionTitle}>Mais Vendidos 🏆</h2>
                 <div className={styles.listingsGrid}>
                   {listings.slice(4, 8).map((listing) => (
@@ -83,7 +83,6 @@ export default function HomePage() {
               </section>*/}
 
               <section className={styles.catalogSection}>
-                <h2 className={styles.sectionTitle}>Todos os Anúncios 📚</h2>
                 <div className={styles.listingsGrid}>
                   {listings.map((listing) => (
                     <ListingCard key={listing.id} listing={listing} />

@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import LogoIMG from "./LogoFooter";
 import useUser from "../hooks/useUser";
-import { useCarrinho } from "../contexts/CarrinhoContext";
+import { useCarrinho } from "../hooks/useCarrinho";
 
 export default function LayoutPadrao({ children }) {
   const router = useRouter();

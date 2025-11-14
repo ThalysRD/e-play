@@ -1,5 +1,5 @@
 import React from "react";
-import { useCarrinho } from "contexts/CarrinhoContext";
+import { useCarrinho } from "hooks/useCarrinho";
 import styles from "styles/carrinho/carrinho.module.css";
 import { IoTrash, IoAdd, IoRemove } from "react-icons/io5";
 import { useRouter } from "next/router";
@@ -30,8 +30,7 @@ const CarrinhoPage = () => {
   };
 
   const handleFinalizarCompra = () => {
-    router.push('/carrinho/finalizacao-compra');
-    /*alert("Funcionalidade de compra em desenvolvimento!");*/
+    router.push('/carrinho/checkout');
   };
 
   const handleAtualizarQuantidade = async (productId, novaQuantidade) => {
