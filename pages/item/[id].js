@@ -8,7 +8,7 @@ import useCheckout from "hooks/useCheckout";
 import SearchBar from "components/SearchBar";
 import Modal from "components/ModalPadrao";
 import ImageGallery from "components/ImageGallery";
-import { useCarrinho } from "contexts/CarrinhoContext";
+import { useCarrinho } from "hooks/useCarrinho";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar as faStarSolid } from "@fortawesome/free-solid-svg-icons";
 import { faStar as faStarRegular } from "@fortawesome/free-regular-svg-icons";
@@ -23,6 +23,7 @@ export default function ProductDetailsPage() {
   const [error, setError] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
+  const [isBuyingNow, setIsBuyingNow] = useState(false);
   const { adicionarItem } = useCarrinho();
   const [isInWishlist, setIsInWishlist] = useState(false);
   const [isUpdatingWishlist, setIsUpdatingWishlist] = useState(false);
@@ -101,22 +102,44 @@ export default function ProductDetailsPage() {
   }
 
   async function handleBuyNow() {
+    if (!listing || isAddingToCart) return;
+    setIsBuyingNow(true);
+    const imageUrl = listing.images && listing.images.length > 0 ? listing.images[0].image_url : null;
+    const itemParaAdicionar = {
+      listing_id: listing.id,
+      price_locked: Number(listing.price),
+      quantity: 1,
+      title: listing.title,
+      image_url: imageUrl
+    };
+    try {
+      await adicionarItem(itemParaAdicionar);
+      showSuccess(`"${listing.title}" foi adicionado ao carrinho!`);
+      router.push('/carrinho');
+    } catch (err) {
+      console.error("Erro ao adicionar ao carrinho:", err);
+      showError("Falha ao adicionar o item. Tente novamente.");
+    } finally {
+      setIsBuyingNow(true);
+    }
+
+    {/*
+    Mari - comentei pois essa lógica de pagamento vai direto ppara a finalização de comrpa,
+    onde coloca os dados pessoais etc
     if (!user) {
       showError("Você precisa estar logado para comprar");
       return;
     }
-
     if (!listing) {
       showError("Produto não disponível");
       return;
     }
-
     try {
       await checkout(listing.id, 1, Number(listing.price));
     } catch (err) {
       console.error("Erro ao iniciar compra:", err);
       showError(err.message || "Erro ao iniciar a compra. Tente novamente.");
-    }
+    }*/}
   }
 
   function handleEdit() {
@@ -306,13 +329,9 @@ export default function ProductDetailsPage() {
                   <button
                     className={styles.buyButton}
                     onClick={handleBuyNow}
-                    disabled={listing.quantity === 0 || isCheckoutLoading}
+                    disabled={listing.quantity === 0 || isBuyingNow}
                   >
-                    {isCheckoutLoading
-                      ? "Processando..."
-                      : listing.quantity === 0
-                      ? "Esgotado"
-                      : "Comprar Agora"}
+                    {isBuyingNow ? "Processando..." : listing.quantity === 0 ? "Esgotado" : "Comprar Agora"}
                   </button>
                 </>
               )}

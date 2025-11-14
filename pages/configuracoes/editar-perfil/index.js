@@ -81,6 +81,13 @@ export default function EditProfilePage() {
           />
         </div>
 
+        <div className={styles.formEndereco}>
+          <div className={styles.formExplain}>
+            <p className={styles.title}>Endereço</p>
+          </div>
+          <EnderecoForm user={user} onOpenModal={() => setIsModalOpen(true)} />
+        </div>
+
         <div className={styles.formSenha}>
           <div className={styles.formExplain}>
             <p className={styles.title}>Redefinir senha</p>
@@ -189,6 +196,7 @@ function PersonalInfosForm({ onOpenModal, user }) {
               maxLength={400}
               className={`${styles.input} ${styles.bioTextarea}`}
               defaultValue={user?.profile_bio || ""}
+              placeholder="Olá! Eu sou fulano..."
             />
           </div>
 
@@ -202,6 +210,7 @@ function PersonalInfosForm({ onOpenModal, user }) {
               type="text"
               className={styles.input}
               defaultValue={user?.name || ""}
+              placeholder="Fulano da Silva"
             />
           </div>
 
@@ -215,6 +224,7 @@ function PersonalInfosForm({ onOpenModal, user }) {
               type="text"
               className={styles.input}
               defaultValue={user?.username || ""}
+              placeholder="fulano.silva"
             />
           </div>
 
@@ -228,6 +238,7 @@ function PersonalInfosForm({ onOpenModal, user }) {
               type="email"
               className={styles.input}
               defaultValue={user?.email || ""}
+              placeholder="fulano@email.com"
             />
           </div>
 
@@ -241,6 +252,7 @@ function PersonalInfosForm({ onOpenModal, user }) {
               type="text"
               className={styles.input}
               defaultValue={user?.phone_number || ""}
+              placeholder="(99) 99999-9999"
             />
           </div>
 
@@ -254,6 +266,7 @@ function PersonalInfosForm({ onOpenModal, user }) {
               type="text"
               className={styles.input}
               defaultValue={user?.cpf || ""}
+              placeholder="999.999.999-99"
             />
           </div>
 
@@ -267,6 +280,7 @@ function PersonalInfosForm({ onOpenModal, user }) {
               type="text"
               className={styles.input}
               defaultValue={user?.cnpj || ""}
+              placeholder="99.999.999/0009-99"
             />
           </div>
         </div>
@@ -342,5 +356,151 @@ function PasswordForm({ onOpenModal }) {
         </div>
       </div>
     </form>
+  );
+}
+
+function EnderecoForm({ onOpenModal }) {
+  return (
+    <form className={styles.enderecoForm}>
+      <div className={styles.formBackground}>
+        <div className={styles.enderecoFormContainer1}>
+          <div className={styles.fieldGroup}>
+            <label htmlFor="cep" className={styles.label}>
+              CEP*
+            </label>
+            <input
+              id="cep"
+              name="cep"
+              type="cep"
+              className={styles.input}
+              placeholder="99999-999"
+            />
+          </div>
+
+          <div className={styles.fieldGroup}>
+            <label htmlFor="rua" className={styles.label}>
+              Rua*
+            </label>
+            <input
+              id="rua"
+              name="rua"
+              type="rua"
+              className={styles.input}
+              placeholder="Ruas das Flores"
+            />
+          </div>
+
+          <div className={styles.fieldGroup}>
+            <label htmlFor="numero" className={styles.label}>
+              Número*
+            </label>
+            <input
+              id="numero"
+              name="numero"
+              type="numero"
+              className={styles.input}
+              placeholder="123"
+            />
+          </div>
+
+          <div className={styles.fieldGroup}>
+            <label htmlFor="complemento" className={styles.label}>
+              Complemento
+            </label>
+            <input
+              id="complemento"
+              name="complemento"
+              type="complemento"
+              className={styles.input}
+              placeholder="Apto, Bloco, Casa"
+            />
+          </div>
+        </div>
+
+        <div className={styles.enderecoFormContainer2}>
+          <div className={styles.fieldGroup}>
+            <label htmlFor="bairro" className={styles.label}>
+              Bairro*
+            </label>
+            <input
+              id="bairro"
+              name="bairro"
+              type="bairro"
+              className={styles.input}
+              placeholder="Planalto"
+            />
+          </div>
+
+          <div className={styles.fieldGroup}>
+            <label htmlFor="cidade" className={styles.label}>
+              Cidade*
+            </label>
+            <input
+              id="cidade"
+              name="cidade"
+              type="cidade"
+              className={styles.input}
+              placeholder="Natal"
+            />
+          </div>
+
+          <div className={styles.fieldGroupHalf}>
+            <label htmlFor="estado" className={styles.label}>
+              Estado*
+            </label>
+            <select
+              id="estado"
+              name="estado"
+              className={styles.select}
+            >
+              <option value=""> </option>
+              <option value="AC">Acre</option>
+              <option value="AL">Alagoas</option>
+              <option value="AP">Amapá</option>
+              <option value="AM">Amazonas</option>
+              <option value="BA">Bahia</option>
+              <option value="CE">Ceará</option>
+              <option value="DF">Distrito Federal</option>
+              <option value="ES">Espírito Santo</option>
+              <option value="GO">Goiás</option>
+              <option value="MA">Maranhão</option>
+              <option value="MT">Mato Grosso</option>
+              <option value="MS">Mato Grosso do Sul</option>
+              <option value="MG">Minas Gerais</option>
+              <option value="PA">Pará</option>
+              <option value="PB">Paraíba</option>
+              <option value="PR">Paraná</option>
+              <option value="PE">Pernambuco</option>
+              <option value="PI">Piauí</option>
+              <option value="RJ">Rio de Janeiro</option>
+              <option value="RN">Rio Grande do Norte</option>
+              <option value="RS">Rio Grande do Sul</option>
+              <option value="RO">Rondônia</option>
+              <option value="RR">Roraima</option>
+              <option value="SC">Santa Catarina</option>
+              <option value="SP">São Paulo</option>
+              <option value="SE">Sergipe</option>
+              <option value="TO">Tocantins</option>
+            </select>
+          </div>
+        </div>
+
+        <div className={styles.buttonsContainer}>
+          <button
+            type="button"
+            onClick={onOpenModal}
+            className={`${styles.button} ${styles.buttonCancel}`}
+          >
+            Cancelar
+          </button>
+          <button
+            type="button"
+            className={`${styles.button} ${styles.buttonSave}`}
+          >
+            Salvar mudanças
+          </button>
+        </div>
+      </div>
+    </form >
   );
 }

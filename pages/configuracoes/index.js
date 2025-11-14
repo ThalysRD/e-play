@@ -7,8 +7,7 @@ import {
   FaBullhorn,
   FaBoxOpen,
   FaStar,
-  FaTruck,
-  FaCreditCard,
+  FaShoppingBag,
   FaHeadset,
 } from "react-icons/fa";
 import Link from "next/link";
@@ -80,15 +79,8 @@ const ConfiguracoesPage = () => {
                 <FaUserEdit size={22} />
               </Link>
               <Link
-                href="/configuracoes/meus-pedidos"
-                className={`${styles.optionButton} ${styles.btnPink}`}
-              >
-                <span>Meus pedidos</span>
-                <FaBoxOpen size={22} />
-              </Link>
-              <Link
                 href="/configuracoes/meus-anuncios"
-                className={`${styles.optionButton} ${styles.btnBlue}`}
+                className={`${styles.optionButton} ${styles.btnPink}`}
               >
                 <span>Meus anúncios</span>
                 <FaBullhorn size={22} />
@@ -108,18 +100,18 @@ const ConfiguracoesPage = () => {
             <h3 className={styles.sectionTitle}>Compras</h3>
             <div className={styles.buttonsGrid}>
               <Link
-                href="/configuracoes/enderecos"
+                href="/configuracoes/meus-pedidos"
                 className={`${styles.optionButton} ${styles.btnBlue}`}
               >
-                <span>Endereço de entrega</span>
-                <FaTruck size={22} />
+                <span>Meus pedidos</span>
+                <FaBoxOpen size={22} />
               </Link>
               <Link
-                href="/configuracoes/pagamento"
+                href="/configuracoes/minhas-vendas"
                 className={`${styles.optionButton} ${styles.btnOrange}`}
               >
-                <span>Métodos de pagamento</span>
-                <FaCreditCard size={22} />
+                <span>Minhas vendas</span>
+                <FaShoppingBag size={22} />
               </Link>
             </div>
           </section>

@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import useUser from '../hooks/useUser';
+import useUser from './useUser';
 
 const CarrinhoContext = createContext();
 
@@ -109,7 +109,7 @@ export const CarrinhoProvider = ({ children }) => {
 
   const adicionarItem = async (produto) => {
     if (user && user.id) {
-      const itemData = { listingId: produto.listing_id, quantity: 1 };
+      const itemData = { listingId: produto.listing_id, quantity: 1, priceLocked: produto.price_locked };
       try {
         const response = await fetch('/api/v1/user/cart', {
           method: 'POST',
