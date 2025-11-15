@@ -86,7 +86,7 @@
 .infoFormContainer {
   border-bottom: 2px solid var(--cor-primaria);
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 2fr 1fr 1fr;
   gap: 20px;
   width: 100%;
   padding-bottom: 30px;

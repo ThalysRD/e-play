@@ -122,24 +122,6 @@ export default function ProductDetailsPage() {
     } finally {
       setIsBuyingNow(true);
     }
-
-    {/*
-    Mari - comentei pois essa lógica de pagamento vai direto ppara a finalização de comrpa,
-    onde coloca os dados pessoais etc
-    if (!user) {
-      showError("Você precisa estar logado para comprar");
-      return;
-    }
-    if (!listing) {
-      showError("Produto não disponível");
-      return;
-    }
-    try {
-      await checkout(listing.id, 1, Number(listing.price));
-    } catch (err) {
-      console.error("Erro ao iniciar compra:", err);
-      showError(err.message || "Erro ao iniciar a compra. Tente novamente.");
-    }*/}
   }
 
   function handleEdit() {

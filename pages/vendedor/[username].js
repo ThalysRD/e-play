@@ -82,7 +82,7 @@ export default function PaginaVendedor() {
                         <div className={styles.userDetails}>
                             <div className={styles.column}>
                                 <p><span className={styles.label}>Usuário:</span> @{vendedor.username}</p>
-                                <p><span className={styles.label}>Localidade:</span> {vendedor.address || 'Não informado'}</p>
+                                <p><span className={styles.label}>Localidade:</span> {vendedor.address_city && vendedor.address_state ? `${vendedor.address_city}, ${vendedor.address_state}` : "Não informado"}</p>
                             </div>
                             <div className={styles.column}>
                                 <p><span className={`${styles.label} ${styles.bioLabel}`}>Sobre mim:</span> {vendedor.profile_bio || 'Não informado'}</p>

@@ -165,11 +165,10 @@ async function update(userInputValues) {
           password = $4,
           cpf = $5,
           cnpj = $6,
-          address = $7,
-          zip_code = $8,
-          profile_image_url = $9,
-          phone_number = $10,
-          profile_bio = $11,
+          profile_image_url = $7,
+          phone_number = $8,
+          profile_bio = $9,
+          name = $10,
           updated_at = timezone('utc', now())
         WHERE
           id = $1
@@ -183,11 +182,10 @@ async function update(userInputValues) {
         userWithNewValues.password,
         userWithNewValues.cpf || null,
         userWithNewValues.cnpj || null,
-        userInputValues.address || null,
-        userWithNewValues.zipCode || null,
-        userWithNewValues.profileImageUrl || null,
-        userWithNewValues.phoneNumber || null,
-        userWithNewValues.profileBio || null,
+        userWithNewValues.profile_image_url || null,
+        userWithNewValues.phone_number || null,
+        userWithNewValues.profile_bio || null,
+        userWithNewValues.name || null,
       ],
     });
 

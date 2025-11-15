@@ -18,6 +18,17 @@ async function patchUser(payload) {
     throw new Error(data?.message || data?.error || "Falha na atualização.");
   return data;
 }
+async function patchUserAddress(payload) {
+  const res = await fetch("/api/v1/user/address", { // Nova URL
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  const data = await res.json();
+  if (!res.ok)
+    throw new Error(data?.message || data?.error || "Falha na atualização do endereço.");
+  return data;
+}
 
 function Message({ kind, children }) {
   if (!children) return null;
@@ -144,8 +155,8 @@ function PersonalInfosForm({ onOpenModal, user }) {
       const payload = {
         id: user?.id,
         name: formVals.name,
-        profileBio: formVals.profileBio,
-        phoneNumber: formVals.phoneNumber,
+        profile_bio: formVals.profileBio,
+        phone_number: formVals.phoneNumber,
         cpf: formVals.cpf,
         cnpj: formVals.cnpj,
       };
@@ -252,7 +263,7 @@ function PersonalInfosForm({ onOpenModal, user }) {
               type="text"
               className={styles.input}
               defaultValue={user?.phone_number || ""}
-              placeholder="(99) 99999-9999"
+              placeholder="99 999999999"
             />
           </div>
 
@@ -266,7 +277,7 @@ function PersonalInfosForm({ onOpenModal, user }) {
               type="text"
               className={styles.input}
               defaultValue={user?.cpf || ""}
-              placeholder="999.999.999-99"
+              placeholder="Digite somente os números do seu CPF."
             />
           </div>
 
@@ -280,7 +291,7 @@ function PersonalInfosForm({ onOpenModal, user }) {
               type="text"
               className={styles.input}
               defaultValue={user?.cnpj || ""}
-              placeholder="99.999.999/0009-99"
+              placeholder="Digite somente os números do seu CNPJ."
             />
           </div>
         </div>
@@ -359,99 +370,154 @@ function PasswordForm({ onOpenModal }) {
   );
 }
 
-function EnderecoForm({ onOpenModal }) {
+function EnderecoForm({ onOpenModal, user }) {
+  const [busy, setBusy] = useState(false);
+  const [msg, setMsg] = useState("");
+
+  async function onSubmit(e) {
+    e.preventDefault();
+    setMsg("");
+    setBusy(true);
+
+    try {
+      const fd = new FormData(e.currentTarget);
+      const get = (k) => fd.get(k)?.toString().trim();
+
+      const payload = {
+        id: user?.id,
+        address_zipcode: get("address_zipcode") ?? "",
+        address_street: get("address_street") ?? "",
+        address_number: get("address_number") ?? "",
+        address_complement: get("address_complement") ?? "",
+        address_neighborhood: get("address_neighborhood") ?? "",
+        address_city: get("address_city") ?? "",
+        address_state: get("address_state") ?? "",
+      };
+      if (
+        !payload.address_zipcode ||
+        !payload.address_street ||
+        !payload.address_number ||
+        !payload.address_neighborhood ||
+        !payload.address_city ||
+        !payload.address_state
+      ) {
+        throw new Error(
+          "Por favor, preencha todos os campos de endereço obrigatórios (*)."
+        );
+      }
+
+      await patchUserAddress(payload);
+      setMsg("Endereço atualizado com sucesso!");
+    } catch (err) {
+      setMsg(err.message);
+    } finally {
+      setBusy(false);
+    }
+  }
+
   return (
-    <form className={styles.enderecoForm}>
+    <form
+      className={styles.enderecoForm}
+      key={user?.id}
+      onSubmit={onSubmit}
+    >
       <div className={styles.formBackground}>
         <div className={styles.enderecoFormContainer1}>
           <div className={styles.fieldGroup}>
-            <label htmlFor="cep" className={styles.label}>
+            <label htmlFor="address_zipcode" className={styles.label}>
               CEP*
             </label>
             <input
-              id="cep"
-              name="cep"
-              type="cep"
+              id="address_zipcode"
+              name="address_zipcode"
+              type="text"
               className={styles.input}
               placeholder="99999-999"
+              defaultValue={user?.address_zipcode || ""}
             />
           </div>
 
           <div className={styles.fieldGroup}>
-            <label htmlFor="rua" className={styles.label}>
+            <label htmlFor="address_street" className={styles.label}>
               Rua*
             </label>
             <input
-              id="rua"
-              name="rua"
-              type="rua"
+              id="address_street"
+              name="address_street"
+              type="text"
               className={styles.input}
               placeholder="Ruas das Flores"
+              defaultValue={user?.address_street || ""}
             />
           </div>
 
           <div className={styles.fieldGroup}>
-            <label htmlFor="numero" className={styles.label}>
+            <label htmlFor="address_number" className={styles.label}>
               Número*
             </label>
             <input
-              id="numero"
-              name="numero"
-              type="numero"
+              id="address_number"
+              name="address_number"
+              type="text"
               className={styles.input}
               placeholder="123"
+              defaultValue={user?.address_number || ""}
             />
           </div>
 
           <div className={styles.fieldGroup}>
-            <label htmlFor="complemento" className={styles.label}>
+            <label htmlFor="address_complement" className={styles.label}>
               Complemento
             </label>
             <input
-              id="complemento"
-              name="complemento"
-              type="complemento"
+              id="address_complement"
+              name="address_complement"
+              type="text"
               className={styles.input}
               placeholder="Apto, Bloco, Casa"
+              defaultValue={user?.address_complement || ""}
             />
           </div>
         </div>
 
         <div className={styles.enderecoFormContainer2}>
           <div className={styles.fieldGroup}>
-            <label htmlFor="bairro" className={styles.label}>
+            <label htmlFor="address_neighborhood" className={styles.label}>
               Bairro*
             </label>
             <input
-              id="bairro"
-              name="bairro"
-              type="bairro"
+              id="address_neighborhood"
+              name="address_neighborhood"
+              type="text"
               className={styles.input}
               placeholder="Planalto"
+              defaultValue={user?.address_neighborhood || ""}
             />
           </div>
 
           <div className={styles.fieldGroup}>
-            <label htmlFor="cidade" className={styles.label}>
+            <label htmlFor="address_city" className={styles.label}>
               Cidade*
             </label>
             <input
-              id="cidade"
-              name="cidade"
-              type="cidade"
+              id="address_city"
+              name="address_city"
+              type="text"
               className={styles.input}
               placeholder="Natal"
+              defaultValue={user?.address_city || ""}
             />
           </div>
 
           <div className={styles.fieldGroupHalf}>
-            <label htmlFor="estado" className={styles.label}>
+            <label htmlFor="address_state" className={styles.label}>
               Estado*
             </label>
             <select
-              id="estado"
-              name="estado"
+              id="address_state"
+              name="address_state"
               className={styles.select}
+              defaultValue={user?.address_state || ""}
             >
               <option value=""> </option>
               <option value="AC">Acre</option>
@@ -485,22 +551,23 @@ function EnderecoForm({ onOpenModal }) {
           </div>
         </div>
 
+        <Message kind={msg?.includes("sucesso") ? "success" : msg ? "error" : undefined}>
+          {msg}
+        </Message>
+
         <div className={styles.buttonsContainer}>
           <button
             type="button"
             onClick={onOpenModal}
             className={`${styles.button} ${styles.buttonCancel}`}
+            disabled={busy}
           >
             Cancelar
           </button>
-          <button
-            type="button"
-            className={`${styles.button} ${styles.buttonSave}`}
-          >
-            Salvar mudanças
-          </button>
+          {/* Usa o SubmitButton */}
+          <SubmitButton busy={busy}>Salvar mudanças</SubmitButton>
         </div>
       </div>
-    </form >
+    </form>
   );
 }
