@@ -4,24 +4,57 @@ import { useCarrinho } from "hooks/useCarrinho";
 import useCheckout from "hooks/useCheckout";
 import useUser from "hooks/useUser";
 
+async function patchUser(payload) {
+    const res = await fetch("/api/v1/users", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        credentials: 'include',
+        body: JSON.stringify(payload),
+    });
+    const data = await res.json();
+    if (!res.ok)
+        throw new Error(data?.message || data?.error || "Falha na atualização dos dados pessoais.");
+    return data;
+}
+
 export default function CheckoutPage() {
     const { checkoutCart, isLoading: isCheckoutLoading } = useCheckout();
     const { itens, calcularSubtotal, calcularFrete, calcularTotal } = useCarrinho();
     const { user } = useUser();
     const [isSavingAddress, setIsSavingAddress] = useState(false);
     const enderecoFormRef = useRef(null);
-    
+    const infosFormRef = useRef(null);
+
     const handleFinalizarCompra = async () => {
         if (itens.length === 0) {
             alert("Seu carrinho está vazio!");
             return;
         }
-        
+
         try {
-            // Salvar endereço antes de finalizar a compra
             setIsSavingAddress(true);
+
+            const infosFormData = new FormData(infosFormRef.current);
+            const cpf = infosFormData.get('cpf')?.trim();
+            const cnpj = infosFormData.get('cnpj')?.trim();
+            if (!cpf && !cnpj) {
+                alert("Por favor, preencha ou o CPF ou o CNPJ.");
+                setIsSavingAddress(false);
+                return;
+            }
+            if (cpf && cnpj) {
+                alert("Por favor, preencha APENAS o CPF ou o CNPJ, não os dois.");
+                setIsSavingAddress(false);
+                return;
+            }
+            const personalDataPayload = {
+                id: user.id,
+                cpf: cpf || null,
+                cnpj: cnpj || null
+            };
+            await patchUser(personalDataPayload);
+
             const formData = new FormData(enderecoFormRef.current);
-            
             const addressData = {
                 address_street: formData.get('rua'),
                 address_number: formData.get('numero'),
@@ -31,17 +64,15 @@ export default function CheckoutPage() {
                 address_state: formData.get('estado'),
                 address_zipcode: formData.get('cep'),
             };
-            
-            // Validar campos obrigatórios
-            if (!addressData.address_street || !addressData.address_number || 
-                !addressData.address_neighborhood || !addressData.address_city || 
+
+            if (!addressData.address_street || !addressData.address_number ||
+                !addressData.address_neighborhood || !addressData.address_city ||
                 !addressData.address_state || !addressData.address_zipcode) {
                 alert("Por favor, preencha todos os campos obrigatórios do endereço.");
                 setIsSavingAddress(false);
                 return;
             }
-            
-            // Salvar endereço
+
             const response = await fetch('/api/v1/user/address', {
                 method: 'PATCH',
                 headers: {
@@ -50,15 +81,14 @@ export default function CheckoutPage() {
                 credentials: 'include',
                 body: JSON.stringify(addressData),
             });
-            
+
             if (!response.ok) {
                 const error = await response.json();
                 throw new Error(error.message || 'Erro ao salvar endereço');
             }
-            
+
             setIsSavingAddress(false);
-            
-            // Prosseguir com o checkout
+
             await checkoutCart(itens, calcularTotal());
         } catch (error) {
             setIsSavingAddress(false);
@@ -79,7 +109,7 @@ export default function CheckoutPage() {
 
                 <div className={styles.formContainer}>
                     <h2>Informações pessoais</h2>
-                    <InfosForm user={user}></InfosForm>
+                    <InfosForm user={user} formRef={infosFormRef}></InfosForm>
                     <h2>Endereço de Entrega</h2>
                     <EnderecoForm user={user} formRef={enderecoFormRef}></EnderecoForm>
                     <h2>Itens do pedido</h2>
@@ -145,9 +175,9 @@ export default function CheckoutPage() {
         </div>
     );
 }
-function InfosForm({ user }) {
+function InfosForm({ user, formRef }) {
     return (
-        <form className={styles.enderecoForm}>
+        <form className={styles.enderecoForm} ref={formRef}>
             <div className={styles.formBackground}>
                 <div className={styles.infoFormContainer}>
                     <div className={styles.fieldGroup}>
@@ -174,8 +204,22 @@ function InfosForm({ user }) {
                             name="cpf"
                             type="text"
                             className={styles.input}
-                            placeholder="999.999.999-99"
+                            placeholder="Somente números."
                             defaultValue={user?.cpf || ''}
+                        />
+                    </div>
+
+                    <div className={styles.fieldGroup}>
+                        <label htmlFor="cnpj" className={styles.label}>
+                            CNPJ
+                        </label>
+                        <input
+                            id="cnpj"
+                            name="cnpj"
+                            type="text"
+                            className={styles.input}
+                            placeholder="Somente números."
+                            defaultValue={user?.cnpj || ''}
                         />
                     </div>
                 </div>

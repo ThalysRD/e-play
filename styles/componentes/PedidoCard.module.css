@@ -1,0 +1,83 @@
+.listingCard {
+  background: var(--cor-secundaria);
+  border-radius: 25px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+
+.imageContainer {
+  width: 100%;
+  height: 150px;
+  background: var(--cor-amarelo-escuro-hoover);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.listingImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+.noImage {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 20px;
+}
+
+.listingInfo {
+  padding: 10px 20px 10px 20px;
+}
+
+.listingTitle {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--cor-texto);
+  padding-bottom: 10px;
+  border-bottom: 3px solid var(--cor-primaria);
+}
+
+.listingDetails {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+.seller{
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+}
+.sellerName {
+  color: var(--cor-amarelo-medio);
+}
+.sellerName:hover {
+  color: var(--cor-texto);
+}
+
+.listingPrice {
+  font-size: 12px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  background: var(--cor-sucess);
+  text-align: center;
+  font-weight: bold;
+}
+
+.row{
+    display: flex;
+    gap: 5px;
+}
+
+.negritoInfo{
+    font-weight: bold;
+}
+.row p {
+  margin: 0;
+}
+
+.status{
+  padding-bottom: 10px;
+  border-bottom: 3px solid var(--cor-primaria);
+}
