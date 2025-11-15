@@ -273,6 +273,63 @@ async function hashPasswordInObject(userInputValues) {
   const hashedPassword = await password.hash(userInputValues.password);
   userInputValues.password = hashedPassword;
 }
+
+async function updateAddress(userId, addressData) {
+  if (!userId) {
+    throw new ValidationError({
+      message: "User ID é obrigatório",
+      action: "Forneça um ID de usuário válido",
+    });
+  }
+
+  const {
+    address_street,
+    address_number,
+    address_complement,
+    address_neighborhood,
+    address_city,
+    address_state,
+    address_zipcode,
+  } = addressData;
+
+  const results = await database.query({
+    text: `
+      UPDATE users
+      SET
+        address_street = $2,
+        address_number = $3,
+        address_complement = $4,
+        address_neighborhood = $5,
+        address_city = $6,
+        address_state = $7,
+        address_zipcode = $8,
+        updated_at = timezone('utc', now())
+      WHERE
+        id = $1
+      RETURNING *
+    `,
+    values: [
+      userId,
+      address_street,
+      address_number,
+      address_complement,
+      address_neighborhood,
+      address_city,
+      address_state,
+      address_zipcode,
+    ],
+  });
+
+  if (results.rowCount === 0) {
+    throw new NotFoundError({
+      message: "Usuário não encontrado",
+      action: "Verifique o ID do usuário e tente novamente",
+    });
+  }
+
+  return results.rows[0];
+}
+
 const user = {
   findOneById,
   findOneByUsername,
@@ -284,6 +341,7 @@ const user = {
   setPermissions,
   findOneWithListingsByUsername,
   updateWishlist,
+  updateAddress,
 };
 
 export default user;

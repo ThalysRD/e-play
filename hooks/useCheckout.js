@@ -24,6 +24,7 @@ export default function useCheckout() {
     sendCheckoutRequest
   );
 
+  // Compra direta de um único item (botão "Comprar Agora")
   const checkout = async (listingId, quantity, totalPrice) => {
     try {
       const result = await trigger({
@@ -45,8 +46,34 @@ export default function useCheckout() {
     }
   };
 
+  // Checkout do carrinho com múltiplos itens
+  const checkoutCart = async (items, totalPrice) => {
+    try {
+      const result = await trigger({
+        items: items.map(item => ({
+          listingId: item.listing_id,
+          quantity: Number(item.quantity),
+          priceLocked: Number(item.price_locked),
+        })),
+        totalPrice: Number(totalPrice),
+      });
+
+      // Redirecionar para Mercado Pago
+      if (result.payment.sandboxInitPoint) {
+        window.location.href = result.payment.sandboxInitPoint;
+      } else {
+        window.location.href = result.payment.initPoint;
+      }
+
+      return result;
+    } catch (err) {
+      throw err;
+    }
+  };
+
   return {
     checkout,
+    checkoutCart,
     isLoading: isMutating,
     error,
     data,

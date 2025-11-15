@@ -1,59 +1,190 @@
-import useSWR from "swr";
-
-async function fetchAPI(key) {
-  const response = await fetch(key);
-  const responseBody = await response.json();
-  return responseBody;
-}
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import styles from "styles/carrinho/checkout.module.css";
 
 export default function StatusPage() {
-  return (
-    <>
-      <h1>Status</h1>
-      <UpdatedAt />
-      <DatabaseStatus />
-    </>
-  );
-}
+  const router = useRouter();
+  const { status, preference_id } = router.query;
+  const [paymentDetails, setPaymentDetails] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-function UpdatedAt() {
-  const { isLoading, data } = useSWR("/api/v1/status", fetchAPI, {
-    refreshInterval: 2000,
-  });
+  useEffect(() => {
+    if (preference_id) {
+      fetchPaymentDetails();
+    }
+  }, [preference_id]);
 
-  return (
-    <div>
-      Última atualização:{" "}
-      {isLoading && !data
-        ? "Carregando..."
-        : new Date(data.updated_at).toLocaleString("pt-BR")}
-    </div>
-  );
-}
+  async function fetchPaymentDetails() {
+    try {
+      setLoading(true);
+      const response = await fetch(`/api/v1/payments/details?preferenceId=${preference_id}`);
+      
+      if (!response.ok) {
+        throw new Error("Erro ao buscar detalhes do pagamento");
+      }
 
-function DatabaseStatus() {
-  const { isLoading, data } = useSWR("/api/v1/status", fetchAPI, {
-    refreshInterval: 2000,
-  });
-  let databaseStatusInformation = "Carregando...";
-  if (!isLoading && data) {
-    databaseStatusInformation = (
-      <>
-        <div>Versão: {data.dependencies.database.version}</div>
-        <div>
-          Conexões abertas: {data.dependencies.database.opened_connections}
+      const data = await response.json();
+      setPaymentDetails(data);
+    } catch (err) {
+      console.error(err);
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function formatarPreco(valor) {
+    return new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+    }).format(valor);
+  }
+
+  function getStatusMessage() {
+    switch (status) {
+      case 'success':
+        return {
+          title: '✅ Pagamento Aprovado!',
+          message: 'Seu pagamento foi processado com sucesso.',
+          color: '#28a745'
+        };
+      case 'pending':
+        return {
+          title: '⏳ Pagamento Pendente',
+          message: 'Aguardando confirmação do pagamento.',
+          color: '#ffc107'
+        };
+      case 'failure':
+        return {
+          title: '❌ Pagamento Recusado',
+          message: 'Não foi possível processar seu pagamento. Tente novamente.',
+          color: '#dc3545'
+        };
+      default:
+        return {
+          title: 'Status Desconhecido',
+          message: 'Verificando status do pagamento...',
+          color: '#6c757d'
+        };
+    }
+  }
+
+  const statusInfo = getStatusMessage();
+
+  if (loading) {
+    return (
+      <div className={styles.checkoutContainer}>
+        <div className={styles.statusMessage}>
+          <h1>Carregando...</h1>
         </div>
-        <div>
-          Conexões máximas: {data.dependencies.database.max_connections}
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className={styles.checkoutContainer}>
+        <div className={styles.statusMessage} style={{ borderColor: '#dc3545' }}>
+          <h1 style={{ color: '#dc3545' }}>Erro</h1>
+          <p>{error}</p>
+          <button 
+            onClick={() => router.push('/')} 
+            className={styles.finalizarBtn}
+          >
+            Voltar para Home
+          </button>
         </div>
-      </>
+      </div>
     );
   }
 
   return (
-    <>
-      <h2>Database</h2>
-      <div>{databaseStatusInformation}</div>
-    </>
+    <div className={styles.checkoutContainer}>
+      <div className={styles.checkoutContent}>
+        <div className={styles.formContainer}>
+          <div style={{ 
+            border: `2px solid ${statusInfo.color}`, 
+            borderRadius: '8px', 
+            padding: '20px',
+            marginBottom: '30px'
+          }}>
+            <h1 style={{ color: statusInfo.color, marginBottom: '10px' }}>
+              {statusInfo.title}
+            </h1>
+            <p style={{ fontSize: '16px', marginBottom: '20px' }}>
+              {statusInfo.message}
+            </p>
+            {preference_id && (
+              <p style={{ fontSize: '14px', color: '#666' }}>
+                ID do Pedido: {preference_id}
+              </p>
+            )}
+          </div>
+
+          {paymentDetails && (
+            <>
+              <h2>Detalhes do Pagamento</h2>
+              <div style={{ 
+                background: '#f8f9fa', 
+                padding: '15px', 
+                borderRadius: '8px',
+                marginBottom: '20px'
+              }}>
+                <p><strong>Valor Total:</strong> {formatarPreco(paymentDetails.amount)}</p>
+                <p><strong>Status:</strong> {paymentDetails.status}</p>
+                <p><strong>Data:</strong> {new Date(paymentDetails.created_at).toLocaleString('pt-BR')}</p>
+              </div>
+
+              <h2>Produtos</h2>
+              <div className={styles.resumoItens}>
+                {paymentDetails.orders.map((order, index) => {
+                  const firstImage = order.product.images?.[0];
+                  return (
+                    <div className={styles.itemResumo} key={index}>
+                      {firstImage && (
+                        <img
+                          src={firstImage}
+                          alt={order.product.title}
+                          className={styles.itemImagem}
+                        />
+                      )}
+                      <div className={styles.itemDetalhes}>
+                        <span className={styles.itemNome}>
+                          {order.product.title}
+                        </span>
+                        <span className={styles.itemQuantidade}>
+                          Quantidade: {order.quantity}
+                        </span>
+                        <span className={styles.itemPreco}>
+                          {formatarPreco(order.total_price)}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </>
+          )}
+
+          <div style={{ marginTop: '30px', display: 'flex', gap: '10px' }}>
+            <button 
+              onClick={() => router.push('/')} 
+              className={styles.finalizarBtn}
+            >
+              Voltar para Home
+            </button>
+            {status === 'success' && (
+              <button 
+                onClick={() => router.push('/configuracoes/meus-pedidos')} 
+                className={styles.finalizarBtn}
+              >
+                Ver Meus Pedidos
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

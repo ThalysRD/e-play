@@ -1,6 +1,7 @@
 import { createRouter } from "next-connect";
 import controller from "infra/controller.js";
 import order from "models/order.js";
+import listing from "models/listing.js";
 import session from "models/session.js";
 
 const router = createRouter();
@@ -41,7 +42,7 @@ async function getHandler(request, response) {
 async function patchHandler(request, response) {
   try {
     const { id } = request.query;
-    const { status } = request.body;
+    const { status, trackingCode } = request.body;
 
     if (!status) {
       return response.status(400).json({
@@ -59,18 +60,45 @@ async function patchHandler(request, response) {
     const userSession = await session.findOneValidByToken(sessionToken);
     const foundOrder = await order.findOneById(id);
 
-    // Apenas o comprador pode atualizar o status do pedido
-    if (foundOrder.buyer_id !== userSession.user_id) {
+    // Buscar o listing para verificar se o usuário é o vendedor
+    const listingData = await listing.findOneById(foundOrder.listing_id);
+
+    // Verificar se o usuário é o vendedor ou o comprador
+    const isSeller = listingData.seller_id === userSession.user_id;
+    const isBuyer = foundOrder.buyer_id === userSession.user_id;
+
+    // Validar permissões baseado no papel do usuário
+    if (isSeller) {
+      // Vendedor pode atualizar para: preparing_shipment, shipped
+      if (!["preparing_shipment", "shipped"].includes(status)) {
+        return response.status(403).json({
+          message: "Vendedores só podem atualizar para 'preparing_shipment' ou 'shipped'.",
+        });
+      }
+    } else if (isBuyer) {
+      // Comprador pode atualizar para: delivered
+      if (status !== "delivered") {
+        return response.status(403).json({
+          message: "Compradores só podem atualizar para 'delivered'.",
+        });
+      }
+    } else {
       return response.status(403).json({
         message: "Você não tem permissão para atualizar este pedido.",
       });
     }
 
+    // Atualizar o status
     const updatedOrder = await order.updateStatus(id, status);
 
+    // Se forneceu código de rastreio, atualizar também
+    if (trackingCode && status === "shipped") {
+      await order.updateTrackingCode(id, trackingCode);
+    }
+
     return response.status(200).json({
-      ...updatedOrder,
-      message: "Pedido atualizado com sucesso",
+      order: updatedOrder,
+      message: "Status do pedido atualizado com sucesso.",
     });
   } catch (error) {
     return controller.errorHandlers.onError(error, request, response);

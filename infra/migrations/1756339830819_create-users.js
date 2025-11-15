@@ -27,9 +27,6 @@ exports.up = (pgm) => {
       type: "varchar[]",
       notNull: true,
     },
-    cart_items: {
-      type: "varchar[]",
-    },
     wish_list: {
       type: "varchar[]",
     },
@@ -41,11 +38,26 @@ exports.up = (pgm) => {
       type: "varchar(14)",
       unique: true,
     },
-    address: {
+    address_street: {
       type: "varchar(255)",
     },
-    zip_code: {
+    address_number: {
+      type: "varchar(50)",
+    },
+    address_complement: {
       type: "varchar(255)",
+    },
+    address_neighborhood: {
+      type: "varchar(255)",
+    },
+    address_city: {
+      type: "varchar(255)",
+    },
+    address_state: {
+      type: "varchar(2)",
+    },
+    address_zipcode: {
+      type: "varchar(10)",
     },
     profile_image_url: {
       type: "varchar(500)",

@@ -107,10 +107,14 @@ async function createPayment(buyerId, orderId, totalPrice, description, email) {
     // Salvar informações de pagamento no banco
     await savePaymentRecord(buyerId, orderId, preference.id, totalPrice, "pending");
 
+    // Adicionar preference_id às URLs de retorno
+    const initPoint = preference.init_point ? `${preference.init_point}&preference_id=${preference.id}` : null;
+    const sandboxInitPoint = preference.sandbox_init_point ? `${preference.sandbox_init_point}&preference_id=${preference.id}` : null;
+
     return {
       preferenceId: preference.id,
-      initPoint: preference.init_point,
-      sandboxInitPoint: preference.sandbox_init_point,
+      initPoint: initPoint || preference.init_point,
+      sandboxInitPoint: sandboxInitPoint || preference.sandbox_init_point,
     };
   } catch (error) {
     console.error("💥 Erro completo na integração:", error.message);
@@ -159,6 +163,71 @@ async function getPaymentByOrderId(orderId) {
   }
 
   return results.rows[0];
+}
+
+async function getPaymentWithDetails(preferenceId) {
+  if (!preferenceId) {
+    throw new ValidationError({
+      message: "Preference ID é obrigatório",
+      action: "Forneça um ID de preferência válido",
+    });
+  }
+
+  const results = await database.query({
+    text: `
+      SELECT 
+        p.id as payment_id,
+        p.preference_id,
+        p.amount,
+        p.status as payment_status,
+        p.created_at as payment_created_at,
+        o.id as order_id,
+        o.buyer_id,
+        o.listing_id,
+        o.quantity,
+        o.total_price,
+        o.status as order_status,
+        l.title,
+        l.price,
+        l.images
+      FROM payments p
+      INNER JOIN orders o ON p.order_id = o.id
+      INNER JOIN listings l ON o.listing_id = l.id
+      WHERE p.preference_id = $1
+    `,
+    values: [preferenceId],
+  });
+
+  if (results.rowCount === 0) {
+    throw new NotFoundError({
+      message: "Pagamento não encontrado",
+      action: "Verifique o ID da preferência e tente novamente",
+    });
+  }
+
+  // Agrupar os resultados por payment
+  const payment = {
+    id: results.rows[0].payment_id,
+    preference_id: results.rows[0].preference_id,
+    amount: results.rows[0].amount,
+    status: results.rows[0].payment_status,
+    created_at: results.rows[0].payment_created_at,
+    buyer_id: results.rows[0].buyer_id,
+    orders: results.rows.map(row => ({
+      order_id: row.order_id,
+      listing_id: row.listing_id,
+      quantity: row.quantity,
+      total_price: row.total_price,
+      order_status: row.order_status,
+      product: {
+        title: row.title,
+        price: row.price,
+        images: row.images,
+      },
+    })),
+  };
+
+  return payment;
 }
 
 async function updatePaymentStatus(orderId, status, externalReference) {
@@ -219,6 +288,7 @@ async function getPaymentByPreferenceId(preferenceId) {
 const payment = {
   createPayment,
   getPaymentByOrderId,
+  getPaymentWithDetails,
   updatePaymentStatus,
   getPaymentByPreferenceId,
 };

@@ -1,11 +1,71 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styles from "styles/carrinho/checkout.module.css";
 import { useCarrinho } from "hooks/useCarrinho";
 import useCheckout from "hooks/useCheckout";
+import useUser from "hooks/useUser";
 
 export default function CheckoutPage() {
-    const { checkout, isLoading: isCheckoutLoading } = useCheckout();
-    const { itens, calcularSubtotal, calcularFrete, calcularTotal, } = useCarrinho();
+    const { checkoutCart, isLoading: isCheckoutLoading } = useCheckout();
+    const { itens, calcularSubtotal, calcularFrete, calcularTotal } = useCarrinho();
+    const { user } = useUser();
+    const [isSavingAddress, setIsSavingAddress] = useState(false);
+    const enderecoFormRef = useRef(null);
+    
+    const handleFinalizarCompra = async () => {
+        if (itens.length === 0) {
+            alert("Seu carrinho está vazio!");
+            return;
+        }
+        
+        try {
+            // Salvar endereço antes de finalizar a compra
+            setIsSavingAddress(true);
+            const formData = new FormData(enderecoFormRef.current);
+            
+            const addressData = {
+                address_street: formData.get('rua'),
+                address_number: formData.get('numero'),
+                address_complement: formData.get('complemento'),
+                address_neighborhood: formData.get('bairro'),
+                address_city: formData.get('cidade'),
+                address_state: formData.get('estado'),
+                address_zipcode: formData.get('cep'),
+            };
+            
+            // Validar campos obrigatórios
+            if (!addressData.address_street || !addressData.address_number || 
+                !addressData.address_neighborhood || !addressData.address_city || 
+                !addressData.address_state || !addressData.address_zipcode) {
+                alert("Por favor, preencha todos os campos obrigatórios do endereço.");
+                setIsSavingAddress(false);
+                return;
+            }
+            
+            // Salvar endereço
+            const response = await fetch('/api/v1/user/address', {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify(addressData),
+            });
+            
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.message || 'Erro ao salvar endereço');
+            }
+            
+            setIsSavingAddress(false);
+            
+            // Prosseguir com o checkout
+            await checkoutCart(itens, calcularTotal());
+        } catch (error) {
+            setIsSavingAddress(false);
+            console.error("Erro ao finalizar compra:", error);
+            alert(error.message || "Erro ao processar pagamento. Tente novamente.");
+        }
+    };
     function formatarPreco(valor) {
         return new Intl.NumberFormat('pt-BR', {
             style: 'currency',
@@ -19,9 +79,9 @@ export default function CheckoutPage() {
 
                 <div className={styles.formContainer}>
                     <h2>Informações pessoais</h2>
-                    <InfosForm></InfosForm>
+                    <InfosForm user={user}></InfosForm>
                     <h2>Endereço de Entrega</h2>
-                    <EnderecoForm></EnderecoForm>
+                    <EnderecoForm user={user} formRef={enderecoFormRef}></EnderecoForm>
                     <h2>Itens do pedido</h2>
                     <div className={styles.resumoItens}>
                         {itens.length === 0 ? (
@@ -75,15 +135,17 @@ export default function CheckoutPage() {
                     </div>
                     <button
                         className={styles.finalizarBtn}
+                        onClick={handleFinalizarCompra}
+                        disabled={isCheckoutLoading || isSavingAddress || itens.length === 0}
                     >
-                        Finalizar Compra
+                        {isSavingAddress ? "Salvando..." : isCheckoutLoading ? "Processando..." : "Finalizar Compra"}
                     </button>
                 </div>
             </div>
         </div>
     );
 }
-function InfosForm() {
+function InfosForm({ user }) {
     return (
         <form className={styles.enderecoForm}>
             <div className={styles.formBackground}>
@@ -98,6 +160,8 @@ function InfosForm() {
                             type="name"
                             className={styles.input}
                             placeholder="Fulano da Silva"
+                            defaultValue={user?.name || ''}
+                            readOnly
                         />
                     </div>
 
@@ -111,6 +175,7 @@ function InfosForm() {
                             type="text"
                             className={styles.input}
                             placeholder="999.999.999-99"
+                            defaultValue={user?.cpf || ''}
                         />
                     </div>
                 </div>
@@ -120,9 +185,9 @@ function InfosForm() {
 }
 
 
-function EnderecoForm() {
+function EnderecoForm({ user, formRef }) {
     return (
-        <form className={styles.enderecoForm}>
+        <form className={styles.enderecoForm} ref={formRef}>
             <div className={styles.formBackground}>
                 <div className={styles.enderecoFormContainer1}>
                     <div className={styles.fieldGroup}>
@@ -132,9 +197,11 @@ function EnderecoForm() {
                         <input
                             id="cep"
                             name="cep"
-                            type="cep"
+                            type="text"
                             className={styles.input}
                             placeholder="99999-999"
+                            defaultValue={user?.address_zipcode || ''}
+                            required
                         />
                     </div>
 
@@ -145,9 +212,11 @@ function EnderecoForm() {
                         <input
                             id="rua"
                             name="rua"
-                            type="rua"
+                            type="text"
                             className={styles.input}
                             placeholder="Ruas das Flores"
+                            defaultValue={user?.address_street || ''}
+                            required
                         />
                     </div>
 
@@ -158,9 +227,11 @@ function EnderecoForm() {
                         <input
                             id="numero"
                             name="numero"
-                            type="numero"
+                            type="text"
                             className={styles.input}
                             placeholder="123"
+                            defaultValue={user?.address_number || ''}
+                            required
                         />
                     </div>
 
@@ -171,9 +242,10 @@ function EnderecoForm() {
                         <input
                             id="complemento"
                             name="complemento"
-                            type="complemento"
+                            type="text"
                             className={styles.input}
                             placeholder="Apto, Bloco, Casa"
+                            defaultValue={user?.address_complement || ''}
                         />
                     </div>
                 </div>
@@ -186,9 +258,11 @@ function EnderecoForm() {
                         <input
                             id="bairro"
                             name="bairro"
-                            type="bairro"
+                            type="text"
                             className={styles.input}
                             placeholder="Planalto"
+                            defaultValue={user?.address_neighborhood || ''}
+                            required
                         />
                     </div>
 
@@ -199,9 +273,11 @@ function EnderecoForm() {
                         <input
                             id="cidade"
                             name="cidade"
-                            type="cidade"
+                            type="text"
                             className={styles.input}
                             placeholder="Natal"
+                            defaultValue={user?.address_city || ''}
+                            required
                         />
                     </div>
 
@@ -213,6 +289,8 @@ function EnderecoForm() {
                             id="estado"
                             name="estado"
                             className={styles.select}
+                            defaultValue={user?.address_state || ''}
+                            required
                         >
                             <option value=""> </option>
                             <option value="AC">Acre</option>
