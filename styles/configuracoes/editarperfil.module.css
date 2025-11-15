@@ -32,6 +32,7 @@
 }
 
 .formInfosPessoais,
+.formEndereco,
 .formSenha,
 .formProfilePicture {
   margin: 10px;
