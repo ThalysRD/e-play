@@ -2,9 +2,11 @@ import styles from "styles/configuracoes/editarperfil.module.css";
 import { FaPencilAlt } from "react-icons/fa";
 import Modal from "components/ModalPadrao";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import useUser from "/hooks/useUser";
 import load from "styles/componentes/loading.module.css";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { storage } from "../../../firebase";
 
 /* ---------- helpers ---------- */
 async function patchUser(payload) {
@@ -19,14 +21,30 @@ async function patchUser(payload) {
   return data;
 }
 async function patchUserAddress(payload) {
-  const res = await fetch("/api/v1/user/address", { // Nova URL
+  const res = await fetch("/api/v1/user/address", {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
   });
   const data = await res.json();
   if (!res.ok)
-    throw new Error(data?.message || data?.error || "Falha na atualização do endereço.");
+    throw new Error(
+      data?.message || data?.error || "Falha na atualização do endereço.",
+    );
+  return data;
+}
+
+async function patchProfilePicture(payload) {
+  const res = await fetch("/api/v1/user/profile-picture", {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  const data = await res.json();
+  if (!res.ok)
+    throw new Error(
+      data?.message || data?.error || "Falha na atualização da foto de perfil.",
+    );
   return data;
 }
 
@@ -59,7 +77,7 @@ function SubmitButton({ busy, children }) {
 export default function EditProfilePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const router = useRouter();
-  const { user, isLoading } = useUser();
+  const { user, isLoading, mutate } = useUser();
 
   const handleCancel = () => {
     setIsModalOpen(false);
@@ -89,6 +107,7 @@ export default function EditProfilePage() {
           <PersonalInfosForm
             user={user}
             onOpenModal={() => setIsModalOpen(true)}
+            onProfilePicChange={mutate}
           />
         </div>
 
@@ -118,10 +137,93 @@ export default function EditProfilePage() {
   );
 }
 
+const UPLOAD_TIMEOUT_MS = 60_000;
+
+function uploadProfileImageToFirebase(file) {
+  return new Promise((resolve, reject) => {
+    const timestamp = Date.now();
+    const randomString = Math.random().toString(36).slice(2);
+    const safeName = file.name.replace(/\s+/g, "_");
+    const path = `profile-images/${timestamp}_${randomString}_${safeName}`;
+    const storageRef = ref(storage, path);
+
+    const task = uploadBytesResumable(storageRef, file);
+
+    const to = setTimeout(() => {
+      try {
+        task.cancel();
+      } catch {}
+      reject(new Error(`Tempo esgotado ao enviar ${file.name}`));
+    }, UPLOAD_TIMEOUT_MS);
+
+    task.on(
+      "state_changed",
+      () => {},
+      (err) => {
+        clearTimeout(to);
+        reject(err);
+      },
+      async () => {
+        clearTimeout(to);
+        try {
+          const url = await getDownloadURL(storageRef);
+          resolve(url);
+        } catch (e) {
+          reject(e);
+        }
+      },
+    );
+  });
+}
+
 /* ---------- forms ---------- */
-function PersonalInfosForm({ onOpenModal, user }) {
+function PersonalInfosForm({ onOpenModal, user, onProfilePicChange }) {
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState("");
+  const [uploading, setUploading] = useState(false);
+  const [imgPreview, setImgPreview] = useState(user?.profile_image_url || null);
+  const [imgError, setImgError] = useState("");
+  const fileInputRef = useRef(null);
+
+  const handleEditPicClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleImageChange = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setImgError("");
+    setUploading(true);
+
+    try {
+      const maxSize = 5 * 1024 * 1024;
+      if (file.size > maxSize) {
+        throw new Error("A imagem deve ter no máximo 5MB.");
+      }
+
+      const validTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+      if (!validTypes.includes(file.type)) {
+        throw new Error("Apenas imagens JPG, PNG e WEBP são permitidas.");
+      }
+
+      const previewUrl = URL.createObjectURL(file);
+      setImgPreview(previewUrl);
+
+      const downloadURL = await uploadProfileImageToFirebase(file);
+
+      await patchProfilePicture({ profile_image_url: downloadURL });
+
+      onProfilePicChange();
+      setMsg("Foto de perfil atualizada com sucesso!");
+    } catch (err) {
+      setImgError(err.message);
+      setImgPreview(user?.profile_image_url || null); // Reverte
+    } finally {
+      setUploading(false);
+      e.target.value = "";
+    }
+  };
 
   async function onSubmit(e) {
     e.preventDefault();
@@ -183,17 +285,28 @@ function PersonalInfosForm({ onOpenModal, user }) {
         <div className={styles.personalFormContainer}>
           <div className={styles.profilePicContainer}>
             <img
-              src={user?.profile_image_url || "/assets/AvatarPadrao.svg"}
+              src={imgPreview || "/assets/AvatarPadrao.svg"}
               className={styles.profilePic}
               alt="Avatar do perfil"
+            />
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleImageChange}
+              accept="image/jpeg,image/jpg,image/png,image/webp"
+              style={{ display: "none" }}
+              disabled={uploading}
             />
             <button
               type="button"
               className={styles.editProfilePicButton}
-              title="Trocar foto (implementar)"
+              title="Trocar foto"
+              onClick={handleEditPicClick}
+              disabled={uploading}
             >
-              <FaPencilAlt />
+              {uploading ? "..." : <FaPencilAlt />}
             </button>
+            {imgError && <p className={styles.errorTextSmall}>{imgError}</p>}
           </div>
 
           <div className={`${styles.fieldGroup} ${styles.fieldGroupBio}`}>
@@ -309,11 +422,11 @@ function PersonalInfosForm({ onOpenModal, user }) {
             type="button"
             onClick={onOpenModal}
             className={`${styles.button} ${styles.buttonCancel}`}
-            disabled={busy}
+            disabled={busy || uploading}
           >
             Cancelar
           </button>
-          <SubmitButton busy={busy}>Salvar mudanças</SubmitButton>
+          <SubmitButton busy={busy || uploading}>Salvar mudanças</SubmitButton>
         </div>
       </div>
     </form>
@@ -402,7 +515,7 @@ function EnderecoForm({ onOpenModal, user }) {
         !payload.address_state
       ) {
         throw new Error(
-          "Por favor, preencha todos os campos de endereço obrigatórios (*)."
+          "Por favor, preencha todos os campos de endereço obrigatórios (*).",
         );
       }
 
@@ -416,11 +529,7 @@ function EnderecoForm({ onOpenModal, user }) {
   }
 
   return (
-    <form
-      className={styles.enderecoForm}
-      key={user?.id}
-      onSubmit={onSubmit}
-    >
+    <form className={styles.enderecoForm} key={user?.id} onSubmit={onSubmit}>
       <div className={styles.formBackground}>
         <div className={styles.enderecoFormContainer1}>
           <div className={styles.fieldGroup}>
@@ -551,7 +660,11 @@ function EnderecoForm({ onOpenModal, user }) {
           </div>
         </div>
 
-        <Message kind={msg?.includes("sucesso") ? "success" : msg ? "error" : undefined}>
+        <Message
+          kind={
+            msg?.includes("sucesso") ? "success" : msg ? "error" : undefined
+          }
+        >
           {msg}
         </Message>
 
