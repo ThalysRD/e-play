@@ -41,9 +41,14 @@ const apiRoute = nc({
     res.status(500).end("Something broke!");
   },
   onNoMatch: (req, res) => {
+    console.log(`onNoMatch triggered for method: ${req.method} and url: ${req.url}`);
     res.status(405).end("Method Not Allowed");
   },
 })
+  .use((req, res, next) => {
+    console.log(`Request received for method: ${req.method} and url: ${req.url}`);
+    next();
+  })
   .use(authentication.injectUser)
   .patch(validate(patchHandler));
 
