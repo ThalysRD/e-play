@@ -17,7 +17,8 @@ const patchHandler = async (req, res) => {
     });
   }
 
-  const updatedUser = await user.update(userSession.user_id, {
+  const updatedUser = await user.update({
+    id: userSession.user_id,
     profile_image_url,
   });
 
