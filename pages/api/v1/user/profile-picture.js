@@ -4,7 +4,7 @@ import session from "../../../../models/session";
 import { validate } from "../../../../infra/controller";
 import authentication from "../../../../models/authentication";
 
-const patchHandler = async (req, res) => {
+const postHandler = async (req, res) => {
   try {
     const { profile_image_url } = req.body;
     const userToken = req.cookies.session_id;
@@ -25,7 +25,7 @@ const patchHandler = async (req, res) => {
 
     res.status(200).json(updatedUser);
   } catch (error) {
-    console.error("Error in patchHandler:", error);
+    console.error("Error in postHandler:", error);
     res.status(500).json({
       error: {
         message: "Ocorreu um erro ao atualizar a foto de perfil.",
@@ -50,6 +50,6 @@ const apiRoute = nc({
     next();
   })
   .use(authentication.injectUser)
-  .patch(validate(patchHandler));
+  .post(validate(postHandler));
 
 export default apiRoute;

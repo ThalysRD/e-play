@@ -34,9 +34,9 @@ async function patchUserAddress(payload) {
   return data;
 }
 
-async function patchProfilePicture(payload) {
+async function postProfilePicture(payload) {
   const res = await fetch("/api/v1/user/profile-picture", {
-    method: "PATCH",
+    method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
   });
@@ -212,7 +212,7 @@ function PersonalInfosForm({ onOpenModal, user, onProfilePicChange }) {
 
       const downloadURL = await uploadProfileImageToFirebase(file);
 
-      await patchProfilePicture({ profile_image_url: downloadURL });
+      await postProfilePicture({ profile_image_url: downloadURL });
 
       onProfilePicChange();
       setMsg("Foto de perfil atualizada com sucesso!");
