@@ -3,11 +3,12 @@ import Link from "next/link";
 import styles from "styles/componentes/PedidoCardVendedor.module.css";
 import load from "styles/componentes/loading.module.css";
 
-
 export default function PedidoCardVendedor({ order }) {
     const [listing, setListing] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [trackingCode, setTrackingCode] = useState(order?.tracking_code || "");
+    const [status, setStatus] = useState(order?.status || "");
 
     useEffect(() => {
         if (!order.listing_id) {
@@ -74,20 +75,72 @@ export default function PedidoCardVendedor({ order }) {
             </Link>
 
             <div className={styles.listingInfo}>
-                <p className={styles.listingTitle}>
-                    {listing.title}
+                <p className={styles.listingTitle}>{listing.title}</p>
+                <p>N° pedido: {order.id} </p>
+                <p className={styles.orderDate}>
+                    Pedido feito em:{" "}
+                    {new Date(order.created_at).toLocaleDateString("pt-BR")}
                 </p>
-                <p>N° pedido: {(order.id)} </p>
-                <p className={styles.orderDate}>Pedido feito em: {new Date(order.created_at).toLocaleDateString("pt-BR")}</p>
-                <div className={styles.row}>
-                    <p> Código de rastreio: </p>
-                    <p className={styles.negritoInfo}> {(order.tracking_code) || "Não informado"} </p>
+
+                <div className={styles.fieldGroup}>
+                    <label htmlFor={`tracking_code_${order.id}`} className={styles.label}>
+                        Código de rastreio:
+                    </label>
+                    <div className={styles.row}>
+                        <input
+                            id={`tracking_code_${order.id}`}
+                            name="tracking_code"
+                            type="text"
+                            className={styles.input}
+                            value={trackingCode}
+                            onChange={(e) => setTrackingCode(e.target.value)}
+                            placeholder="Informe o código!"
+                        />
+                        <button type="button" className={`${styles.buttonSave}`}>
+                            Salvar
+                        </button>
+                    </div>
                 </div>
-                <p className={styles.status}> Status: {(order.status)} </p>
-                <p className={styles.quantity}>Dados pessoais: *nome e cpf/cnpj colocado na hora da compra*</p>
-                <p className={styles.quantity}>Endereço de entrega: *endereço colocado na hora da compra*</p>
+                <br></br>
+
+                <div className={styles.fieldGroupHalf}>
+                    <label htmlFor={`status_${order.id}`} className={styles.label}>
+                        Status do pedido:
+                    </label>
+                    <div className={styles.row}>
+                        <select
+                            id={`status_${order.id}`}
+                            name="status"
+                            className={styles.select}
+                            value={status}
+                            onChange={(e) => setStatus(e.target.value)}
+                        >
+                            <option value="">Selecione...</option>
+                            <option value="pending">Pendente</option>
+                            <option value="Pago">Pago</option>
+                            <option value="Em preparação">Em preparação</option>
+                            <option value="Enviado">Enviado</option>
+                            <option value="Entregue">Entregue</option>
+                            <option value="Cancelado">Cancelado</option>
+                        </select>
+                        <button type="button" className={`${styles.buttonSave}`}>
+                            Salvar
+                        </button>
+                    </div>
+                </div>
+
+                <p className={styles.status}> </p>
+
+                <p className={styles.quantity}>
+                    Dados pessoais: *nome e cpf/cnpj colocado na hora da compra*
+                </p>
+                <p className={styles.quantity}>
+                    Endereço de entrega: *endereço colocado na hora da compra*
+                </p>
                 <p className={styles.quantity}>Quantidade: {quantityText}</p>
-                <p className={styles.listingPrice}>Total pago: R$ {Number(order.total_price).toFixed(2)}</p>
+                <p className={styles.listingPrice}>
+                    Total pago: R$ {Number(order.total_price).toFixed(2)}
+                </p>
             </div>
         </div>
     );

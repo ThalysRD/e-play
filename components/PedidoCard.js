@@ -8,6 +8,8 @@ export default function PedidoCard({ order }) {
     const [listing, setListing] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [status, setStatus] = useState(order?.status || "");
+
 
     useEffect(() => {
         if (!order.listing_id) {
@@ -83,7 +85,33 @@ export default function PedidoCard({ order }) {
                     <p> Código de rastreio: </p>
                     <p className={styles.negritoInfo}> {(order.tracking_code) || "Não informado"} </p>
                 </div>
-                <p className={styles.status}> Status: {(order.status)} </p>
+                <br></br>
+                <div className={styles.fieldGroupHalf}>
+                    <label htmlFor={`status_${order.id}`} className={styles.label}>
+                        Status do pedido:
+                    </label>
+                    <div className={styles.row}>
+                        <select
+                            id={`status_${order.id}`}
+                            name="status"
+                            className={styles.select}
+                            value={status}
+                            onChange={(e) => setStatus(e.target.value)}
+                        >
+                            <option value="">Selecione...</option>
+                            <option value="pending">Pendente</option>
+                            <option value="Pago">Pago</option>
+                            <option value="Em preparação">Em preparação</option>
+                            <option value="Enviado">Enviado</option>
+                            <option value="Entregue">Entregue</option>
+                            <option value="Cancelado">Cancelado</option>
+                        </select>
+                        <button type="button" className={`${styles.buttonSave}`}>
+                            Salvar
+                        </button>
+                    </div>
+                </div>
+                <p className={styles.status}></p>
                 <p className={styles.quantity}>Dados pessoais: *nome e cpf/cnpj colocado na hora da compra*</p>
                 <p className={styles.quantity}>Endereço de entrega: *endereço colocado na hora da compra*</p>
                 <p className={styles.quantity}>Quantidade: {quantityText}</p>
