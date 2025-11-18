@@ -124,7 +124,7 @@ async function sendBuyerOrderConfirmation(buyerEmail, buyerName, orders, totalAm
   `;
 
   const mailOptions = {
-    from: process.env.EMAIL_FROM || "noreply@e-play.com",
+    from: "E-Play <contato@lojaeplay.com.br>",
     to: buyerEmail,
     subject: "🎮 Pedido Confirmado - E-Play",
     html: htmlContent,
@@ -257,9 +257,9 @@ async function sendSellerNewOrderNotification(sellerEmail, sellerName, order, bu
   `;
 
   const mailOptions = {
-    from: process.env.EMAIL_FROM || "noreply@e-play.com",
+    from: "E-Play <contato@lojaeplay.com.br>",
     to: sellerEmail,
-    subject: "🛒 Nova Venda - E-Play",
+    subject: "🛍️ Nova Venda - E-Play",
     html: htmlContent,
   };
 
@@ -362,7 +362,7 @@ async function sendStatusUpdateToBuyer(buyerEmail, buyerName, order, productTitl
   `;
 
   const mailOptions = {
-    from: process.env.EMAIL_FROM || "noreply@e-play.com",
+    from: "E-Play <contato@lojaeplay.com.br>",
     to: buyerEmail,
     subject: `${statusInfo.title} - E-Play`,
     html: htmlContent,
@@ -461,7 +461,7 @@ async function sendDeliveryConfirmationToSeller(sellerEmail, sellerName, order, 
   `;
 
   const mailOptions = {
-    from: process.env.EMAIL_FROM || "noreply@e-play.com",
+    from: "E-Play <contato@lojaeplay.com.br>",
     to: sellerEmail,
     subject: "✅ Entrega Confirmada - E-Play",
     html: htmlContent,
@@ -563,7 +563,7 @@ async function sendOrderCompletedToBuyer(buyerEmail, buyerName, order, productTi
   `;
 
   const mailOptions = {
-    from: process.env.EMAIL_FROM || "noreply@e-play.com",
+    from: "E-Play <contato@lojaeplay.com.br>",
     to: buyerEmail,
     subject: "✅ Pedido Finalizado - E-Play",
     html: htmlContent,

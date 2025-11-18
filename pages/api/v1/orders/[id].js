@@ -113,6 +113,7 @@ async function patchHandler(request, response) {
       if (isSeller) {
         // Vendedor alterou status - notificar comprador
         if (status === "processing" || status === "shipped" || status === "canceled") {
+          console.log(`[EMAIL] Enviando atualização de status "${status}" para comprador: ${buyer.email}`);
           await orderNotifications.sendStatusUpdateToBuyer(
             buyer.email,
             buyer.name,
@@ -120,9 +121,11 @@ async function patchHandler(request, response) {
             listingData.title,
             status
           );
+          console.log(`[EMAIL] ✓ Email de status enviado para ${buyer.email}`);
         }
       } else if (isBuyer && status === "delivered") {
         // Comprador confirmou entrega - notificar vendedor e comprador
+        console.log(`[EMAIL] Enviando confirmação de entrega para vendedor: ${seller.email}`);
         await orderNotifications.sendDeliveryConfirmationToSeller(
           seller.email,
           seller.name,
@@ -130,16 +133,20 @@ async function patchHandler(request, response) {
           listingData.title,
           buyer.name
         );
+        console.log(`[EMAIL] ✓ Email de entrega enviado para vendedor`);
         
+        console.log(`[EMAIL] Enviando finalização de pedido para comprador: ${buyer.email}`);
         await orderNotifications.sendOrderCompletedToBuyer(
           buyer.email,
           buyer.name,
           updatedOrder,
           listingData.title
         );
+        console.log(`[EMAIL] ✓ Email de finalização enviado para comprador`);
       }
     } catch (emailError) {
-      console.error("Erro ao enviar email de notificação:", emailError);
+      console.error("[EMAIL] ✗ Erro ao enviar email de notificação:", emailError.message);
+      console.error(emailError);
       // Não interromper o processo se o email falhar
     }
 

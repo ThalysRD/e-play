@@ -109,14 +109,17 @@ async function postHandler(request, response) {
 
     // Enviar email de confirmação para o comprador
     try {
+      console.log(`[EMAIL] Enviando confirmação para comprador: ${buyerData.email}`);
       await orderNotifications.sendBuyerOrderConfirmation(
         buyerData.email,
         buyerData.name,
         ordersWithDetails,
         totalGeralComFrete
       );
+      console.log(`[EMAIL] ✓ Email de confirmação enviado para ${buyerData.email}`);
     } catch (emailError) {
-      console.error("Erro ao enviar email para comprador:", emailError);
+      console.error("[EMAIL] ✗ Erro ao enviar email para comprador:", emailError.message);
+      console.error(emailError);
       // Não interromper o processo se o email falhar
     }
 
@@ -142,15 +145,18 @@ async function postHandler(request, response) {
 
         // Enviar notificação para cada pedido do vendedor
         for (const orderDetail of sellerOrders) {
+          console.log(`[EMAIL] Enviando notificação de venda para vendedor: ${sellerData.email}`);
           await orderNotifications.sendSellerNewOrderNotification(
             sellerData.email,
             sellerData.name,
             orderDetail,
             buyerInfo
           );
+          console.log(`[EMAIL] ✓ Email de venda enviado para ${sellerData.email}`);
         }
       } catch (emailError) {
-        console.error(`Erro ao enviar email para vendedor ${sellerId}:`, emailError);
+        console.error(`[EMAIL] ✗ Erro ao enviar email para vendedor ${sellerId}:`, emailError.message);
+        console.error(emailError);
         // Não interromper o processo se o email falhar
       }
     }
