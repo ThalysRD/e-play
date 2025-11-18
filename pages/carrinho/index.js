@@ -21,6 +21,7 @@ const CarrinhoPage = () => {
 
   const [updatingItemId, setUpdatingItemId] = useState(null);
   const [isRemoving, setIsRemoving] = useState(false);
+  const [isCheckingOut, setIsCheckingOut] = useState(false);
 
   const formatarPreco = (preco) => {
     return new Intl.NumberFormat("pt-BR", {
@@ -29,21 +30,62 @@ const CarrinhoPage = () => {
     }).format(preco);
   };
 
-  const handleFinalizarCompra = () => {
-    router.push('/carrinho/checkout');
+  const handleFinalizarCompra = async () => {
+    if (itens.length === 0) {
+      alert('Seu carrinho está vazio!');
+      return;
+    }
+    
+    if (isCheckingOut) return;
+    
+    setIsCheckingOut(true);
+    try {
+      const response = await fetch('/api/v1/orders/checkout-cart', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Erro ao finalizar compra');
+      }
+      
+      const data = await response.json();
+      
+      alert(`Pedido realizado com sucesso!\n\nSubtotal: R$ ${data.summary.subtotal.toFixed(2)}\nFrete: R$ ${data.summary.shipping.toFixed(2)}\nTotal: R$ ${data.summary.total.toFixed(2)}\n\n${data.summary.itemCount} pedido(s) criado(s).`);
+      
+      // Redirecionar para página de pedidos
+      router.push('/configuracoes/meus-pedidos');
+      
+    } catch (error) {
+      console.error('Erro ao finalizar compra:', error);
+      alert(error.message || 'Não foi possível finalizar a compra. Tente novamente.');
+    } finally {
+      setIsCheckingOut(false);
+    }
   };
 
-  const handleAtualizarQuantidade = async (productId, novaQuantidade) => {
+  const handleAtualizarQuantidade = async (productId, novaQuantidade, availableQuantity) => {
     if (novaQuantidade < 1) {
       return handleRemoverItem(productId);
     }
+    
+    // Validar no frontend antes de enviar
+    if (availableQuantity && novaQuantidade > availableQuantity) {
+      alert(`Quantidade indisponível. Este produto tem apenas ${availableQuantity} unidade(s) em estoque.`);
+      return;
+    }
+    
     if (updatingItemId) return;
     setUpdatingItemId(productId);
     try {
       await atualizarQuantidade(productId, novaQuantidade);
     } catch (err) {
       console.error("Falha ao atualizar quantidade:", err);
-      alert("Não foi possível atualizar o item. Tente novamente.");
+      alert(err.message || "Não foi possível atualizar o item. Tente novamente.");
     } finally {
       setUpdatingItemId(null);
     }
@@ -104,6 +146,7 @@ const CarrinhoPage = () => {
         <div className={styles.carrinhoItens}>
           {itens.map((item) => {
             const isItemUpdating = updatingItemId === item.listing_id;
+            const isMaxQuantity = item.available_quantity && item.quantity >= item.available_quantity;
 
             return (
               <div key={item.listing_id} className={`${styles.itemCarrinho} ${isItemUpdating ? styles.itemUpdating : ''}`}>
@@ -116,13 +159,16 @@ const CarrinhoPage = () => {
                 <div className={styles.itemDetalhes}>
                   <h3 className={styles.itemNome}>{item.title}</h3>
                   <p className={styles.itemPreco}>{formatarPreco(item.price_locked)}</p>
+                  {isMaxQuantity && (
+                    <p className={styles.estoqueAviso}>Quantidade máxima atingida</p>
+                  )}
                 </div>
 
                 <div className={styles.itemControles}>
                   <div className={styles.quantidadeControle}>
                     <button
                       className={styles.quantidadeBtn}
-                      onClick={() => handleAtualizarQuantidade(item.listing_id, item.quantity - 1)}
+                      onClick={() => handleAtualizarQuantidade(item.listing_id, item.quantity - 1, item.available_quantity)}
                       disabled={item.quantity <= 1 || isItemUpdating}
                     >
                       <IoRemove />
@@ -130,8 +176,9 @@ const CarrinhoPage = () => {
                     <span className={styles.quantidadeValor}>{item.quantity}</span>
                     <button
                       className={styles.quantidadeBtn}
-                      onClick={() => handleAtualizarQuantidade(item.listing_id, item.quantity + 1)}
-                      disabled={isItemUpdating}
+                      onClick={() => handleAtualizarQuantidade(item.listing_id, item.quantity + 1, item.available_quantity)}
+                      disabled={isItemUpdating || (item.available_quantity && item.quantity >= item.available_quantity)}
+                      title={item.available_quantity && item.quantity >= item.available_quantity ? `Máximo disponível: ${item.available_quantity}` : ''}
                     >
                       <IoAdd />
                     </button>
@@ -178,8 +225,9 @@ const CarrinhoPage = () => {
           <button
             className={styles.finalizarBtn}
             onClick={handleFinalizarCompra}
+            disabled={isCheckingOut || itens.length === 0}
           >
-            Finalizar Compra
+            {isCheckingOut ? 'Processando...' : 'Finalizar Compra'}
           </button>
         </div>
       </div>

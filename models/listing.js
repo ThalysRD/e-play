@@ -319,6 +319,35 @@ async function validateListingExists(listingId) {
   }
 }
 
+async function decreaseQuantity(listingId, quantityToDecrease) {
+  if (!listingId || !quantityToDecrease || quantityToDecrease <= 0) {
+    throw new ValidationError({
+      message: "listingId e quantidade válida são obrigatórios",
+      action: "Forneça os parâmetros corretos",
+    });
+  }
+
+  const results = await database.query({
+    text: `
+      UPDATE listings
+      SET quantity = quantity - $2,
+          updated_at = timezone('utc', now())
+      WHERE id = $1 AND quantity >= $2
+      RETURNING *
+    `,
+    values: [listingId, quantityToDecrease],
+  });
+
+  if (results.rowCount === 0) {
+    throw new ValidationError({
+      message: "Não foi possível reduzir o estoque. Quantidade insuficiente.",
+      action: "Verifique o estoque disponível.",
+    });
+  }
+
+  return results.rows[0];
+}
+
 const listing = {
   findAll,
   findOneById,
@@ -327,6 +356,7 @@ const listing = {
   deleteById,
   findListingsByTitle,
   updateById,
+  decreaseQuantity,
 };
 
 export default listing;

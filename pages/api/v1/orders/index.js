@@ -1,6 +1,7 @@
 import { createRouter } from "next-connect";
 import controller from "infra/controller.js";
 import order from "models/order.js";
+import listing from "models/listing.js";
 import session from "models/session.js";
 
 const router = createRouter();
@@ -38,20 +39,43 @@ async function postHandler(request, response) {
     }
 
     const userSession = await session.findOneValidByToken(sessionToken);
-    const { listingId, quantity, totalPrice } = request.body;
+    const { listingId, quantity, includeShipping = false } = request.body;
 
-    if (!listingId || !quantity || !totalPrice) {
+    if (!listingId || !quantity) {
       return response.status(400).json({
-        message: "listingId, quantity e totalPrice são obrigatórios.",
+        message: "listingId e quantity são obrigatórios.",
       });
     }
+
+    // Buscar o produto para calcular o preço correto
+    const product = await listing.findOneById(listingId);
+    
+    if (!product) {
+      return response.status(404).json({
+        message: "Produto não encontrado.",
+      });
+    }
+
+    if (product.quantity < quantity) {
+      return response.status(400).json({
+        message: `Quantidade indisponível. Apenas ${product.quantity} unidade(s) em estoque.`,
+      });
+    }
+
+    // Calcular o total correto no backend
+    const subtotal = Number(product.price) * Number(quantity);
+    const shippingCost = includeShipping && subtotal < 200 ? 15 : 0;
+    const totalPrice = subtotal + shippingCost;
 
     const newOrder = await order.create(
       userSession.user_id,
       listingId,
       Number(quantity),
-      Number(totalPrice)
+      totalPrice
     );
+
+    // Reduzir o estoque do produto
+    await listing.decreaseQuantity(listingId, Number(quantity));
 
     return response.status(201).json({
       ...newOrder,

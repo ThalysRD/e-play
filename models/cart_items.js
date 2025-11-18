@@ -15,6 +15,23 @@ async function addItem(cartId, listingId, quantity = 1, priceLocked = null) {
             action: "Informe uma quantidade positiva.",
         });
     }
+    
+    // Verificar quantidade disponível no estoque
+    const listingResult = await database.query({
+        text: `SELECT quantity, title FROM listings WHERE id = $1 LIMIT 1;`,
+        values: [listingId],
+    });
+    
+    if (listingResult.rowCount === 0) {
+        throw new NotFoundError({
+            message: "Produto não encontrado.",
+            action: "Verifique o ID do produto.",
+        });
+    }
+    
+    const availableQuantity = listingResult.rows[0].quantity;
+    const productTitle = listingResult.rows[0].title;
+    
     const existing = await database.query({
         text: `
       SELECT quantity
@@ -24,8 +41,17 @@ async function addItem(cartId, listingId, quantity = 1, priceLocked = null) {
     `,
         values: [cartId, listingId],
     });
+    
     if (existing.rowCount > 0) {
         const newQty = existing.rows[0].quantity + quantity;
+        
+        if (newQty > availableQuantity) {
+            throw new ValidationError({
+                message: `Quantidade indisponível. "${productTitle}" tem apenas ${availableQuantity} unidade(s) em estoque.`,
+                action: `Você já tem ${existing.rows[0].quantity} no carrinho. Máximo permitido: ${availableQuantity}.`,
+            });
+        }
+        
         await database.query({
             text: `
         UPDATE cart_items
@@ -36,6 +62,13 @@ async function addItem(cartId, listingId, quantity = 1, priceLocked = null) {
             values: [cartId, listingId, newQty, priceLocked],
         });
     } else {
+        if (quantity > availableQuantity) {
+            throw new ValidationError({
+                message: `Quantidade indisponível. "${productTitle}" tem apenas ${availableQuantity} unidade(s) em estoque.`,
+                action: `Máximo permitido: ${availableQuantity}.`,
+            });
+        }
+        
         await database.query({
             text: `
         INSERT INTO cart_items (cart_id, listing_id, quantity, price_locked)
@@ -59,6 +92,30 @@ async function setItemQuantity(cartId, listingId, quantity) {
         await removeItem(cartId, listingId);
         return null;
     }
+    
+    // Verificar quantidade disponível no estoque
+    const listingResult = await database.query({
+        text: `SELECT quantity, title FROM listings WHERE id = $1 LIMIT 1;`,
+        values: [listingId],
+    });
+    
+    if (listingResult.rowCount === 0) {
+        throw new NotFoundError({
+            message: "Produto não encontrado.",
+            action: "Verifique o ID do produto.",
+        });
+    }
+    
+    const availableQuantity = listingResult.rows[0].quantity;
+    const productTitle = listingResult.rows[0].title;
+    
+    if (quantity > availableQuantity) {
+        throw new ValidationError({
+            message: `Quantidade indisponível. "${productTitle}" tem apenas ${availableQuantity} unidade(s) em estoque.`,
+            action: `Máximo permitido: ${availableQuantity}.`,
+        });
+    }
+    
     const result = await database.query({
         text: `
       UPDATE cart_items

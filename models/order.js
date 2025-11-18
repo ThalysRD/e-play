@@ -3,12 +3,10 @@ import { NotFoundError, ValidationError } from "infra/errors";
 
 const ORDER_STATUS = {
   PENDING: "pending",
-  PAYMENT_APPROVED: "payment_approved",
-  PREPARING_SHIPMENT: "preparing_shipment",
+  PROCESSING: "processing",
   SHIPPED: "shipped",
   DELIVERED: "delivered",
   CANCELED: "canceled",
-  PAYMENT_FAILED: "payment_failed",
 };
 
 async function create(buyerId, listingId, quantity, totalPrice, status = ORDER_STATUS.PENDING) {
@@ -176,48 +174,12 @@ async function cancelById(orderId) {
   return await updateStatus(orderId, ORDER_STATUS.CANCELED);
 }
 
-async function updateTrackingCode(orderId, trackingCode) {
-  if (!orderId) {
-    throw new ValidationError({
-      message: "Order ID é obrigatório",
-      action: "Forneça um ID de pedido válido",
-    });
-  }
-
-  if (!trackingCode) {
-    throw new ValidationError({
-      message: "Tracking code é obrigatório",
-      action: "Forneça um código de rastreio válido",
-    });
-  }
-
-  const results = await database.query({
-    text: `
-      UPDATE orders 
-      SET tracking_code = $2, updated_at = timezone('utc', now())
-      WHERE id = $1
-      RETURNING *
-    `,
-    values: [orderId, trackingCode],
-  });
-
-  if (results.rowCount === 0) {
-    throw new NotFoundError({
-      message: "Pedido não encontrado",
-      action: "Verifique o ID do pedido e tente novamente",
-    });
-  }
-
-  return results.rows[0];
-}
-
 const order = {
   create,
   findOneById,
   findAllByBuyerId,
   findAllBySellerListings,
   updateStatus,
-  updateTrackingCode,
   cancelById,
   STATUS: ORDER_STATUS,
 };

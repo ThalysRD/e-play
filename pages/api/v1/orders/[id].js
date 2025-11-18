@@ -42,7 +42,7 @@ async function getHandler(request, response) {
 async function patchHandler(request, response) {
   try {
     const { id } = request.query;
-    const { status, trackingCode } = request.body;
+    const { status } = request.body;
 
     if (!status) {
       return response.status(400).json({
@@ -69,10 +69,10 @@ async function patchHandler(request, response) {
 
     // Validar permissões baseado no papel do usuário
     if (isSeller) {
-      // Vendedor pode atualizar para: preparing_shipment, shipped
-      if (!["preparing_shipment", "shipped"].includes(status)) {
+      // Vendedor pode atualizar para: processing, shipped
+      if (!["processing", "shipped"].includes(status)) {
         return response.status(403).json({
-          message: "Vendedores só podem atualizar para 'preparing_shipment' ou 'shipped'.",
+          message: "Vendedores só podem atualizar para 'processing' ou 'shipped'.",
         });
       }
     } else if (isBuyer) {
@@ -90,11 +90,6 @@ async function patchHandler(request, response) {
 
     // Atualizar o status
     const updatedOrder = await order.updateStatus(id, status);
-
-    // Se forneceu código de rastreio, atualizar também
-    if (trackingCode && status === "shipped") {
-      await order.updateTrackingCode(id, trackingCode);
-    }
 
     return response.status(200).json({
       order: updatedOrder,

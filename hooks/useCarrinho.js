@@ -116,7 +116,10 @@ export const CarrinhoProvider = ({ children }) => {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(itemData),
         });
-        if (!response.ok) throw new Error('Falha ao adicionar item na API');
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Falha ao adicionar item na API');
+        }
         const updatedCart = await response.json();
         setItens(updatedCart.items || []);
       } catch (err) {
@@ -179,7 +182,10 @@ export const CarrinhoProvider = ({ children }) => {
             quantity: novaQuantidade
           }),
         });
-        if (!response.ok) throw new Error('Falha ao atualizar quantidade na API');
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Falha ao atualizar quantidade na API');
+        }
         const updatedCart = await response.json();
         setItens(updatedCart.items || []);
       } catch (err) {

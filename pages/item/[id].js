@@ -4,7 +4,6 @@ import load from "styles/componentes/loading.module.css";
 import Link from "next/link";
 import styles from "styles/item/detalhes.module.css";
 import useUser from "hooks/useUser";
-import useCheckout from "hooks/useCheckout";
 import SearchBar from "components/SearchBar";
 import Modal from "components/ModalPadrao";
 import ImageGallery from "components/ImageGallery";
@@ -17,7 +16,6 @@ export default function ProductDetailsPage() {
   const router = useRouter();
   const { id } = router.query;
   const { user } = useUser();
-  const { checkout, isLoading: isCheckoutLoading } = useCheckout();
   const [listing, setListing] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");

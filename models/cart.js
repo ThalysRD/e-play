@@ -50,6 +50,7 @@ COALESCE(
         ci.quantity,
         ci.price_locked,
         l.title,
+        l.quantity as available_quantity,
         (
           SELECT li.image_url
           FROM listing_images li
@@ -95,6 +96,23 @@ async function addItemForUser(userId, listingId, quantity = 1, priceLocked = nul
         });
     }
     const cart = await getOrCreateByUserId(userId);
+    
+    // Verificar quantidade disponível no estoque
+    const listingResult = await database.query({
+        text: `SELECT quantity, title FROM listings WHERE id = $1 LIMIT 1;`,
+        values: [listingId],
+    });
+    
+    if (listingResult.rowCount === 0) {
+        throw new NotFoundError({
+            message: "Produto não encontrado.",
+            action: "Verifique o ID do produto.",
+        });
+    }
+    
+    const availableQuantity = listingResult.rows[0].quantity;
+    const productTitle = listingResult.rows[0].title;
+    
     const existing = await database.query({
         text: `
       SELECT cart_id, listing_id, quantity
@@ -104,8 +122,17 @@ async function addItemForUser(userId, listingId, quantity = 1, priceLocked = nul
     `,
         values: [cart.id, listingId],
     });
+    
     if (existing.rowCount > 0) {
         const newQty = existing.rows[0].quantity + quantity;
+        
+        if (newQty > availableQuantity) {
+            throw new ValidationError({
+                message: `Quantidade indisponível. "${productTitle}" tem apenas ${availableQuantity} unidade(s) em estoque.`,
+                action: `Você já tem ${existing.rows[0].quantity} no carrinho. Máximo permitido: ${availableQuantity}.`,
+            });
+        }
+        
         await database.query({
             text: `
         UPDATE cart_items
@@ -116,6 +143,13 @@ async function addItemForUser(userId, listingId, quantity = 1, priceLocked = nul
             values: [cart.id, listingId, newQty, priceLocked],
         });
     } else {
+        if (quantity > availableQuantity) {
+            throw new ValidationError({
+                message: `Quantidade indisponível. "${productTitle}" tem apenas ${availableQuantity} unidade(s) em estoque.`,
+                action: `Máximo permitido: ${availableQuantity}.`,
+            });
+        }
+        
         await database.query({
             text: `
         INSERT INTO cart_items (cart_id, listing_id, quantity, price_locked)
@@ -150,6 +184,16 @@ async function mergeItemsForUser(userId, itemsToSync) {
         const numQuantity = Number(quantity);
         const numPriceLocked = price_locked !== undefined ? price_locked : null;
 
+        // Verificar quantidade disponível
+        const listingResult = await database.query({
+            text: `SELECT quantity FROM listings WHERE id = $1 LIMIT 1;`,
+            values: [listing_id],
+        });
+        
+        if (listingResult.rowCount === 0) continue;
+        
+        const availableQuantity = listingResult.rows[0].quantity;
+
         const existing = await database.query({
             text: `
               SELECT quantity
@@ -159,8 +203,13 @@ async function mergeItemsForUser(userId, itemsToSync) {
             `,
             values: [cart.id, listing_id],
         });
+        
         if (existing.rowCount > 0) {
             const newQty = existing.rows[0].quantity + numQuantity;
+            
+            // Limitar ao estoque disponível
+            const finalQty = Math.min(newQty, availableQuantity);
+            
             await database.query({
                 text: `
                 UPDATE cart_items
@@ -168,15 +217,18 @@ async function mergeItemsForUser(userId, itemsToSync) {
                     price_locked = COALESCE($4, price_locked)
                 WHERE cart_id = $1 AND listing_id = $2;
                 `,
-                values: [cart.id, listing_id, newQty, numPriceLocked],
+                values: [cart.id, listing_id, finalQty, numPriceLocked],
             });
         } else {
+            // Limitar ao estoque disponível
+            const finalQty = Math.min(numQuantity, availableQuantity);
+            
             await database.query({
                 text: `
                 INSERT INTO cart_items (cart_id, listing_id, quantity, price_locked)
                 VALUES ($1, $2, $3, $4);
                 `,
-                values: [cart.id, listing_id, numQuantity, numPriceLocked],
+                values: [cart.id, listing_id, finalQty, numPriceLocked],
             });
         }
     }
@@ -187,12 +239,28 @@ async function mergeItemsForUser(userId, itemsToSync) {
     return await getWithItemsByUserId(userId);
 }
 
+async function clearCartForUser(userId) {
+    const cart = await getByUserId(userId);
+    if (!cart) return;
+    
+    await database.query({
+        text: `DELETE FROM cart_items WHERE cart_id = $1;`,
+        values: [cart.id],
+    });
+    
+    await database.query({
+        text: `UPDATE carts SET updated_at = timezone('utc', now()) WHERE id = $1;`,
+        values: [cart.id],
+    });
+}
+
 const cart = {
     createForUser,
     getOrCreateByUserId,
     getWithItemsByUserId,
     addItemForUser,
     mergeItemsForUser,
+    clearCartForUser,
 };
 
 export default cart;
