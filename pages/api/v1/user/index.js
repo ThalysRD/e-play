@@ -2,6 +2,7 @@ import { createRouter } from "next-connect";
 import controller from "infra/controller.js";
 import user from "models/user.js";
 import session from "models/session";
+import document from "models/document.js";
 
 const router = createRouter();
 
@@ -18,6 +19,17 @@ async function getHandler(request, response) {
   controller.setSessionCookie(renewedSessionObject.token, response);
 
   const userFound = await user.findOneById(sessionObject.user_id);
+
+  // Descriptografar e formatar CPF/CNPJ para exibição
+  if (userFound.cpf) {
+    userFound.cpf = await document.formatForDisplay(userFound.cpf, "cpf");
+  }
+  if (userFound.cnpj) {
+    userFound.cnpj = await document.formatForDisplay(userFound.cnpj, "cnpj");
+  }
+
+  // Remover senha do retorno
+  delete userFound.password;
 
   response.setHeader(
     "Cache-Control",

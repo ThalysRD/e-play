@@ -51,6 +51,7 @@ function RegisterForm() {
     email: "",
     password: "",
     confirmPassword: "",
+    document: "",
   });
 
   const [error, setError] = useState("");
@@ -72,10 +73,22 @@ function RegisterForm() {
     setSuccess(false);
 
     for (const key in formData) {
+      if (key === "confirmPassword" || key === "document") continue;
       if (formData[key] === "") {
         setError(`O campo ${key} é obrigatório`);
         return;
       }
+    }
+
+    if (!formData.document) {
+      setError("Você deve informar CPF ou CNPJ");
+      return;
+    }
+
+    const cleanDocument = formData.document.replace(/\D/g, "");
+    if (cleanDocument.length !== 11 && cleanDocument.length !== 14) {
+      setError("CPF deve ter 11 dígitos ou CNPJ deve ter 14 dígitos");
+      return;
     }
 
     if (formData.password !== formData.confirmPassword) {
@@ -91,6 +104,15 @@ function RegisterForm() {
     try {
       const dataToSend = { ...formData };
       delete dataToSend.confirmPassword;
+      delete dataToSend.document;
+      
+      // Identificar se é CPF ou CNPJ pelo tamanho e enviar apenas números
+      if (cleanDocument.length === 11) {
+        dataToSend.cpf = cleanDocument;
+      } else if (cleanDocument.length === 14) {
+        dataToSend.cnpj = cleanDocument;
+      }
+      
       const result = await trigger(dataToSend);
 
       setSuccess(true);
@@ -100,6 +122,7 @@ function RegisterForm() {
         email: "",
         password: "",
         confirmPassword: "",
+        document: "",
       });
     } catch (err) {
       setError(err.message);
@@ -150,6 +173,21 @@ function RegisterForm() {
               name="email"
               type="email"
               value={formData.email}
+              onChange={handleChange}
+              className={styles.input}
+              required
+            />
+          </div>
+
+          <div className={styles.fieldGroup}>
+            <label htmlFor="document" className={styles.label}>
+              CPF ou CNPJ
+            </label>
+            <input
+              id="document"
+              name="document"
+              type="text"
+              value={formData.document}
               onChange={handleChange}
               className={styles.input}
               required

@@ -31,11 +31,11 @@ exports.up = (pgm) => {
       type: "varchar[]",
     },
     cpf: {
-      type: "varchar(11)",
+      type: "varchar(255)",
       unique: true,
     },
     cnpj: {
-      type: "varchar(14)",
+      type: "varchar(255)",
       unique: true,
     },
     address_street: {

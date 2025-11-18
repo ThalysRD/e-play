@@ -177,6 +177,28 @@
   margin: 0;
 }
 
+.buyerInfo {
+  background: var(--cor-fundo);
+  border: 1px solid var(--cor-borda);
+  border-radius: 8px;
+  padding: 12px 15px;
+  margin-bottom: 10px;
+}
+
+.infoLabel {
+  color: var(--cor-texto);
+  font-size: 13px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+}
+
+.infoText {
+  color: var(--cor-texto-secundario);
+  font-size: 13px;
+  margin: 4px 0;
+  line-height: 1.5;
+}
+
 .fieldGroupHalf {
   flex: 1;
   display: flex;

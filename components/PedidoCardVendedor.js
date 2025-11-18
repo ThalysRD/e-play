@@ -11,6 +11,7 @@ export default function PedidoCardVendedor({ order }) {
     const [status, setStatus] = useState(order?.status || "");
     const [isSaving, setIsSaving] = useState(false);
     const [isSavingTracking, setIsSavingTracking] = useState(false);
+    const [buyer, setBuyer] = useState(null);
 
     useEffect(() => {
         if (!order.listing_id) {
@@ -28,6 +29,13 @@ export default function PedidoCardVendedor({ order }) {
                 }
                 const data = await response.json();
                 setListing(data);
+
+                // Buscar dados do comprador
+                const buyerResponse = await fetch(`/api/v1/users/${order.buyer_id}`);
+                if (buyerResponse.ok) {
+                    const buyerData = await buyerResponse.json();
+                    setBuyer(buyerData);
+                }
             } catch (err) {
                 console.error(err);
                 setError(err.message);
@@ -37,7 +45,7 @@ export default function PedidoCardVendedor({ order }) {
         }
 
         fetchListingDetails();
-    }, [order.listing_id]);
+    }, [order.listing_id, order.buyer_id]);
 
     const handleSaveTrackingCode = async () => {
         if (!trackingCode.trim()) {
@@ -263,12 +271,40 @@ export default function PedidoCardVendedor({ order }) {
 
                 <p className={styles.status}> </p>
 
-                <p className={styles.quantity}>
-                    Dados pessoais: *nome e cpf/cnpj colocado na hora da compra*
-                </p>
-                <p className={styles.quantity}>
-                    Endereço de entrega: *endereço colocado na hora da compra*
-                </p>
+                {buyer && (
+                    <>
+                        <div className={styles.buyerInfo}>
+                            <p className={styles.infoLabel}>Dados pessoais:</p>
+                            <p className={styles.infoText}>{buyer.name}</p>
+                        </div>
+
+                        <div className={styles.buyerInfo}>
+                            <p className={styles.infoLabel}>Endereço de entrega:</p>
+                            {buyer.address_street ? (
+                                <>
+                                    <p className={styles.infoText}>
+                                        {buyer.address_street}, {buyer.address_number}
+                                        {buyer.address_complement ? ` - ${buyer.address_complement}` : ''}
+                                    </p>
+                                    <p className={styles.infoText}>
+                                        {buyer.address_neighborhood}
+                                    </p>
+                                    <p className={styles.infoText}>
+                                        {buyer.address_city} - {buyer.address_state}
+                                    </p>
+                                    <p className={styles.infoText}>
+                                        CEP: {buyer.address_zipcode}
+                                    </p>
+                                </>
+                            ) : (
+                                <p className={styles.infoText} style={{ color: '#f44336' }}>
+                                    Endereço não cadastrado
+                                </p>
+                            )}
+                        </div>
+                    </>
+                )}
+
                 <p className={styles.quantity}>Quantidade: {quantityText}</p>
                 <p className={styles.listingPrice}>
                     Total pago: R$ {Number(order.total_price).toFixed(2)}

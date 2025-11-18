@@ -243,8 +243,8 @@ function PersonalInfosForm({ onOpenModal, user, onProfilePicChange }) {
         email: get("email") ?? "",
         profileBio: get("profile_bio") ?? "",
         phoneNumber: get("phone_number") ?? "",
-        cpf: get("cpf") ?? "",
-        cnpj: get("cnpj") ?? "",
+        cpf: get("cpf")?.replace(/\D/g, "") ?? "",
+        cnpj: get("cnpj")?.replace(/\D/g, "") ?? "",
       };
 
       const original = {
@@ -253,8 +253,6 @@ function PersonalInfosForm({ onOpenModal, user, onProfilePicChange }) {
         email: user?.email ?? "",
         profileBio: user?.profile_bio ?? "",
         phoneNumber: user?.phone_number ?? "",
-        cpf: user?.cpf ?? "",
-        cnpj: user?.cnpj ?? "",
       };
 
       const payload = {
@@ -262,9 +260,15 @@ function PersonalInfosForm({ onOpenModal, user, onProfilePicChange }) {
         name: formVals.name,
         profile_bio: formVals.profileBio,
         phone_number: formVals.phoneNumber,
-        cpf: formVals.cpf,
-        cnpj: formVals.cnpj,
       };
+
+      // Permitir cadastrar CPF/CNPJ apenas se não existir
+      if (!user?.cpf && formVals.cpf) {
+        payload.cpf = formVals.cpf;
+      }
+      if (!user?.cnpj && formVals.cnpj) {
+        payload.cnpj = formVals.cnpj;
+      }
 
       if ((formVals.username || "") !== (original.username || "")) {
         payload.username = formVals.username;
@@ -393,7 +397,9 @@ function PersonalInfosForm({ onOpenModal, user, onProfilePicChange }) {
               type="text"
               className={styles.input}
               defaultValue={user?.cpf || ""}
-              placeholder="Digite somente os números do seu CPF."
+              placeholder="Não cadastrado"
+              disabled={user?.cpf ? true : false}
+              readOnly={user?.cpf ? true : false}
             />
           </div>
 
@@ -407,7 +413,9 @@ function PersonalInfosForm({ onOpenModal, user, onProfilePicChange }) {
               type="text"
               className={styles.input}
               defaultValue={user?.cnpj || ""}
-              placeholder="Digite somente os números do seu CNPJ."
+              placeholder="Não cadastrado"
+              disabled={user?.cnpj ? true : false}
+              readOnly={user?.cnpj ? true : false}
             />
           </div>
         </div>

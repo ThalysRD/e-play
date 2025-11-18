@@ -1,6 +1,7 @@
 import { ValidationError, NotFoundError } from "infra/errors";
 import database from "../infra/database";
 import password from "./password";
+import document from "./document";
 
 async function findOneById(id) {
   const userFound = await runSelectQuery(id);
@@ -115,18 +116,21 @@ async function create(userInputValues) {
   await validateUniqueEmail(userInputValues.email);
   await validateUniqueUsername(userInputValues.username);
   await hashPasswordInObject(userInputValues);
+  await hashDocumentsInObject(userInputValues);
 
   const newUser = await runInsertQuery(userInputValues);
   return newUser;
 
   async function runInsertQuery(userInputValues) {
     const results = await database.query({
-      text: "INSERT INTO users (name,username,email,password,permissions) VALUES ($1,$2,$3,$4,$5) RETURNING *;",
+      text: "INSERT INTO users (name,username,email,password,cpf,cnpj,permissions) VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING *;",
       values: [
         userInputValues.name,
         userInputValues.username,
         userInputValues.email,
         userInputValues.password,
+        userInputValues.cpf || null,
+        userInputValues.cnpj || null,
         ["read:validate_token"],
       ],
     });
@@ -147,6 +151,10 @@ async function update(userInputValues) {
 
   if ("password" in userInputValues) {
     await hashPasswordInObject(userInputValues);
+  }
+
+  if ("cpf" in userInputValues || "cnpj" in userInputValues) {
+    await hashDocumentsInObject(userInputValues);
   }
 
   const userWithNewValues = { ...currentUser, ...userInputValues };
@@ -270,6 +278,17 @@ async function updateWishlist(userId, wishList) {
 async function hashPasswordInObject(userInputValues) {
   const hashedPassword = await password.hash(userInputValues.password);
   userInputValues.password = hashedPassword;
+}
+
+async function hashDocumentsInObject(userInputValues) {
+  if (userInputValues.cpf) {
+    const encryptedCpf = await document.encrypt(userInputValues.cpf);
+    userInputValues.cpf = encryptedCpf;
+  }
+  if (userInputValues.cnpj) {
+    const encryptedCnpj = await document.encrypt(userInputValues.cnpj);
+    userInputValues.cnpj = encryptedCnpj;
+  }
 }
 
 async function updateAddress(userId, addressData) {
