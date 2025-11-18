@@ -9,6 +9,7 @@ export default function PedidoCard({ order }) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [status, setStatus] = useState(order?.status || "");
+    const [isSaving, setIsSaving] = useState(false);
 
 
     useEffect(() => {
@@ -37,6 +38,43 @@ export default function PedidoCard({ order }) {
 
         fetchListingDetails();
     }, [order.listing_id]);
+
+    const handleSaveStatus = async () => {
+        try {
+            setIsSaving(true);
+            const response = await fetch(`/api/v1/orders/${order.id}`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ status: "delivered" }),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || "Erro ao atualizar status");
+            }
+
+            alert("Recebimento confirmado com sucesso!");
+            window.location.reload();
+        } catch (err) {
+            console.error("Erro ao confirmar recebimento:", err);
+            alert(err.message);
+        } finally {
+            setIsSaving(false);
+        }
+    };
+
+    const getStatusLabel = (statusValue) => {
+        const statusMap = {
+            pending: "Pendente",
+            processing: "Em preparação",
+            shipped: "Enviado",
+            delivered: "Entregue",
+            canceled: "Cancelado",
+        };
+        return statusMap[statusValue] || statusValue;
+    };
 
     if (loading) {
         return (
@@ -88,28 +126,25 @@ export default function PedidoCard({ order }) {
                 <br></br>
                 <div className={styles.fieldGroupHalf}>
                     <label htmlFor={`status_${order.id}`} className={styles.label}>
-                        Status do pedido:
+                        Status do pedido: <strong>{getStatusLabel(order.status)}</strong>
                     </label>
-                    <div className={styles.row}>
-                        <select
-                            id={`status_${order.id}`}
-                            name="status"
-                            className={styles.select}
-                            value={status}
-                            onChange={(e) => setStatus(e.target.value)}
-                        >
-                            <option value="">Selecione...</option>
-                            <option value="pending">Pendente</option>
-                            <option value="Pago">Pago</option>
-                            <option value="Em preparação">Em preparação</option>
-                            <option value="Enviado">Enviado</option>
-                            <option value="Entregue">Entregue</option>
-                            <option value="Cancelado">Cancelado</option>
-                        </select>
-                        <button type="button" className={`${styles.buttonSave}`}>
-                            Salvar
-                        </button>
-                    </div>
+                    {order.status === "shipped" && (
+                        <div className={styles.row}>
+                            <button 
+                                type="button" 
+                                className={`${styles.buttonSave}`}
+                                onClick={async () => {
+                                    if (window.confirm("Confirmar que o pedido foi recebido?")) {
+                                        setStatus("delivered");
+                                        await handleSaveStatus();
+                                    }
+                                }}
+                                disabled={isSaving}
+                            >
+                                {isSaving ? "Confirmando..." : "Confirmar Recebimento"}
+                            </button>
+                        </div>
+                    )}
                 </div>
                 <p className={styles.status}></p>
                 <p className={styles.quantity}>Dados pessoais: *nome e cpf/cnpj colocado na hora da compra*</p>

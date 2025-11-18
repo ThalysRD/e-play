@@ -36,36 +36,8 @@ const CarrinhoPage = () => {
       return;
     }
     
-    if (isCheckingOut) return;
-    
-    setIsCheckingOut(true);
-    try {
-      const response = await fetch('/api/v1/orders/checkout-cart', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-      });
-      
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Erro ao finalizar compra');
-      }
-      
-      const data = await response.json();
-      
-      alert(`Pedido realizado com sucesso!\n\nSubtotal: R$ ${data.summary.subtotal.toFixed(2)}\nFrete: R$ ${data.summary.shipping.toFixed(2)}\nTotal: R$ ${data.summary.total.toFixed(2)}\n\n${data.summary.itemCount} pedido(s) criado(s).`);
-      
-      // Redirecionar para página de pedidos
-      router.push('/configuracoes/meus-pedidos');
-      
-    } catch (error) {
-      console.error('Erro ao finalizar compra:', error);
-      alert(error.message || 'Não foi possível finalizar a compra. Tente novamente.');
-    } finally {
-      setIsCheckingOut(false);
-    }
+    // Redirecionar para a página de checkout
+    router.push('/carrinho/checkout');
   };
 
   const handleAtualizarQuantidade = async (productId, novaQuantidade, availableQuantity) => {

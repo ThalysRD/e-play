@@ -4,6 +4,8 @@ import order from "models/order.js";
 import listing from "models/listing.js";
 import session from "models/session.js";
 import cart from "models/cart.js";
+import user from "models/user.js";
+import orderNotifications from "models/orderNotifications.js";
 
 const router = createRouter();
 
@@ -60,7 +62,10 @@ async function postHandler(request, response) {
     const shippingCost = subtotalGeral >= 200 ? 0 : 15;
     const totalGeralComFrete = subtotalGeral + shippingCost;
 
-    // Criar pedidos (um por item)
+    // Criar pedidos (um por item) e coletar informações para emails
+    const ordersWithDetails = [];
+    const sellerNotifications = new Map(); // Agrupar por vendedor
+    
     for (const item of userCart.items) {
       const product = await listing.findOneById(item.listing_id);
       
@@ -80,7 +85,74 @@ async function postHandler(request, response) {
       // Reduzir o estoque do produto
       await listing.decreaseQuantity(item.listing_id, Number(item.quantity));
 
+      // Armazenar detalhes para emails
+      const orderWithDetails = {
+        ...newOrder,
+        product_title: product.title,
+      };
+      ordersWithDetails.push(orderWithDetails);
       orders.push(newOrder);
+
+      // Agrupar pedidos por vendedor para notificação
+      const sellerId = product.user_id;
+      if (!sellerNotifications.has(sellerId)) {
+        sellerNotifications.set(sellerId, []);
+      }
+      sellerNotifications.get(sellerId).push({
+        ...orderWithDetails,
+        seller_id: sellerId,
+      });
+    }
+
+    // Buscar dados do comprador para os emails
+    const buyerData = await user.findOneById(userSession.user_id);
+
+    // Enviar email de confirmação para o comprador
+    try {
+      await orderNotifications.sendBuyerOrderConfirmation(
+        buyerData.email,
+        buyerData.name,
+        ordersWithDetails,
+        totalGeralComFrete
+      );
+    } catch (emailError) {
+      console.error("Erro ao enviar email para comprador:", emailError);
+      // Não interromper o processo se o email falhar
+    }
+
+    // Enviar emails para cada vendedor
+    for (const [sellerId, sellerOrders] of sellerNotifications) {
+      try {
+        const sellerData = await user.findOneById(sellerId);
+        
+        // Preparar informações do comprador
+        const buyerInfo = {
+          name: buyerData.name,
+          email: buyerData.email,
+          phone_number: buyerData.phone_number || null,
+          hasAddress: !!(buyerData.address_street && buyerData.address_zipcode),
+          address_street: buyerData.address_street || '',
+          address_number: buyerData.address_number || '',
+          address_complement: buyerData.address_complement || '',
+          address_neighborhood: buyerData.address_neighborhood || '',
+          address_city: buyerData.address_city || '',
+          address_state: buyerData.address_state || '',
+          address_zipcode: buyerData.address_zipcode || '',
+        };
+
+        // Enviar notificação para cada pedido do vendedor
+        for (const orderDetail of sellerOrders) {
+          await orderNotifications.sendSellerNewOrderNotification(
+            sellerData.email,
+            sellerData.name,
+            orderDetail,
+            buyerInfo
+          );
+        }
+      } catch (emailError) {
+        console.error(`Erro ao enviar email para vendedor ${sellerId}:`, emailError);
+        // Não interromper o processo se o email falhar
+      }
     }
 
     // Limpar o carrinho após criar os pedidos

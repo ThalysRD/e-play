@@ -28,6 +28,27 @@ exports.up = (pgm) => {
       notNull: true,
       default: "pending",
     },
+    tracking_code:{
+      type: "varchar(50)",
+    },
+    address_street: {
+      type: "varchar(255)",
+    },
+    address_number: {
+      type: "varchar(50)",
+    },
+    address_complement: {
+      type: "varchar(255)",
+    },
+    address_neighborhood: {
+      type: "varchar(255)",
+    },
+    address_city: {
+      type: "varchar(255)",
+    },
+    address_state: {
+      type: "varchar(2)",
+    },
     created_at: {
       type: "timestamp",
       notNull: true,

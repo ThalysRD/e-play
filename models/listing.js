@@ -35,6 +35,8 @@ async function findListingsByTitle(listingTitle) {
           users u ON l.user_id = u.id
         WHERE
           l.title ILIKE $1
+          AND l.quantity > 0
+          AND l.active = true
         ORDER BY
           l.created_at DESC
       `,
@@ -70,6 +72,9 @@ async function findAll() {
           listings l
         LEFT JOIN
           users u ON l.user_id = u.id
+        WHERE
+          l.quantity > 0
+          AND l.active = true
         ORDER BY
           l.created_at DESC
       `,
@@ -348,6 +353,35 @@ async function decreaseQuantity(listingId, quantityToDecrease) {
   return results.rows[0];
 }
 
+async function increaseQuantity(listingId, quantityToIncrease) {
+  if (!listingId || !quantityToIncrease || quantityToIncrease <= 0) {
+    throw new ValidationError({
+      message: "listingId e quantidade válida são obrigatórios",
+      action: "Forneça os parâmetros corretos",
+    });
+  }
+
+  const results = await database.query({
+    text: `
+      UPDATE listings
+      SET quantity = quantity + $2,
+          updated_at = timezone('utc', now())
+      WHERE id = $1
+      RETURNING *
+    `,
+    values: [listingId, quantityToIncrease],
+  });
+
+  if (results.rowCount === 0) {
+    throw new ValidationError({
+      message: "Não foi possível aumentar o estoque. Anúncio não encontrado.",
+      action: "Verifique se o anúncio existe.",
+    });
+  }
+
+  return results.rows[0];
+}
+
 const listing = {
   findAll,
   findOneById,
@@ -357,6 +391,7 @@ const listing = {
   findListingsByTitle,
   updateById,
   decreaseQuantity,
+  increaseQuantity,
 };
 
 export default listing;
