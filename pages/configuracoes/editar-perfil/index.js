@@ -21,7 +21,7 @@ async function patchUser(payload) {
   return data;
 }
 async function patchUserAddress(payload) {
-  const res = await fetch("/api/v1/user/address", {
+  const res = await fetch("/api/v1/user", {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
