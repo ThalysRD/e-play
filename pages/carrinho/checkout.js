@@ -5,6 +5,36 @@ import { useCarrinho } from "hooks/useCarrinho";
 import styles from "styles/carrinho/checkout.module.css";
 import load from "styles/componentes/loading.module.css";
 
+const estados = [
+  { sigla: "AC", nome: "Acre" },
+  { sigla: "AL", nome: "Alagoas" },
+  { sigla: "AP", nome: "Amapá" },
+  { sigla: "AM", nome: "Amazonas" },
+  { sigla: "BA", nome: "Bahia" },
+  { sigla: "CE", nome: "Ceará" },
+  { sigla: "DF", nome: "Distrito Federal" },
+  { sigla: "ES", nome: "Espírito Santo" },
+  { sigla: "GO", nome: "Goiás" },
+  { sigla: "MA", nome: "Maranhão" },
+  { sigla: "MT", nome: "Mato Grosso" },
+  { sigla: "MS", nome: "Mato Grosso do Sul" },
+  { sigla: "MG", nome: "Minas Gerais" },
+  { sigla: "PA", nome: "Pará" },
+  { sigla: "PB", nome: "Paraíba" },
+  { sigla: "PR", nome: "Paraná" },
+  { sigla: "PE", nome: "Pernambuco" },
+  { sigla: "PI", nome: "Piauí" },
+  { sigla: "RJ", nome: "Rio de Janeiro" },
+  { sigla: "RN", nome: "Rio Grande do Norte" },
+  { sigla: "RS", nome: "Rio Grande do Sul" },
+  { sigla: "RO", nome: "Rondônia" },
+  { sigla: "RR", nome: "Roraima" },
+  { sigla: "SC", nome: "Santa Catarina" },
+  { sigla: "SP", nome: "São Paulo" },
+  { sigla: "SE", nome: "Sergipe" },
+  { sigla: "TO", nome: "Tocantins" },
+];
+
 export default function CheckoutPage() {
   const router = useRouter();
   const { user, isLoading: userLoading, mutate } = useUser();
@@ -167,74 +197,72 @@ export default function CheckoutPage() {
   const frete = calcularFrete();
   const total = calcularTotal();
   const userHasAddress = user.address_street && user.address_zipcode;
+  const isAddressFormComplete = hasAddress();
 
   return (
     <div className={styles.checkoutContainer}>
       <div className={styles.checkoutContent}>
-        <header className={styles.header}>
-          <h2>Finalizar Compra</h2>
-          <div className={styles.divider}></div>
-        </header>
+        <div className={styles.formContainer}>
 
-        <div className={styles.mainContent}>
-          {/* Endereço de Entrega */}
-          <section className={styles.section}>
-            <h3>📍 Endereço de Entrega</h3>
-            
-            {!userHasAddress && (
-              <div className={styles.alertWarning}>
-                <strong>⚠️ Atenção:</strong> Você precisa cadastrar um endereço de entrega para finalizar a compra.
-              </div>
-            )}
+          <h2>Endereço de Entrega</h2>
+          <form className={styles.enderecoForm}>
+            <div className={styles.formBackground}>
 
-            <div className={styles.addressForm}>
-              <div className={styles.formRow}>
-                <div className={styles.formGroup} style={{ flex: 1 }}>
-                  <label htmlFor="address_zipcode">CEP *</label>
+              {!userHasAddress && (
+                <div className={styles.alertWarning}>
+                  <strong>⚠️ Atenção:</strong> Você precisa cadastrar um endereço de entrega para finalizar a compra.
+                </div>
+              )}
+
+              <div className={styles.enderecoFormContainer1}>
+
+                <div className={styles.fieldGroup}>
+                  <label htmlFor="address_zipcode" className={styles.label}>CEP *</label>
                   <input
                     type="text"
                     id="address_zipcode"
                     name="address_zipcode"
+                    className={styles.input}
                     value={addressForm.address_zipcode}
                     onChange={handleInputChange}
                     placeholder="00000-000"
                     maxLength="9"
                   />
                 </div>
-              </div>
 
-              <div className={styles.formRow}>
-                <div className={styles.formGroup} style={{ flex: 3 }}>
-                  <label htmlFor="address_street">Rua *</label>
+                <div className={styles.fieldGroup}>
+                  <label htmlFor="address_street" className={styles.label}>Rua *</label>
                   <input
                     type="text"
                     id="address_street"
                     name="address_street"
+                    className={styles.input}
                     value={addressForm.address_street}
                     onChange={handleInputChange}
                     placeholder="Nome da rua"
                   />
                 </div>
-                <div className={styles.formGroup} style={{ flex: 1 }}>
-                  <label htmlFor="address_number">Número *</label>
+
+                <div className={styles.fieldGroup}>
+                  <label htmlFor="address_number" className={styles.label}>Número *</label>
                   <input
                     type="text"
                     id="address_number"
                     name="address_number"
+                    className={styles.input}
                     value={addressForm.address_number}
                     onChange={handleInputChange}
                     placeholder="123"
                   />
                 </div>
-              </div>
 
-              <div className={styles.formRow}>
-                <div className={styles.formGroup}>
-                  <label htmlFor="address_complement">Complemento</label>
+                <div className={styles.fieldGroup}>
+                  <label htmlFor="address_complement" className={styles.label}>Complemento</label>
                   <input
                     type="text"
                     id="address_complement"
                     name="address_complement"
+                    className={styles.input}
                     value={addressForm.address_complement}
                     onChange={handleInputChange}
                     placeholder="Apto, bloco, etc (opcional)"
@@ -242,117 +270,139 @@ export default function CheckoutPage() {
                 </div>
               </div>
 
-              <div className={styles.formRow}>
-                <div className={styles.formGroup}>
-                  <label htmlFor="address_neighborhood">Bairro *</label>
+              <div className={styles.enderecoFormContainer2}>
+                <div className={styles.fieldGroup}>
+                  <label htmlFor="address_neighborhood" className={styles.label}>Bairro *</label>
                   <input
                     type="text"
                     id="address_neighborhood"
                     name="address_neighborhood"
+                    className={styles.input}
                     value={addressForm.address_neighborhood}
                     onChange={handleInputChange}
                     placeholder="Nome do bairro"
                   />
                 </div>
-              </div>
 
-              <div className={styles.formRow}>
-                <div className={styles.formGroup} style={{ flex: 2 }}>
-                  <label htmlFor="address_city">Cidade *</label>
+                <div className={styles.fieldGroup}>
+                  <label htmlFor="address_city" className={styles.label}>Cidade *</label>
                   <input
                     type="text"
                     id="address_city"
                     name="address_city"
+                    className={styles.input}
                     value={addressForm.address_city}
                     onChange={handleInputChange}
                     placeholder="Nome da cidade"
                   />
                 </div>
-                <div className={styles.formGroup} style={{ flex: 1 }}>
-                  <label htmlFor="address_state">Estado *</label>
-                  <input
-                    type="text"
+
+                <div className={styles.fieldGroupHalf}>
+                  <label htmlFor="address_state" className={styles.label}>Estado *</label>
+                  <select
                     id="address_state"
                     name="address_state"
+                    className={styles.select}
                     value={addressForm.address_state}
                     onChange={handleInputChange}
-                    placeholder="UF"
-                    maxLength="2"
-                  />
+                  >
+                    <option value=""> </option>
+                    {estados.map((estado) => (
+                      <option key={estado.sigla} value={estado.sigla}>
+                        {estado.nome}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
-
-              {!userHasAddress && (
-                <button
-                  className={styles.saveAddressButton}
-                  onClick={handleSaveAddress}
-                  disabled={isProcessing || !hasAddress()}
-                >
-                  {isProcessing ? "Salvando..." : "Salvar Endereço"}
-                </button>
-              )}
             </div>
-          </section>
+          </form>
 
-          {/* Resumo do Pedido */}
-          <section className={styles.section}>
-            <h3>📦 Resumo do Pedido</h3>
-            <div className={styles.orderSummary}>
-              <div className={styles.summaryItems}>
-                {itens.map((item) => (
-                  <div key={item.listing_id} className={styles.summaryItem}>
-                    <span>{item.title}</span>
-                    <span>
-                      {item.quantity}x {formatarPreco(item.price_locked)}
+          {!userHasAddress && (
+            <button
+              className={styles.saveAddressButton}
+              onClick={handleSaveAddress}
+              disabled={isProcessing || !isAddressFormComplete}
+            >
+              {isProcessing ? "Salvando Endereço..." : "Salvar Endereço"}
+            </button>
+          )}
+
+
+          <h2>Itens do pedido</h2>
+          <div className={styles.resumoItens}>
+            {itens.length === 0 ? (
+              <p>Seu carrinho está vazio.</p>
+            ) : (
+              itens.map((item) => (
+                <div className={styles.itemResumo} key={item.listing_id}>
+                  <img
+                    src={item.image_url || 'placeholder_image.png'}
+                    alt={item.title}
+                    className={styles.itemImagem}
+                  />
+                  <div className={styles.itemDetalhes}>
+                    <span className={styles.itemNome}>
+                      {item.title}
+                    </span>
+                    <span className={styles.itemQuantidade}>
+                      Quantidade: {item.quantity}
+                    </span>
+                    <span className={styles.itemPreco}>
+                      {formatarPreco(item.price_locked * item.quantity)}
                     </span>
                   </div>
-                ))}
-              </div>
-
-              <div className={styles.divider}></div>
-
-              <div className={styles.summaryTotals}>
-                <div className={styles.summaryRow}>
-                  <span>Subtotal:</span>
-                  <span>{formatarPreco(subtotal)}</span>
                 </div>
-                <div className={styles.summaryRow}>
-                  <span>Frete:</span>
-                  <span className={frete === 0 ? styles.free : ""}>
-                    {frete === 0 ? "GRÁTIS" : formatarPreco(frete)}
-                  </span>
-                </div>
-                <div className={`${styles.summaryRow} ${styles.total}`}>
-                  <span>Total:</span>
-                  <span>{formatarPreco(total)}</span>
-                </div>
-              </div>
-
-              {subtotal < 200 && (
-                <div className={styles.freteInfo}>
-                  Faltam {formatarPreco(200 - subtotal)} para ganhar frete grátis!
-                </div>
-              )}
-            </div>
-          </section>
-
-          {/* Botões de Ação */}
-          <div className={styles.actions}>
-            <button
-              className={styles.backButton}
-              onClick={() => router.push("/carrinho")}
-              disabled={isProcessing}
-            >
-              Voltar ao Carrinho
-            </button>
-            <button
-              className={styles.checkoutButton}
-              onClick={handleFinalizarCompra}
-              disabled={isProcessing || !hasAddress()}
-            >
-              {isProcessing ? "Processando..." : "Confirmar Pedido"}
-            </button>
+              ))
+            )}
           </div>
+        </div>
+
+        <div className={styles.resumoPedido}>
+          <h2>Resumo do Pedido</h2>
+
+          <div className={styles.freteInfo}>
+            {frete === 0
+              ? "🎉 Frete Grátis!"
+              : (
+                subtotal < 200
+                  ? `Faltam ${formatarPreco(200 - subtotal)} para ganhar frete grátis!`
+                  : "Frete grátis acima de R$ 200,00"
+              )}
+          </div>
+
+          <div className={styles.resumoLinha}>
+            <span>Subtotal:</span>
+            <span>{formatarPreco(subtotal)}</span>
+          </div>
+          <div className={styles.resumoLinha}>
+            <span>Frete:</span>
+            <span>
+              {frete === 0
+                ? "Grátis"
+                : formatarPreco(frete)}
+            </span>
+          </div>
+          <div className={styles.resumoTotal}>
+            <span>Total:</span>
+            <span>{formatarPreco(total)}</span>
+          </div>
+
+          <button
+            className={styles.finalizarBtn}
+            onClick={handleFinalizarCompra}
+            disabled={isProcessing || !isAddressFormComplete}
+          >
+            {isProcessing ? "Processando..." : "Confirmar Pedido"}
+          </button>
+
+          <button
+            onClick={() => router.push("/carrinho")}
+            disabled={isProcessing}
+            className={styles.backButton}
+          >
+            Voltar ao Carrinho
+          </button>
         </div>
       </div>
     </div>

@@ -134,11 +134,11 @@
   transition:
     transform 0.18s ease,
     box-shadow 0.18s ease;
-  color: var(--cor-texto);
+  color: var(--cor-secundaria);
 }
 
 .buttonSave:hover {
-  background-color: var(--cor-rosa-escuro);
+  background-color:#c28d1a;
 }
 
 .buttonCancel {

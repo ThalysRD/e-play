@@ -3,15 +3,13 @@ import Link from "next/link";
 import styles from "styles/componentes/PedidoCard.module.css";
 import load from "styles/componentes/loading.module.css";
 
-
 export default function PedidoCard({ order }) {
     const [listing, setListing] = useState(null);
-    const [seller, setSeller] = useState(null);
+    const [buyer, setBuyer] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [status, setStatus] = useState(order?.status || "");
     const [isSaving, setIsSaving] = useState(false);
-
 
     useEffect(() => {
         if (!order.listing_id) {
@@ -29,13 +27,18 @@ export default function PedidoCard({ order }) {
                 }
                 const data = await response.json();
                 setListing(data);
-                
-                // Buscar dados do vendedor
-                if (data.user_id) {
-                    const sellerResponse = await fetch(`/api/v1/users/${data.user_id}`);
-                    if (sellerResponse.ok) {
-                        const sellerData = await sellerResponse.json();
-                        setSeller(sellerData);
+
+                if (order.buyer_id) {
+                    try {
+                        const buyerResponse = await fetch(`/api/v1/users/${order.buyer_id}`);
+                        if (buyerResponse.ok) {
+                            const buyerData = await buyerResponse.json();
+                            setBuyer(buyerData);
+                        } else {
+                            console.warn("Não foi possível carregar dados do comprador:", buyerResponse.status);
+                        }
+                    } catch (innerErr) {
+                        console.error("Erro ao buscar buyer:", innerErr);
                     }
                 }
             } catch (err) {
@@ -47,7 +50,7 @@ export default function PedidoCard({ order }) {
         }
 
         fetchListingDetails();
-    }, [order.listing_id]);
+    }, [order.listing_id, order.buyer_id]);
 
     const handleSaveStatus = async () => {
         try {
@@ -127,21 +130,34 @@ export default function PedidoCard({ order }) {
                 <p className={styles.listingTitle}>
                     {listing.title}
                 </p>
-                <p>N° pedido: {(order.id)} </p>
+
+                <p>
+                    Vendedor:{" "}
+                    {listing.username ? (
+                        <Link href={`/vendedor/${listing.username}`} className={styles.sellerLink}>
+                            {listing.username}
+                        </Link>
+                    ) : (
+                        <span className={styles.negritoInfo}>Usuário não informado</span>
+                    )}
+                </p>
+
+                <p>N° pedido: {order.id}</p>
                 <p className={styles.orderDate}>Pedido feito em: {new Date(order.created_at).toLocaleDateString("pt-BR")}</p>
                 <div className={styles.row}>
                     <p> Código de rastreio: </p>
                     <p className={styles.negritoInfo}> {(order.tracking_code) || "Não informado"} </p>
                 </div>
-                <br></br>
+                <br />
+
                 <div className={styles.fieldGroupHalf}>
                     <label htmlFor={`status_${order.id}`} className={styles.label}>
                         Status do pedido: <strong>{getStatusLabel(order.status)}</strong>
                     </label>
                     {order.status === "shipped" && (
                         <div className={styles.row}>
-                            <button 
-                                type="button" 
+                            <button
+                                type="button"
                                 className={`${styles.buttonSave}`}
                                 onClick={async () => {
                                     if (window.confirm("Confirmar que o pedido foi recebido?")) {
@@ -157,22 +173,22 @@ export default function PedidoCard({ order }) {
                     )}
                 </div>
                 <p className={styles.status}></p>
-                
-                {seller && (
+
+                {buyer && (
                     <>
                         <div className={styles.buyerInfo}>
-                            <p className={styles.infoLabel}>Dados do vendedor:</p>
-                            <p className={styles.infoText}>{seller.name}</p>
+                            <p className={styles.infoLabel}>Dados do comprador:</p>
+                            <p className={styles.infoText}>{buyer.name}</p>
                         </div>
 
                         <div className={styles.buyerInfo}>
-                            <p className={styles.infoLabel}>Endereço do vendedor:</p>
-                            {seller.address_street ? (
+                            <p className={styles.infoLabel}>Endereço de entrega:</p>
+                            {buyer.address_street ? (
                                 <>
-                                    <p className={styles.infoText}>{seller.address_street}, {seller.address_number}{seller.address_complement ? ` - ${seller.address_complement}` : ''}</p>
-                                    <p className={styles.infoText}>{seller.address_neighborhood}</p>
-                                    <p className={styles.infoText}>{seller.address_city} - {seller.address_state}</p>
-                                    <p className={styles.infoText}>CEP: {seller.address_zipcode}</p>
+                                    <p className={styles.infoText}>{buyer.address_street}, {buyer.address_number}{buyer.address_complement ? ` - ${buyer.address_complement}` : ''}</p>
+                                    <p className={styles.infoText}>{buyer.address_neighborhood}</p>
+                                    <p className={styles.infoText}>{buyer.address_city} - {buyer.address_state}</p>
+                                    <p className={styles.infoText}>CEP: {buyer.address_zipcode}</p>
                                 </>
                             ) : (
                                 <p className={styles.infoText} style={{ color: '#f44336' }}>Endereço não cadastrado</p>
@@ -180,7 +196,6 @@ export default function PedidoCard({ order }) {
                         </div>
                     </>
                 )}
-
                 <p className={styles.quantity}>Quantidade: {quantityText}</p>
                 <p className={styles.listingPrice}>Total pago: R$ {Number(order.total_price).toFixed(2)}</p>
             </div>

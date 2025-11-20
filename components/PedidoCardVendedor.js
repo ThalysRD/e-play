@@ -187,8 +187,8 @@ export default function PedidoCardVendedor({ order }) {
                                 disabled={order.status === "shipped" || order.status === "delivered" || order.status === "canceled"}
                             />
                             {!order.tracking_code && order.status !== "shipped" && order.status !== "delivered" && order.status !== "canceled" && (
-                                <button 
-                                    type="button" 
+                                <button
+                                    type="button"
                                     className={`${styles.buttonSave}`}
                                     onClick={handleSaveTrackingCode}
                                     disabled={isSavingTracking || !trackingCode.trim()}
@@ -274,7 +274,7 @@ export default function PedidoCardVendedor({ order }) {
                 {buyer && (
                     <>
                         <div className={styles.buyerInfo}>
-                            <p className={styles.infoLabel}>Dados pessoais:</p>
+                            <p className={styles.infoLabel}>Dados do comprador:</p>
                             <p className={styles.infoText}>{buyer.name}</p>
                         </div>
 

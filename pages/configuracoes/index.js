@@ -121,7 +121,7 @@ const ConfiguracoesPage = () => {
             <h3 className={styles.sectionTitle}>Ajuda</h3>
             <div className={styles.buttonsGrid}>
               <Link
-                href="/suporte"
+                href=""
                 className={`${styles.optionButton} ${styles.btnGreen}`}
               >
                 <span>Suporte ao cliente</span>
