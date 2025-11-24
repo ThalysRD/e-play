@@ -147,12 +147,6 @@ export default function LayoutPadrao({ children }) {
                 <li>
                   <a href="#">Perguntas frequentes</a>
                 </li>
-                <li>
-                  <a href="#">Métodos de Pagamento</a>
-                </li>
-                <li>
-                  <a href="#">Devolução e Reembolso</a>
-                </li>
               </ul>
             </div>
           </div>
