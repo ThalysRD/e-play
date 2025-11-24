@@ -1,298 +1,379 @@
 .checkoutContainer {
-  border-radius: 8px;
+    border-radius: 8px;
 }
 
 .checkoutContent {
-  gap: 20px;
-  display: grid;
-  grid-template-columns: 3fr 1fr;
+    gap: 20px;
+    display: grid;
+    grid-template-columns: 3fr 1fr;
 }
 
 .formContainer {
-  flex: 2;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  border-radius: 10px;
-  background-color: var(--cor-secundaria);
-  padding: 25px;
-  margin-bottom: 20px;
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-radius: 10px;
+    background-color: var(--cor-secundaria);
+    padding: 25px;
+    margin-bottom: 20px;
 }
 
-.formContainer h2{
-  font-size: 1.3rem;
-  margin-top: 0rem;
-  margin-bottom: 0mm;
-  padding-bottom: 1rem;
+.formContainer h2 {
+    font-size: 1.3rem;
+    margin-top: 0rem;
+    margin-bottom: 0mm;
+    padding-bottom: 1rem;
 }
 
 /* ----------------- Inputs e Labels ----------------- */
 .label {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--cor-texto);
-  margin-bottom: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--cor-texto);
+    margin-bottom: 6px;
 }
 
 .input,
 .bioTextarea {
-  width: 100%;
-  padding: 10px 15px;
-  border-radius: 10px;
-  font-size: 14px;
-  color: var(--cor-texto);
-  outline: none;
-  transition:
-    border 0.25s,
-    box-shadow 0.25s,
-    background 0.25s;
+    width: 100%;
+    padding: 10px 15px;
+    border-radius: 10px;
+    font-size: 14px;
+    color: var(--cor-texto);
+    outline: none;
+    transition:
+        border 0.25s,
+        box-shadow 0.25s,
+        background 0.25s;
 }
 
 .input {
-  border: 1px solid var(--cor-borda);
-  background: var(--cor-amarelo-escuro);
+    border: 1px solid var(--cor-borda);
+    background: var(--cor-amarelo-escuro);
 }
 
 .input:focus {
-  border-color: var(--cor-borda);
-  box-shadow: 0 0 8px var(--cor-amarelo-medio);
-  background: var(--cor-secundaria);
+    border-color: var(--cor-borda);
+    box-shadow: 0 0 8px var(--cor-amarelo-medio);
+    background: var(--cor-secundaria);
 }
 
 .input:-webkit-autofill,
 .input:-webkit-autofill:hover,
 .input:-webkit-autofill:focus,
 .input:-webkit-autofill:active {
-  -webkit-text-fill-color: #fff !important;
-  box-shadow: 0 0 0 30px var(--cor-amarelo-escuro) inset !important;
-  transition: background-color 5000s ease-in-out 0s;
+    -webkit-text-fill-color: #fff !important;
+    box-shadow: 0 0 0 30px var(--cor-amarelo-escuro) inset !important;
+    transition: background-color 5000s ease-in-out 0s;
 }
 
 .bioTextarea {
-  resize: none;
+    resize: none;
 }
 
 /* ----------------- Field Groups ----------------- */
 .fieldGroup {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
 }
 
 /* ----------------- Info Form ----------------- */
 .formBackground {
-  padding: 0px 0px 10px 0px;
+    padding: 0px 0px 10px 0px;
 }
 .infoFormContainer {
-  border-bottom: 2px solid var(--cor-primaria);
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  width: 100%;
-  padding-bottom: 30px;
+    border-bottom: 2px solid var(--cor-primaria);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    width: 100%;
+    padding-bottom: 30px;
 }
 
-/* ----------------- Endereço Form ----------------- */
+/* ----------------- Endereço Form (DESKTOP) ----------------- */
 .enderecoFormContainer1 {
-  display: grid;
-  grid-template-columns: 1fr 3fr 1fr 3fr;
-  gap: 20px;
-  width: 100%;
-  margin-bottom: 20px;
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr 3fr;
+    gap: 20px;
+    width: 100%;
+    margin-bottom: 20px;
 }
 .enderecoFormContainer2 {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 20px;
-  width: 100%;
-  border-bottom: 2px solid var(--cor-primaria);
-  padding-bottom: 30px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    width: 100%;
+    border-bottom: 2px solid var(--cor-primaria);
+    padding-bottom: 30px;
 }
 
 .fieldGroupHalf {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .select {
-  width: 100%;
-  background: var(--cor-amarelo-escuro);
-  border: 1px solid var(--cor-borda);
-  border-radius: 10px;
-  box-sizing: border-box;
-  padding: 9px;
-  color: #fff;
-  font-family: "Montserrat", sans-serif;
-  font-size: 14px;
+    width: 100%;
+    background: var(--cor-amarelo-escuro);
+    border: 1px solid var(--cor-borda);
+    border-radius: 10px;
+    box-sizing: border-box;
+    padding: 9px;
+    color: #fff;
+    font-family: "Montserrat", sans-serif;
+    font-size: 14px;
 }
 
 /* Lista de Itens no Resumo */
 .resumoItens {
-  gap: 20px;
-  padding-bottom: 10px;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    padding-bottom: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
 }
 
 .itemResumo {
-  display: flex;
-  margin-bottom: 1rem;
-  gap: 1rem;
+    display: flex;
+    margin-bottom: 1rem;
+    gap: 1rem;
 }
 .itemImagem {
-  width: 60px;
-  height: 60px;
-  border-radius: 6px;
-  border: 1px solid #eee;
+    width: 60px;
+    height: 60px;
+    border-radius: 6px;
+    border: 1px solid #eee;
 }
 .itemDetalhes {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
 .itemNome {
-  font-weight: 600;
-  font-size: 0.9rem;
+    font-weight: 600;
+    font-size: 0.9rem;
 }
 .itemQuantidade {
-  font-size: 0.85rem;
+    font-size: 0.85rem;
 }
 .itemPreco {
-  font-weight: 600;
-  font-size: 0.9rem;
+    font-weight: 600;
+    font-size: 0.9rem;
 }
 
 
 
 
 .resumoPedido {
-  background: var(--cor-secundaria);
-  border-radius: 12px;
-  padding: 1.5rem;
-  height: fit-content;
-  position: sticky;
-  top: 2rem;
+    background: var(--cor-secundaria);
+    border-radius: 12px;
+    padding: 1.5rem;
+    height: fit-content;
+    position: sticky;
+    top: 2rem;
 }
 
 .resumoPedido h2 {
-  color: var(--cor-texto);
-  font-size: 1.5rem;
-  margin-bottom: 1.5rem;
-  padding-bottom: 1rem;
-  border-bottom: 2px solid var(--cor-primaria);
+    color: var(--cor-texto);
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--cor-primaria);
 }
 
 .resumoLinha {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 1rem;
-  color: var(--cor-texto-secundario);
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    color: var(--cor-texto-secundario);
 }
 
 .resumoLinha span:first-child {
-  font-weight: 500;
+    font-weight: 500;
 }
 
 .resumoLinha span:last-child {
-  font-weight: 600;
+    font-weight: 600;
 }
 
 .resumoTotal {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 1.5rem;
-  padding-top: 1.5rem;
-  border-top: 2px solid var(--cor-primaria);
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--cor-texto);
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--cor-primaria);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--cor-texto);
 }
 
 .resumoTotal span:last-child {
-  color: var(--cor-amarelo-medio);
+    color: var(--cor-amarelo-medio);
 }
 
 .finalizarBtn {
-  width: 100%;
-  background: var(--cor-verde-medio);
-  color: var(--cor-texto);
-  border: none;
-  padding: 1rem;
-  border-radius: 8px;
-  font-size: 1.1rem;
-  font-weight: 700;
-  cursor: pointer;
-  margin-top: 1.5rem;
-  transition: all 0.3s ease;
+    width: 100%;
+    background: var(--cor-verde-medio);
+    color: var(--cor-texto);
+    border: none;
+    padding: 1rem;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 1.5rem;
+    transition: all 0.3s ease;
 }
 
 .finalizarBtn:hover {
-  background: var(--cor-verde-escuro);
+    background: var(--cor-verde-escuro);
 }
 
 .backButton {
-  width: 100%;
-  background: transparent;
-  color: var(--cor-texto);
-  border: 3px solid var(--cor-primaria);
-  padding: 1rem;
-  border-radius: 8px;
-  font-size: 1.1rem;
-  font-weight: 700;
-  cursor: pointer;
-  margin-top: 1.5rem;
-  transition: all 0.3s ease;
+    width: 100%;
+    background: transparent;
+    color: var(--cor-texto);
+    border: 3px solid var(--cor-primaria);
+    padding: 1rem;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 1.5rem;
+    transition: all 0.3s ease;
 }
 .backButton:hover:not(:disabled) {
-  background: var(--cor-primaria);
+    background: var(--cor-primaria);
 }
 .backButton:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
 .saveAddressButton {
-  background: var(--cor-rosa-medio);
-  color: var(--cor-texto);
-  border: none;
-  border-radius: 8px;
-  padding: 0.875rem 1.5rem;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-top: 0; 
-  margin-bottom: 20px;
+    background: var(--cor-rosa-medio);
+    color: var(--cor-texto);
+    border: none;
+    border-radius: 8px;
+    padding: 0.875rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 0;
+    margin-bottom: 20px;
 }
 
 .saveAddressButton:hover:not(:disabled) {
-  background: var(--cor-rosa-escuro);
-  box-shadow: 0 5px 24px rgba(236, 64, 121, 0.4);
-  transform: translateY(-2px);
+    background: var(--cor-rosa-escuro);
+    box-shadow: 0 5px 24px rgba(236, 64, 121, 0.4);
+    transform: translateY(-2px);
 }
 
 .saveAddressButton:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
 .freteInfo {
-  background: var(--cor-primaria);
-  padding: 1rem;
-  border-radius: 8px;
-  margin-bottom: 1rem;
-  color: var(--cor-texto-terciario);
-  font-size: 0.9rem;
-  text-align: center;
+    background: var(--cor-primaria);
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    color: var(--cor-texto-terciario);
+    font-size: 0.9rem;
+    text-align: center;
 }
 
 .alertWarning {
-  background: var(--cor-primaria);
-  padding: 1rem;
-  border-radius: 8px;
-  margin-bottom: 1.5rem;
-  font-size: 0.95rem;
-  text-align: center;
+    background: var(--cor-primaria);
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+    text-align: center;
+}
+
+@media (max-width: 968px) {
+    .checkoutContent {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .formContainer {
+        padding: 20px;
+        order: -1;
+    }
+
+    .resumoPedido {
+        position: static;
+        order: 1;
+    }
+
+    .enderecoFormContainer1 {
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+    }
+    
+    .enderecoFormContainer2 {
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+    }
+
+    .resumoItens {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .itemResumo {
+        flex-direction: row;
+        gap: 10px;
+        align-items: center;
+    }
+}
+
+@media (max-width: 600px) {
+    .formContainer {
+        padding: 15px;
+    }
+    
+    .formContainer h2 {
+        font-size: 1.2rem;
+    }
+
+    .enderecoFormContainer1,
+    .enderecoFormContainer2 {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .formBackground {
+        padding: 0;
+    }
+
+    .itemImagem {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .itemNome, .itemPreco {
+        font-size: 0.85rem;
+    }
+    .itemQuantidade {
+        font-size: 0.8rem;
+    }
+    
+    .finalizarBtn,
+    .backButton,
+    .saveAddressButton {
+        padding: 0.8rem;
+        font-size: 1rem;
+    }
+
+    .resumoPedido {
+        padding: 1rem;
+    }
 }

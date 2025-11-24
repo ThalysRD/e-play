@@ -1,81 +1,106 @@
 /* ----- HEADER COM INFOS DO VENDEDOR -----*/
 .header {
-  background-color: var(--cor-secundaria);
-  border-radius: 16px;
-  color: var(--cor-texto);
-  max-width: 100%;
-  padding: 25px 25px 25px 40px;
+    background-color: var(--cor-secundaria);
+    border-radius: 16px;
+    color: var(--cor-texto);
+    max-width: 100%;
+    padding: 25px 25px 25px 40px;
 }
 .navLinkLoginCadastro {
-  text-decoration: none;
-  color: var(--cor-texto);
-  font-size: 14px;
+    text-decoration: none;
+    color: var(--cor-texto);
+    font-size: 14px;
 }
 .navLinkLoginCadastro:hover {
-  text-decoration: underline;
+    text-decoration: underline;
 }
 .infosUser {
-  display: flex;
-  align-items: center;
-  gap: 24px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
 }
 .profilePic {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 3px solid #fff;
-  box-shadow: 0 0 10px var(--cor-amarelo-medio);
-  background-color: var(--cor-azul-claro);
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #fff;
+    box-shadow: 0 0 10px var(--cor-amarelo-medio);
+    background-color: var(--cor-azul-claro);
 }
 .userInfoText {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }
 .userInfo {
-  display: flex;
-  flex-direction: row;
-  gap: 20px;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
 }
 .userName {
-  font-size: 2rem;
-  font-weight: 600;
-  margin: 0 0 12px 0;
+    font-size: 2rem;
+    font-weight: 600;
+    margin: 0 0 12px 0;
 }
 .userDetails {
-  display: flex;
-  gap: 40px;
+    display: flex;
+    gap: 40px;
 }
 .column p {
-  margin: 0 0 8px 0;
+    margin: 0 0 8px 0;
 }
 .label {
-  color: var(--cor-azul-claro);
-  font-weight: bold;
-  margin-right: 8px;
+    color: var(--cor-azul-claro);
+    font-weight: bold;
+    margin-right: 8px;
 }
 
 
 /* ----- CONTEUDO PRINCIPAL -----*/
 .body {
-  max-width: 100%;
-  margin: 24px auto 0;
+    max-width: 100%;
+    margin: 24px auto 0;
 }
 .listingsGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 25px;
+    display: grid;
+    /* Padrão: Colunas automáticas responsivas */
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
 }
 .featuredSection,
 .catalogSection {
-  margin-top: 20px;
-  border-radius: 16px;
-  padding: 5px;
-  box-sizing: border-box; 
+    margin-top: 20px;
+    border-radius: 16px;
+    padding: 5px;
+    box-sizing: border-box; 
 }
 
 .sectionTitle {
-  margin-bottom: 20px;
-  padding-bottom: 10px;
-  border-bottom: 2px solid;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid;
+}
+
+/* ------------------------------------------- */
+/* RESPONSIVIDADE (MOBILE) */
+/* ------------------------------------------- */
+@media (max-width: 768px) {
+    
+    /* 1. Ajuste para o conteúdo principal caber melhor no mobile */
+    .body {
+        margin-top: 20px;
+        padding: 0 10px; /* Adiciona padding lateral para respiro */
+    }
+
+    /* 2. FORÇA DUAS COLUNAS DE ANÚNCIOS (Conforme solicitado) */
+    .listingsGrid {
+        /* Define exatamente 2 colunas, cada uma ocupando 50% do espaço */
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px; /* Reduz o espaçamento no mobile */
+    }
+
+    /* 3. Ajustes no Header (mantido em coluna única como estava no desktop) */
+    .header {
+        padding: 20px;
+    }
 }

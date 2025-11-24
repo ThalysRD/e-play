@@ -37,3 +37,38 @@
 .searchIconWrapper:hover {
   filter: brightness(0.9);
 }
+
+/* RESPONSIVIDADE */
+@media (max-width: 600px) {
+  .searchBar {
+    min-width: unset;
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    height: 45px;
+  }
+
+  .searchBar input {
+    font-size: 0.9rem;
+    margin-left: 0.4rem;
+  }
+
+  .searchIconWrapper {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+@media (max-width: 400px) {
+  .searchBar {
+    padding: 0.45rem 0.6rem;
+  }
+
+  .searchBar input {
+    font-size: 0.85rem;
+  }
+
+  .searchIconWrapper {
+    width: 26px;
+    height: 26px;
+  }
+}

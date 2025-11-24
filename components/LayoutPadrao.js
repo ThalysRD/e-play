@@ -1,6 +1,6 @@
 import styles from "styles/layout.padrao.module.css";
 import Modal from "./ModalPadrao";
-import { IoHome, IoCart, IoSettings, IoLogOut } from "react-icons/io5";
+import { IoHome, IoCart, IoSettings, IoLogOut, IoLogIn } from "react-icons/io5";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -75,6 +75,16 @@ export default function LayoutPadrao({ children }) {
               </li>
             </Link>
 
+            {/* ----- LOGIN aparece aqui quando NÃO estiver logado (útil para mobile) ----- */}
+            {!user && (
+              <Link href="/login" className={styles.navLink}>
+                <li className={`${styles.navItem} ${router.pathname === "/login" ? styles.active : ""}`}>
+                  <IoLogIn size={20} />
+                  <span>Entrar</span>
+                </li>
+              </Link>
+            )}
+
             {user && (
               <Link href="/configuracoes" className={styles.navLink}>
                 <li
@@ -85,20 +95,21 @@ export default function LayoutPadrao({ children }) {
                 </li>
               </Link>
             )}
+
+            {/* ----- ALTERAÇÃO: BOTÃO SAIR DENTRO DA LISTA PARA ALINHAMENTO MOBILE ----- */}
+            {user && (
+              <li
+                className={styles.navItem}
+                onClick={() => setIsModalOpen(true)}
+              >
+                <IoLogOut size={20} />
+                <span>Sair</span>
+              </li>
+            )}
           </ul>
         </div>
 
-        {user && (
-          <div className={styles.sidebarBottom}>
-            <button
-              onClick={() => setIsModalOpen(true)}
-              className={styles.logoutButton}
-            >
-              <IoLogOut size={20} />
-              Sair
-            </button>
-          </div>
-        )}
+        {/* REMOVIDO: A div .sidebarBottom não é mais necessária para o botão Sair */}
       </nav>
 
       <div className={styles.contentWrapper}>

@@ -272,85 +272,102 @@
 }
 
 .toastNotificationSuccess {
-  position: fixed;
-  bottom: 30px;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: var(--cor-sucess);
-  color: white;
-  padding: 16px 24px;
-  border-radius: 8px;
-  z-index: 1000;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  font-size: 1rem;
-  font-weight: 500;
-  animation: toast-in 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--cor-sucess);
+    color: white;
+    padding: 16px 24px;
+    border-radius: 8px;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    font-size: 1rem;
+    font-weight: 500;
+    animation: toast-in 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 }
 .toastNotificationError {
-  position: fixed;
-  bottom: 30px;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: var(--cor-error);
-  color: white;
-  padding: 16px 24px;
-  border-radius: 8px;
-  z-index: 1000;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  font-size: 1rem;
-  font-weight: 500;
-  animation: toast-in 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--cor-error);
+    color: white;
+    padding: 16px 24px;
+    border-radius: 8px;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    font-size: 1rem;
+    font-weight: 500;
+    animation: toast-in 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 }
 
 @keyframes toast-in {
-  from {
-    opacity: 0;
-    transform: translateX(-50%) translateY(20px); 
-  }
-  to {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-  }
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(20px); 
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
 }
 
-/* Responsive */
+@keyframes toast-in-mobile {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-20px); 
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
 @media (max-width: 968px) {
-  .productContainer {
-    grid-template-columns: 1fr;
-    padding: 30px 20px;
-  }
+    .productContainer {
+        grid-template-columns: 1fr;
+        padding: 30px 20px;
+    }
 
-  .mainImageContainer {
-    height: 400px;
-  }
+    .mainImageContainer {
+        height: 400px;
+    }
 
-  .title {
-    font-size: 2rem;
-  }
+    .title {
+        font-size: 2rem;
+    }
 
-  .price {
-    font-size: 2.5rem;
-  }
+    .price {
+        font-size: 2.5rem;
+    }
 
-  .detailsGrid {
-    grid-template-columns: 1fr;
-  }
+    .detailsGrid {
+        grid-template-columns: 1fr;
+    }
 
-  .actionButtons {
-    flex-direction: column;
-  }
+    .actionButtons {
+        flex-direction: column;
+    }
+    
+    .toastNotificationSuccess,
+    .toastNotificationError {
+        bottom: auto;
+        top: 20px;
+        animation: toast-in-mobile 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+    }
 }
 
 @media (max-width: 600px) {
-  .mainImageContainer {
-    height: 300px;
-  }
+    .mainImageContainer {
+        height: 300px;
+    }
 
-  .title {
-    font-size: 1.5rem;
-  }
+    .title {
+        font-size: 1.5rem;
+    }
 
-  .price {
-    font-size: 2rem;
-  }
+    .price {
+        font-size: 2rem;
+    }
 }

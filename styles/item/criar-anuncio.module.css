@@ -325,26 +325,79 @@
 
 /* Responsividade */
 @media (max-width: 768px) {
-  .registerForm {
-    width: 90%;
-    max-width: 500px;
-    margin-top: 80px;
-  }
+    .registerForm {
+        width: 90%;
+        max-width: 500px;
+        margin-top: 80px;
+    }
 
-  .formBackground {
-    padding: 30px 20px;
-  }
+    .formBackground {
+        padding: 30px 20px;
+    }
 
-  .rowGroup {
-    flex-direction: column;
-    gap: 20px;
-  }
+    .rowGroup {
+        flex-direction: column;
+        gap: 20px;
+    }
 
-  .title {
-    font-size: 20px;
-  }
+    .title {
+        font-size: 20px;
+    }
 
-  .createButton {
-    width: 100%;
-  }
+    .createButton {
+        width: 100%;
+    }
+
+    .imagePreviewContainer {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 10px;
+    }
+}
+
+@media (max-width: 500px) {
+    .pageContainer {
+        padding: 40px 10px; 
+    }
+    
+    .registerForm {
+        width: 100%;
+        margin-top: 
+        0px;
+    }
+
+    .formBackground {
+        padding: 20px 15px; 
+    }
+    
+    .header {
+        margin-bottom: 20px;
+    }
+    
+    .label {
+        font-size: 13px;
+    }
+    
+    .input,
+    .select,
+    .textarea {
+        padding: 10px 14px;
+        font-size: 13px;
+    }
+
+    .fileInput {
+        padding: 15px;
+    }
+
+    .imagePreviewContainer {
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+        gap: 8px;
+    }
+
+    .removeImageBtn {
+        width: 25px;
+        height: 25px;
+        font-size: 14px;
+        top: 3px;
+        right: 3px;
+    }
 }

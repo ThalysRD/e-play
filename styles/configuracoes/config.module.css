@@ -1,117 +1,175 @@
 /* ----- HEADER COM INFOS DO USUARIO -----*/
 .header {
-  background-color: var(--cor-secundaria);
-  border-radius: 16px;
-  color: var(--cor-texto);
-  max-width: 100%;
-  padding: 25px 25px 25px 40px;
+    background-color: var(--cor-secundaria);
+    border-radius: 16px;
+    color: var(--cor-texto);
+    max-width: 100%;
+    padding: 25px 25px 25px 40px;
 }
 .navLinkLoginCadastro {
-  text-decoration: none;
-  color: var(--cor-texto);
-  font-size: 14px;
+    text-decoration: none;
+    color: var(--cor-texto);
+    font-size: 14px;
 }
 .navLinkLoginCadastro:hover {
-  text-decoration: underline;
+    text-decoration: underline;
 }
 .infosUser {
-  display: flex;
-  align-items: center;
-  gap: 24px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
 }
 .profilePic {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 3px solid #fff;
-  box-shadow: 0 0 10px var(--cor-amarelo-medio);
-  background-color: var(--cor-azul-claro);
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #fff;
+    box-shadow: 0 0 10px var(--cor-amarelo-medio);
+    background-color: var(--cor-azul-claro);
 }
 .userInfoText {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }
 .userInfo {
-  display: flex;
-  flex-direction: row;
-  gap: 20px;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
 }
 .userName {
-  font-size: 2rem;
-  font-weight: 600;
-  margin: 0 0 12px 0;
+    font-size: 2rem;
+    font-weight: 600;
+    margin: 0 0 12px 0;
 }
 .userDetails {
-  display: flex;
-  gap: 40px;
+    display: flex;
+    gap: 40px;
 }
 .column p {
-  margin: 0 0 8px 0;
+    margin: 0 0 8px 0;
+    /* Garante que o texto quebre ou use reticências */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .label {
-  color: var(--cor-azul-claro);
-  font-weight: bold;
-  margin-right: 8px;
+    color: var(--cor-azul-claro);
+    font-weight: bold;
+    margin-right: 8px;
 }
 
 /* ----- CONTEUDO PRINCIPAL -----*/
 .body {
-  max-width: 100%;
-  margin: 24px auto 0;
+    max-width: 100%;
+    margin: 24px auto 0;
 }
 .optionsContainer {
-  background-color: var(--cor-secundaria);
-  padding: 10px 24px 10px 24px;
-  border-radius: 16px;
-  color: var(--cor-texto);
-  margin: 0 auto;
+    background-color: var(--cor-secundaria);
+    padding: 10px 24px 10px 24px;
+    border-radius: 16px;
+    color: var(--cor-texto);
+    margin: 0 auto;
 }
 .section {
-  width: 100%;
+    width: 100%;
 }
 .sectionTitle {
-  color: var(--cor-texto);
-  font-size: 16px;
-  font-weight: 500;
-  margin-top: 14px;
-  margin-bottom: 12px;
+    color: var(--cor-texto);
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: 14px;
+    margin-bottom: 12px;
 }
 .buttonsGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 16px;
-  margin-bottom: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
 }
 .optionButton {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px;
-  border-radius: 12px;
-  color: #ffffff;
-  font-weight: 600;
-  text-decoration: none;
-  transition:
-    transform 0.2s ease-in-out,
-    box-shadow 0.2s ease-in-out;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-radius: 12px;
+    color: #ffffff;
+    font-weight: 600;
+    text-decoration: none;
+    transition:
+        transform 0.2s ease-in-out,
+        box-shadow 0.2s ease-in-out;
 }
 .optionButton:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transform: translateY(-3px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 .btnPurple {
-  background-color: var(--cor-roxo-medio);
+    background-color: var(--cor-roxo-medio);
 }
 .btnBlue {
-  background-color: var(--cor-azul-medio);
+    background-color: var(--cor-azul-medio);
 }
 .btnPink {
-  background-color: var(--cor-rosa-medio);
+    background-color: var(--cor-rosa-medio);
 }
 .btnGreen {
-  background-color: var(--cor-verde-escuro);
+    background-color: var(--cor-verde-escuro);
 }
 .btnOrange {
-  background-color: var(--cor-laranja-medio);
+    background-color: var(--cor-laranja-medio);
+}
+
+
+@media (max-width: 768px) {
+    .header {
+        padding: 20px;
+    }
+
+    .infosUser {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .profilePic {
+        width: 80px;
+        height: 80px;
+        align-self: center;
+    }
+
+    .userInfoText {
+        width: 100%;
+        text-align: left;
+    }
+    
+    .userName {
+        font-size: 1.5rem;
+        margin-bottom: 8px;
+    }
+    
+    .userDetails {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .column p {
+        font-size: 0.95rem;
+        margin: 0 0 4px 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%; 
+    }
+    
+    .column:last-child p {
+        white-space: pre-wrap;
+        overflow: visible;
+        text-overflow: clip;
+    }
+
+    .buttonsGrid {
+        grid-template-columns: 1fr;
+    }
+
 }

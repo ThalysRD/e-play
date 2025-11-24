@@ -291,3 +291,135 @@
   color: #ffffff;
   animation: fadeIn 0.3s ease-in;
 }
+
+
+/* ----------------- Responsividade Mobile (apenas) ----------------- */
+@media (max-width: 768px) {
+  .divider {
+    width: 100%;
+    height: 1px;
+  }
+  .formBackground {
+    padding: 12px;
+    min-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .optionsContainer {
+    gap: 12px;
+    padding: 0 6px;
+  }
+
+  .profilePicContainer {
+    width: 80px;
+    height: 80px;
+  }
+
+  .profilePic {
+    width: 80px;
+    height: 80px;
+    border-width: 2px;
+  }
+
+  .editProfilePicButton {
+    bottom: 0;
+    right: -6px;
+    width: 34px;
+    height: 34px;
+    font-size: 1.05rem;
+  }
+
+  .label {
+    font-size: 12px;
+    margin-bottom: 6px;
+  }
+
+  .input,
+  .bioTextarea {
+    font-size: 13px;
+    padding: 8px 12px;
+  }
+
+  .personalFormContainer {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .personalFormContainer .fieldGroup,
+  .personalFormContainer .fieldGroup:nth-child(1),
+  .personalFormContainer .fieldGroup:nth-child(2),
+  .personalFormContainer .fieldGroup:nth-child(3),
+  .personalFormContainer .fieldGroup:nth-child(4),
+  .personalFormContainer .fieldGroup:nth-child(5),
+  .personalFormContainer .fieldGroup:nth-child(6),
+  .personalFormContainer .fieldGroup:nth-child(7),
+  .personalFormContainer .fieldGroup:nth-child(8) {
+    grid-column: auto !important;
+    grid-row: auto !important;
+    width: 100%;
+  }
+
+  .passwordFormContainer {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .enderecoFormContainer1,
+  .enderecoFormContainer2 {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .fieldGroupHalf {
+    width: 100%;
+  }
+
+  .select {
+    font-size: 13px;
+    padding: 8px;
+  }
+
+  .buttonsContainer {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 12px;
+    align-items: stretch;
+    justify-content: center;
+    margin-top: 20px;
+    width: 100%;
+  }
+
+  .button {
+    width: 100% !important;
+    padding: 10px 12px;
+    border-radius: 10px;
+    font-size: 14px;
+  }
+
+  .buttonCancel {
+    width: 100% !important;
+  }
+
+  .buttonSave {
+    width: 100% !important;
+  }
+
+  .successMessage,
+  .errorMessage {
+    width: calc(100% - 24px);
+    margin: 0 auto 12px;
+    font-size: 13px;
+    padding: 10px;
+  }
+
+  .pageContainer,
+  .body,
+  .formBackground {
+    padding-left: 5px;
+    padding-right: 5px;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+}
+

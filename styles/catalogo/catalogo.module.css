@@ -4,7 +4,7 @@
   margin-bottom: 20px;
 }
 .container {
-  min-width: 100vh;
+  min-width: 100vh; 
 }
 
 .resultsSection {
@@ -34,4 +34,33 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 25px;
+}
+
+
+@media (max-width: 600px) {
+  
+  .container {
+    min-width: 100%; 
+    width: 100%;
+    padding: 0 10px; 
+  }
+  
+  .header {
+    gap: 1rem;
+    padding: 0 5px; 
+  }
+  
+  .listingsGrid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px; 
+  }
+
+  .resultsSection {
+    padding: 0;
+  }
+  
+  .notFound {
+    padding: 20px 10px;
+    margin: 10px;
+  }
 }
