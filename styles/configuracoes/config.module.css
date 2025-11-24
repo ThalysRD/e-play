@@ -6,23 +6,19 @@
   max-width: 100%;
   padding: 25px 25px 25px 40px;
 }
-
 .navLinkLoginCadastro {
   text-decoration: none;
   color: var(--cor-texto);
   font-size: 14px;
 }
-
 .navLinkLoginCadastro:hover {
   text-decoration: underline;
 }
-
 .infosUser {
   display: flex;
   align-items: center;
   gap: 24px;
 }
-
 .profilePic {
   width: 100px;
   height: 100px;
@@ -32,33 +28,27 @@
   box-shadow: 0 0 10px var(--cor-amarelo-medio);
   background-color: var(--cor-azul-claro);
 }
-
 .userInfoText {
   display: flex;
   flex-direction: column;
 }
-
 .userInfo {
   display: flex;
   flex-direction: row;
   gap: 20px;
 }
-
 .userName {
   font-size: 2rem;
   font-weight: 600;
   margin: 0 0 12px 0;
 }
-
 .userDetails {
   display: flex;
   gap: 40px;
 }
-
 .column p {
   margin: 0 0 8px 0;
 }
-
 .label {
   color: var(--cor-azul-claro);
   font-weight: bold;
@@ -70,7 +60,6 @@
   max-width: 100%;
   margin: 24px auto 0;
 }
-
 .optionsContainer {
   background-color: var(--cor-secundaria);
   padding: 10px 24px 10px 24px;
@@ -78,11 +67,9 @@
   color: var(--cor-texto);
   margin: 0 auto;
 }
-
 .section {
   width: 100%;
 }
-
 .sectionTitle {
   color: var(--cor-texto);
   font-size: 16px;
@@ -90,14 +77,12 @@
   margin-top: 14px;
   margin-bottom: 12px;
 }
-
 .buttonsGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 16px;
   margin-bottom: 20px;
 }
-
 .optionButton {
   display: flex;
   justify-content: space-between;
@@ -111,112 +96,22 @@
     transform 0.2s ease-in-out,
     box-shadow 0.2s ease-in-out;
 }
-
 .optionButton:hover {
   transform: translateY(-3px);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
-
 .btnPurple {
   background-color: var(--cor-roxo-medio);
 }
-
 .btnBlue {
   background-color: var(--cor-azul-medio);
 }
-
 .btnPink {
   background-color: var(--cor-rosa-medio);
 }
-
 .btnGreen {
   background-color: var(--cor-verde-escuro);
 }
-
 .btnOrange {
   background-color: var(--cor-laranja-medio);
-}
-
-/* ----- MEDIA QUERIES - RESPONSIVIDADE -----*/
-/* Tablet e Mobile */
-@media (max-width: 768px) {
-  .header {
-    padding: 20px;
-  }
-  
-  .infosUser {
-    flex-direction: column;
-    text-align: center;
-    gap: 15px;
-  }
-  
-  .profilePic {
-    width: 80px;
-    height: 80px;
-  }
-  
-  .userInfoText {
-    align-items: center;
-  }
-  
-  .userName {
-    font-size: 1.5rem;
-  }
-  
-  .userDetails {
-    flex-direction: column;
-    gap: 10px;
-    text-align: center;
-  }
-  
-  .body {
-    margin: 16px auto 0;
-  }
-  
-  .optionsContainer {
-    padding: 16px;
-  }
-  
-  .buttonsGrid {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 12px;
-  }
-  
-  .optionButton {
-    padding: 16px;
-    font-size: 14px;
-  }
-}
-
-/* Mobile pequeno */
-@media (max-width: 480px) {
-  .header {
-    padding: 15px;
-  }
-  
-  .profilePic {
-    width: 70px;
-    height: 70px;
-  }
-  
-  .userName {
-    font-size: 1.2rem;
-  }
-  
-  .userDetails {
-    font-size: 14px;
-  }
-  
-  .buttonsGrid {
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
-  
-  .optionButton {
-    padding: 14px;
-  }
-  
-  .sectionTitle {
-    font-size: 14px;
-  }
 }

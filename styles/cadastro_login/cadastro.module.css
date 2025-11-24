@@ -227,7 +227,7 @@
 /* Tablets e telas médias */
 @media (max-width: 768px) {
   .formBackground {
-    width: 90%;
+    width: 50vh;
     padding: 35px 25px;
   }
 
@@ -248,7 +248,7 @@
 /* Celulares pequenos */
 @media (max-width: 480px) {
   .formBackground {
-    width: 90%;
+    width: 50vh;
     padding: 25px 20px;
     border-radius: 15px;
   }
@@ -285,7 +285,7 @@
   /* Celulares muito pequenos */
   @media (max-width: 300px) {
     .formBackground {
-      width: 90%;
+      width: 45vh;
       padding: 25px 20px;
       border-radius: 15px;
     }

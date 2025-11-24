@@ -1,5 +1,5 @@
 .pageContainer{
-  padding: 20px;
+  padding: 100px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -332,7 +332,7 @@
   }
 
   .formBackground {
-    padding: 20px 15px;
+    padding: 30px 20px;
   }
 
   .rowGroup {

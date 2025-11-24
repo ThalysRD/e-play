@@ -4,7 +4,7 @@
   margin-bottom: 20px;
 }
 .container {
-  min-width: 100%; /* Ajustado de 100vh para 100% */
+  min-width: 100vh;
 }
 
 /* Messages */
@@ -54,7 +54,7 @@
   }
 
   .listingsGrid {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 15px;
   }
 

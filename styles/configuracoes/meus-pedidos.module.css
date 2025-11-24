@@ -11,7 +11,7 @@
 .divider {
   background-color: var(--cor-borda);
   height: 0.5px;
-  width: 100%;
+  width: 100vh;
 }
 
 /* Estado Vazio */
@@ -66,7 +66,7 @@
 
 .ordersList {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 20px;
   margin-top: 20px;
 }
@@ -97,8 +97,8 @@
     font-size: 1.5rem;
   }
 
-  .ordersList {
-    grid-template-columns: 1fr;
+  .listingsGrid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 15px;
   }
 
@@ -120,7 +120,7 @@
     font-size: 1.3rem;
   }
 
-  .ordersList {
+  .listingsGrid {
     grid-template-columns: 1fr;
   }
 
