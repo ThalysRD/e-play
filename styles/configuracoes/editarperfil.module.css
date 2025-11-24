@@ -237,20 +237,25 @@
   margin-top: 30px;
 }
 
+
 @media (max-width: 768px) {
   .header {
     padding: 15px;
   }
-  .divider {
-    margin-bottom: 15px;
+  
+  .body {
+    margin: 8px auto 0;
   }
-  .personalFormContainer,
-  .passwordFormContainer,
-  .enderecoFormContainer1,
-  .enderecoFormContainer2 {
-    grid-template-columns: 1fr;
+  
+  .optionsContainer {
     gap: 15px;
   }
+  
+  .personalFormContainer {
+    grid-template-columns: 1fr !important;
+    gap: 12px;
+  }
+  
   .personalFormContainer .fieldGroup:nth-child(1),
   .personalFormContainer .fieldGroup:nth-child(2),
   .personalFormContainer .fieldGroup:nth-child(3),
@@ -259,70 +264,84 @@
   .personalFormContainer .fieldGroup:nth-child(6),
   .personalFormContainer .fieldGroup:nth-child(7),
   .personalFormContainer .fieldGroup:nth-child(8) {
-    grid-column: auto;
-    grid-row: auto;
+    grid-column: 1 !important;
+    grid-row: auto !important;
   }
+  
+  .profilePicContainer {
+    align-self: center;
+    margin-bottom: 15px;
+  }
+  
+  .passwordFormContainer,
+  .enderecoFormContainer1,
+  .enderecoFormContainer2 {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
   .buttonsContainer {
     flex-direction: column;
     gap: 10px;
+    margin-top: 20px;
   }
+  
   .buttonCancel,
   .buttonSave {
     width: 100%;
+    padding: 10px;
+  }
+  
+  .formInfosPessoais,
+  .formEndereco,
+  .formSenha,
+  .formProfilePicture {
+    padding: 8px 8px 8px 12px;
   }
 }
 
-.button {
-  border: none;
-  border-radius: 8px;
-  padding: 12px 25px;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  transition:
-    transform 0.18s ease,
-    box-shadow 0.18s ease;
-  color: var(--cor-texto);
+@media (max-width: 480px) {
+  .profilePic {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .editProfilePicButton {
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
+    right: -5px;
+  }
+  
+  .input,
+  .select {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+  
+  .label {
+    font-size: 11px;
+  }
+  
+  .title {
+    font-size: 16px;
+  }
+  
+  .successMessage,
+  .errorMessage {
+    font-size: 12px;
+    padding: 10px;
+  }
 }
 
-.buttonCancel {
-  background-color: var(--cor-secundaria);
-  border: 2px solid var(--cor-primaria);
-  width: 100%;
-}
-
-.buttonSave {
-  background: var(--cor-rosa-medio);
-  width: 100%;
-}
-
-.buttonSave:hover {
-  background-color: var(--cor-rosa-escuro);
-}
-.buttonCancel:hover {
-  background: var(--cor-primaria);
-}
-
-.successMessage,
-.errorMessage {
-  max-width: 560px;
-  padding: 12px;
-  border-radius: 10px;
-  font-size: 14px;
-  margin: 0 auto 20px;
-  display: flex;
-  align-self: center;
-  justify-content: center;
-  animation: fadeIn 0.3s ease-in;
-}
-.successMessage {
-  background: var(--cor-sucess);
-  color: #ffffff;
-  animation: fadeIn 0.3s ease-in;
-}
-
-.errorMessage {
-  background: var(--cor-error);
-  color: #ffffff;
-  animation: fadeIn 0.3s ease-in;
+@media (max-width: 320px) {
+  .profilePic {
+    width: 70px;
+    height: 70px;
+  }
+  
+  .input,
+  .select {
+    padding: 7px 10px;
+  }
 }

@@ -19,3 +19,19 @@
     transform: rotate(360deg);
   }
 }
+
+@media (max-width: 768px) {
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border-width: 4px;
+  }
+}
+
+@media (max-width: 480px) {
+  .spinner {
+    width: 30px;
+    height: 30px;
+    border-width: 3px;
+  }
+}
