@@ -325,8 +325,16 @@
 }
 
 @media (max-width: 968px) {
+    .header {
+      flex-direction: column;
+      gap: 15px;
+      padding: 15px;
+      padding: 0 5px; 
+    }
+
     .productContainer {
         grid-template-columns: 1fr;
+        margin: 5px;
         padding: 30px 20px;
     }
 
