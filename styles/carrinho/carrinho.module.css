@@ -312,56 +312,25 @@
 @media (max-width: 968px) {
   .carrinhoContent {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
   }
-  
+
   .resumoPedido {
     position: static;
-    order: -1; /* pra colocar o resumo primeiro */
   }
-}
 
-@media (max-width: 768px) {
   .itemCarrinho {
     flex-direction: column;
+    align-items: center;
     text-align: center;
-    padding: 1rem;
   }
-  
-  .itemImagem, .noImage {
-    width: 100px;
-    height: 100px;
-  }
-  
+
   .itemControles {
     flex-direction: column;
     width: 100%;
-    gap: 0.5rem;
+    align-items: center;
   }
-  
+
   .quantidadeControle {
     justify-content: center;
-  }
-  
-  .removerBtn {
-    width: 100%;
-  }
-}
-
-@media (max-width: 480px) {
-  .itemCarrinho {
-    padding: 0.75rem;
-  }
-  
-  .itemNome {
-    font-size: 1.1rem;
-  }
-  
-  .itemPreco {
-    font-size: 1.3rem;
-  }
-  
-  .carrinhoHeader h2 {
-    font-size: 1.3rem;
   }
 }

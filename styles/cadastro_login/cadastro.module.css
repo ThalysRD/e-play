@@ -224,71 +224,150 @@
 }
 
 /* ---------------- RESPONSIVIDADE ---------------- */
-/* Tablets */
+/* Tablets e telas médias */
 @media (max-width: 768px) {
-  .pageContainer {
-    padding: 30px 20px;
-  }
-  
   .formBackground {
-    width: 95%;
-    padding: 25px 20px;
+    width: 90%;
+    padding: 35px 25px;
   }
-  
+
   .loginLogo {
     width: 150px;
+    margin-bottom: 30px;
+  }
+
+  .createButton {
+    width: 80%;
+  }
+
+  .title {
+    font-size: 16px;
+  }
+}
+
+/* Celulares pequenos */
+@media (max-width: 480px) {
+  .formBackground {
+    width: 90%;
+    padding: 25px 20px;
+    border-radius: 15px;
+  }
+
+  .loginLogo {
     margin-bottom: 25px;
   }
-  
+
+  .title {
+    font-size: 15px;
+    margin-bottom: 20px;
+  }
+
+  .input {
+    font-size: 13px;
+    padding: 9px 15px;
+  }
+
   .createButton {
     width: 100%;
-  }
-}
-
-/* Celulares */
-@media (max-width: 480px) {
-  .pageContainer {
-    padding: 20px 15px;
-  }
-  
-  .formBackground {
-    width: 100%;
-    padding: 20px 15px;
-    border-radius: 12px;
-  }
-  
-  .title {
     font-size: 14px;
+    padding: 10px;
   }
-  
-  .input {
-    padding: 8px 12px;
-    font-size: 12px;
+
+  .loginPrompt {
+    font-size: 11px;
   }
-  
-  .optionsRow {
-    flex-direction: column;
-    gap: 10px;
-    align-items: flex-start;
+
+  .legalLinksContainer {
+    gap: 4px;
+    font-size: 10px;
+  }
+
+  /* Celulares muito pequenos */
+  @media (max-width: 300px) {
+    .formBackground {
+      width: 90%;
+      padding: 25px 20px;
+      border-radius: 15px;
+    }
+
+    .loginLogo {
+      margin-bottom: 25px;
+    }
+
+    .title {
+      font-size: 14px;
+      margin-bottom: 18px;
+    }
+
+    .input {
+      font-size: 12px;
+      padding: 8px 14px;
+    }
+
+    .createButton {
+      width: 100%;
+      font-size: 13px;
+      padding: 9px;
+    }
+
+    .loginPrompt {
+      font-size: 10px;
+    }
+
+    .legalLinksContainer {
+      gap: 3px;
+      font-size: 9px;
+    }
   }
 }
 
-/* Telas muito pequenas */
-@media (max-width: 320px) {
-  .pageContainer {
-    padding: 15px 10px;
-  }
-  
-  .formBackground {
-    padding: 15px 10px;
-  }
-  
-  .legalLinksContainer {
-    flex-direction: column;
-    gap: 5px;
-  }
-  
-  .linkSeparator {
-    display: none;
-  }
+/* Botões */
+.submitButton {
+  background: var(--cor-rosa-medio);
+  color: var(--cor-texto);
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  width: 100%;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 15px;
+}
+
+.submitButton:hover:not(:disabled) {
+  background: var(--cor-rosa-claro);
+  box-shadow: 0 5px 24px rgba(236, 64, 121, 0.463);
+  transform: translateY(-2px);
+}
+
+.submitButton:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Links */
+.link {
+  color: var(--cor-secundaria);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.link:hover {
+  color: var(--cor-amarelo-claro);
+  text-decoration: underline;
+}
+
+.forgotLink {
+  color: var(--cor-secundaria);
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.3s ease;
+}
+
+.forgotLink:hover {
+  color: var(--cor-amarelo-claro);
+  text-decoration: underline;
 }

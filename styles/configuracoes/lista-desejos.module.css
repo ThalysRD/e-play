@@ -11,7 +11,7 @@
 .divider {
   background-color: var(--cor-borda);
   height: 0.5px;
-  width: 100%;
+  width: 100vh;
 }
 
 /* Estado Vazio */
@@ -110,71 +110,44 @@
 }
 
 /* Responsivo */
-
 @media (max-width: 768px) {
-  .header {
-    padding: 15px;
+  .pageTitle {
+    font-size: 1.5rem;
   }
-  
+
   .listingsGrid {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 15px;
   }
-  
+
   .emptyState {
-    padding: 30px 20px;
-    margin: 15px 0;
+    padding: 40px 20px;
   }
-  
+
   .emptyIcon {
-    font-size: 2.5rem;
-  }
-  
-  .emptyTitle {
-    font-size: 1.3rem;
-  }
-  
-  .emptyMessage {
-    font-size: 0.9rem;
-  }
-  
-  .createButton,
-  .createButton2 {
-    padding: 10px 20px;
-    font-size: 0.9rem;
+    font-size: 3rem;
   }
 }
 
 @media (max-width: 480px) {
-  .header {
-    padding: 12px;
+  .container {
+    padding: 20px 10px;
   }
-  
-  .listingsGrid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-  }
-  
-  .emptyState {
-    padding: 25px 15px;
-  }
-  
-  .emptyIcon {
-    font-size: 2rem;
-  }
-  
-  .emptyTitle {
-    font-size: 1.1rem;
-  }
-  
-  .emptyMessage {
-    font-size: 0.8rem;
-    margin-bottom: 20px;
-  }
-}
 
-@media (max-width: 320px) {
+  .pageTitle {
+    font-size: 1.3rem;
+  }
+
   .listingsGrid {
     grid-template-columns: 1fr;
+  }
+
+  .cardActions {
+    flex-direction: column;
+  }
+
+  .editButton,
+  .deleteButton {
+    width: 100%;
   }
 }
