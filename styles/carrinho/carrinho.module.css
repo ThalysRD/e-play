@@ -12,7 +12,7 @@
 .divider{
   background-color: var(--cor-borda);
   height: 0.5px;
-  width: 100vh;
+  width: 100%;
 }
 
 .carrinhoHeader {
@@ -32,7 +32,7 @@
 /*deixa os itens de um lado e o resumo do pedido do outro*/
 .carrinhoContent {
   display: grid;
-  grid-template-columns: 1fr 350px;
+  grid-template-columns: 1fr 300px;
   gap: 2rem;
 }
 
@@ -117,12 +117,13 @@
   align-items: center;
 }
 
-.itemDetalhes {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
+  .itemDetalhes {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center;
+  }
 
 .itemNome {
   color: var(--cor-texto);
@@ -194,20 +195,21 @@
   text-align: center;
 }
 
-.removerBtn {
-  width: 100%;
-  background: var(--cor-laranja-medio);
-  color: var(--cor-texto);
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-weight: 600;
-}
+  .removerBtn {
+    width: 100%;
+    background: var(--cor-laranja-medio);
+    color: var(--cor-texto);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-weight: 600;
+  }
 
 .removerBtn:hover {
   background: var(--cor-laranja-escuro);
@@ -318,12 +320,14 @@
 
   .itemCarrinho {
     flex-direction: column;
+    align-items: center;
     text-align: center;
   }
 
   .itemControles {
     flex-direction: column;
     width: 100%;
+    align-items: center;
   }
 
   .quantidadeControle {

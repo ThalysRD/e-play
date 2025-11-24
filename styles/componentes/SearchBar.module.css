@@ -6,6 +6,13 @@
   padding: 0.5rem 0.5rem 0.5rem 1rem;
   min-width: 400px; 
 }
+
+@media (max-width: 768px) {
+  .searchBar {
+    min-width: 100%;
+    padding: 0.5rem;
+  }
+}
 .searchBar input {
   font-weight: bold;
   flex-grow: 1;
