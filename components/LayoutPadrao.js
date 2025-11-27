@@ -75,7 +75,6 @@ export default function LayoutPadrao({ children }) {
               </li>
             </Link>
 
-            {/* ----- LOGIN aparece aqui quando NÃO estiver logado (útil para mobile) ----- */}
             {!user && (
               <Link href="/login" className={styles.navLink}>
                 <li className={`${styles.navItem} ${router.pathname === "/login" ? styles.active : ""}`}>
@@ -96,7 +95,6 @@ export default function LayoutPadrao({ children }) {
               </Link>
             )}
 
-            {/* ----- ALTERAÇÃO: BOTÃO SAIR DENTRO DA LISTA PARA ALINHAMENTO MOBILE ----- */}
             {user && (
               <li
                 className={styles.navItem}
@@ -109,7 +107,6 @@ export default function LayoutPadrao({ children }) {
           </ul>
         </div>
 
-        {/* REMOVIDO: A div .sidebarBottom não é mais necessária para o botão Sair */}
       </nav>
 
       <div className={styles.contentWrapper}>
