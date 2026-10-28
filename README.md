@@ -2,6 +2,10 @@
 
 E-commerce para compra e venda de jogos físicos usados, com foco em catálogo de produtos, autenticação de usuários, gestão de anúncios, carrinho e fluxo de pedidos.
 
+**Demonstração:** https://e-play-inky.vercel.app · Projeto acadêmico em equipe do IFRN (Tecnologia em Sistemas para Internet, 2025.2).
+
+![Catálogo do E-Play](docs/img/catalogo.jpg)
+
 ## Visão Geral
 
 A E-Play é uma plataforma de marketplace para gamers que desejam vender e comprar jogos usados de forma simples, segura e organizada. O sistema foi desenvolvido em Next.js com PostgreSQL e inclui autenticação, gestão de anúncios, lista de desejos, carrinho de compras, checkout, pedidos, notificações e painel do vendedor.
@@ -359,9 +363,24 @@ Os testes cobrem cenários de API e fluxo principal do sistema. O comando já in
 - O projeto depende de um banco PostgreSQL em execução antes de iniciar a aplicação e executar migrações.
 - Em produção, configure corretamente as variáveis de ambiente e a URL base do frontend para links de ativação, reset de senha e notificações.
 
-## Contribuição
+## Equipe e minha contribuição
 
-Para contribuir com o projeto:
+Projeto desenvolvido em equipe com colegas do IFRN, entre agosto e novembro de 2025. O histórico completo de cada pessoa está nos [commits](https://github.com/ThalysRD/e-play/commits/main) e [pull requests](https://github.com/ThalysRD/e-play/pulls?q=is%3Apr).
+
+Eu ([@ThalysRD](https://github.com/ThalysRD)) fui responsável por cerca de 110 dos 180 commits e por 30 dos 43 pull requests. Minhas principais entregas:
+
+- **Base do projeto e infraestrutura:** estrutura inicial, ambiente local com Docker, script que espera o banco aceitar conexões e orquestrador que estabiliza os testes de integração ([#9](https://github.com/ThalysRD/e-play/pull/9), [#10](https://github.com/ThalysRD/e-play/pull/10), [#11](https://github.com/ThalysRD/e-play/pull/11)).
+- **Banco de dados:** migrações de usuários, categorias, anúncios, pedidos, avaliações, envios, sessões e imagens, com o endpoint `/api/v1/migrations` e seus testes ([#5](https://github.com/ThalysRD/e-play/pull/5), [#7](https://github.com/ThalysRD/e-play/pull/7), [#12](https://github.com/ThalysRD/e-play/pull/12)).
+- **Autenticação:** sessões de login e logout ([#16](https://github.com/ThalysRD/e-play/pull/16), [#17](https://github.com/ThalysRD/e-play/pull/17)), ativação de conta por token e recuperação de senha.
+- **E-mail:** serviço de mensageria para ativação, recuperação de senha e notificações ([#20](https://github.com/ThalysRD/e-play/pull/20), [#33](https://github.com/ThalysRD/e-play/pull/33)).
+- **Anúncios e busca:** criação e listagem de anúncios, rota de pesquisa por título e correções ([#27](https://github.com/ThalysRD/e-play/pull/27), [#31](https://github.com/ThalysRD/e-play/pull/31), [#32](https://github.com/ThalysRD/e-play/pull/32)).
+- **Compra:** finalização do pedido a partir do carrinho e forma de pagamento ([#37](https://github.com/ThalysRD/e-play/pull/37)).
+- **Status e testes:** página e endpoint `/api/v1/status` com testes de integração ([#4](https://github.com/ThalysRD/e-play/pull/4), [#8](https://github.com/ThalysRD/e-play/pull/8)).
+- **Interface:** layout base com navegação, home e tela de login ([#21](https://github.com/ThalysRD/e-play/pull/21), [#22](https://github.com/ThalysRD/e-play/pull/22), [#23](https://github.com/ThalysRD/e-play/pull/23)).
+
+O carrinho, o perfil do usuário, as telas de pedidos e vendas e a responsividade foram desenvolvidos principalmente pelas outras pessoas da equipe.
+
+### Como contribuir
 
 1. Crie uma branch para a sua funcionalidade ou correção
 2. Faça commits claros e descritivos
