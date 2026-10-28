@@ -352,6 +352,23 @@ npm test
 
 Os testes cobrem cenários de API e fluxo principal do sistema. O comando já inicia os serviços do Docker e a aplicação para validar comportamento em ambiente próximo do real.
 
+## E-mail em produção sem domínio próprio
+
+A Resend só entrega para qualquer destinatário com um domínio verificado. Sem domínio, use um servidor SMTP comum, como o Gmail, configurando estas variáveis na Vercel (Settings → Environment Variables):
+
+```env
+EMAIL_PROVIDER=smtp
+EMAIL_SMTP_HOST=smtp.gmail.com
+EMAIL_SMTP_PORT=587
+EMAIL_SMTP_USER=seuemail@gmail.com
+EMAIL_SMTP_PASSWORD=senha-de-app-de-16-caracteres
+EMAIL_FROM=E-Play <seuemail@gmail.com>
+```
+
+A senha é uma **senha de app** do Google (exige verificação em duas etapas ativa), não a senha normal da conta. `EMAIL_FROM` substitui o remetente fixo no código, que usa o domínio antigo. O Gmail permite cerca de 500 envios por dia, suficiente para a demonstração.
+
+Com domínio verificado, volte para `EMAIL_PROVIDER=resend` e `RESEND_API_KEY`.
+
 ## Observações de Desenvolvimento
 
 - A configuração de e-mail pode ser testada via MailCatcher em ambiente local.
